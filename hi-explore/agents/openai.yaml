@@ -1,0 +1,4 @@
+interface:
+  display_name: "Explore"
+  short_description: "Fast, token-efficient codebase exploration using parallel agents."
+  default_prompt: "Use $explore to explore the codebase in parallel: analyze, divide scope, register tasks, spawn subagents, collect deduplicated results."
