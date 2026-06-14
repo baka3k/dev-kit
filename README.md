@@ -74,11 +74,8 @@ dev-kit/
 ├── .cursorrules      Cursor auto-load rules
 ├── AGENTS.md         Agent harness instructions
 ├── CLAUDE.md         Project-level Claude instructions
-├── MANIFEST.json     Auto-generated skill metadata
 ├── devkit.md         Workflow diagrams (mermaid) + HARD-GATEs
 ├── dependency.md     Skill-to-skill call graph + missing skills
-├── optimize.md       Token-burn reduction analysis
-└── USAGE_GUIDE.md    Per-skill reference (compressed)
 ```
 
 ## Key Conventions
