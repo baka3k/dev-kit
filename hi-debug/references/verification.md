@@ -73,3 +73,7 @@ Skip any step = lying, not verifying
 | Build | `[Run build] [See: exit 0]` | "Linter passed" (linter ≠ compiler) |
 | Requirements | Re-read plan → checklist → verify each → report gaps | "Tests pass, phase complete" |
 | Agent delegation | Report success → check VCS diff → verify changes → report actual | Trust agent report |
+
+## When To Apply
+- ALWAYS before ANY completion claim, expression of satisfaction, or positive statement about work state
+- Rule covers exact phrases, paraphrases, synonyms, and implications of success
