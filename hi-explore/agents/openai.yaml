@@ -1,4 +1,10 @@
 interface:
   display_name: "Explore"
-  short_description: "Fast, token-efficient codebase exploration using parallel agents."
-  default_prompt: "Use $explore to explore the codebase in parallel: analyze, divide scope, register tasks, spawn subagents, collect deduplicated results."
+  short_description: "Fast parallel codebase + external research using subagents and MCP tools (web search, web reading, GitHub repo lookup, visual analysis)."
+  default_prompt: "Use $explore to discover files, docs, repos, and visual context in parallel: analyze target scope, divide work, register tasks, spawn subagents (internal Glob/Grep for local code, MCP tools for web/repo/image), collect deduplicated results."
+  capabilities:
+    - local_codebase_search
+    - web_documentation_lookup
+    - github_repo_analysis
+    - image_and_ui_analysis
+    - parallel_agent_orchestration
