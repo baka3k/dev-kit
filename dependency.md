@@ -9,17 +9,17 @@
 ```mermaid
 graph TD
     knows[knows] --> standalone
-    cook[hi:cook] --> |Step 1| explore[hi:explore]
+    cook[hi:cook] --> |Step 1| scout[hi:scout]
     cook --> |Step 2| plan[hi:plan]
     cook --> |Step 6| log[hi:log]
     plan --> |research-phase| seqthink[sequential-thinking]
     plan --> |research-phase| docs[docs-seeker]
     plan -.-> |optional| log
-    fix[hi:fix] --> explore
+    fix[hi:fix] --> scout
     fix --> |diagnosis-protocol| debug[hi:debug]
     fix --> |diagnosis-protocol| probsolve[hi:problem-solving]
     debug --> |Tools section| docs
-    debug --> |Tools section| explore
+    debug --> |Tools section| scout
     debug --> |Tools section| probsolve
 
 ```
@@ -44,7 +44,7 @@ graph TD
 | Property | Value |
 | --- | --- |
 | **Status** | 🟢 Primary — called directly |
-| **Calls** | `hi:explore`, `hi:plan`, `hi:log` |
+| **Calls** | `hi:scout`, `hi:plan`, `hi:log` |
 | **Called by** | *None.* |
 | **Description** | Main orchestrator for implementation: research → plan → code → test → review → finalize. |
 
@@ -52,7 +52,7 @@ graph TD
 
 | Step | Call | File:Line | Purpose |
 | --- | --- | --- | --- |
-| Step 1: Research | `hi:explore` | `hi-cook/SKILL.md:41` | "Spawn researcher + hi:explore. Reports <=150 lines." |
+| Step 1: Research | `hi:scout` | `hi-cook/SKILL.md:41` | "Spawn researcher + hi:scout. Reports <=150 lines." |
 | Step 2: Plan | `hi:plan` | `hi-cook/SKILL.md:44` | "Spawn planner. Fast: /hi:plan --fast." |
 | Step 6: Finalize | `hi:log` | `hi-cook/SKILL.md:62` | "/hi:log" — log after completion |
 
@@ -69,7 +69,7 @@ graph TD
 
 ---
 
-### 2.4 `hi:explore` — Parallel Codebase Explorer
+### 2.4 `hi:scout` — Parallel Codebase scoutr
 
 | Property | Value |
 | --- | --- |
@@ -118,7 +118,7 @@ graph TD
 | Property | Value |
 | --- | --- |
 | **Status** | 🔵 Linked — called by `hi:fix` |
-| **Calls** | `docs-seeker`, `hi:explore`, `hi:problem-solving` |
+| **Calls** | `docs-seeker`, `hi:scout`, `hi:problem-solving` |
 | **Called by** | `hi:fix` (diagnosis-protocol.md) |
 | **Description** | Debug framework: systematic debugging, root cause tracing, defense-in-depth, log/CI analysis, performance diagnostics. |
 | **Other refs** | Also references `hi:chrome-devtools` ✗ and `hi:repomix` ✗ — no corresponding skills. |
@@ -141,7 +141,7 @@ graph TD
 | Property | Value |
 | --- | --- |
 | **Status** | ⚪ Unused — **NOT called by any primary skill** |
-| **Calls** | `hi:explore`, `hi:debug`, `hi:problem-solving` |
+| **Calls** | `hi:scout`, `hi:debug`, `hi:problem-solving` |
 | **Called by** | *None.* |
 | **Description** | Orchestrator for bug fixing: locate → diagnose → fix → verify → finalize. |
 
@@ -162,14 +162,14 @@ graph TD
 | Skill | Primary | Calls others? | Called by? | Missing Ref? | Note |
 | --- | --- | --- | --- | --- | --- |
 | `knows` | ✅ | ❌ | ❌ | ❌ | Fully standalone |
-| `hi:cook` | ✅ | `explore`, `plan`, `log` | ❌ | ❌ | Main orchestrator |
+| `hi:cook` | ✅ | `scout`, `plan`, `log` | ❌ | ❌ | Main orchestrator |
 | `hi:plan` | ✅ | `sequential`, `docs`, `log` | `cook` | ❌ | Refs fixed |
-| `hi:explore` | 🔵 | ❌ | `cook`, `fix` | ❌ | Service skill |
+| `hi:scout` | 🔵 | ❌ | `cook`, `fix` | ❌ | Service skill |
 | `hi:log` | 🔵 | ❌ | `cook`, `plan` | ❌ | Service skill |
 | `sequential-thinking` | 🔵 | ❌ | `plan` | ❌ | Added |
 | `docs-seeker` | 🔵 | ❌ | `plan` | ❌ | Added |
-| `hi:debug` | 🔵 | `docs`, `explore`, `probsolve` | `fix` | ❌ | Added |
+| `hi:debug` | 🔵 | `docs`, `scout`, `probsolve` | `fix` | ❌ | Added |
 | `hi:problem-solving` | 🔵 | ❌ | `fix`, `debug` | ❌ | Added |
-| `hi:fix` | ⚪ | `explore`, `debug`, `probsolve` | ❌ | ❌ | Safe to delete |
+| `hi:fix` | ⚪ | `scout`, `debug`, `probsolve` | ❌ | ❌ | Safe to delete |
 
 ---

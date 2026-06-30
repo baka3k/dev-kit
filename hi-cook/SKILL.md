@@ -59,4 +59,4 @@ Không spawn tester riêng.
 
 ## Review (optional, flag --review hoặc full mode)
 Run code-reviewer. Score>=9.5 + 0 critical = auto-approve (auto mode only).
-Max 3 fix cycles. Critical issues always block: Security, Performance, Architecture violations.
+Max 3 fix cycles. Critical issues always blohi: Security, Performance, Architecture violations.

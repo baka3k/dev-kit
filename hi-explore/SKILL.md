@@ -1,13 +1,13 @@
 ---
-name: hi:explore
-description: "Fast parallel codebase explorer using multiple subagents with MCP-based external research. Use for file discovery (local), web/docs lookup, GitHub repo analysis, image/UI understanding."
+name: hi:scout
+description: "Fast parallel codebase scoutr using multiple subagents with MCP-based external research. Use for file discovery (local), web/docs lookup, GitHub repo analysis, image/UI understanding."
 argument-hint: "[search-target]"
 metadata:
   author: baka3k
   version: "3.0.0"
 ---
 
-# Explore (Parallel Codebase + External Researcher)
+# scout (Parallel Codebase + External Researcher)
 
 Fast, token-efficient codebase intelligence + external research using parallel agents and MCP tools.
 
@@ -42,8 +42,8 @@ Xem `references/task-management.md` cho patterns.
 ### 4. Spawn
 TaskUpdate mỗi task → `in_progress` trước khi spawn. **3-min timeout per agent**. Skip timed-out.
 
-- **Internal mode**: load `references/internal-explore.md` — dùng Glob/Grep
-- **External mode**: load `references/external-explore.md` + `references/external-research.md` — dùng MCP tools
+- **Internal mode**: load `references/internal-scout.md` — dùng Glob/Grep
+- **External mode**: load `references/external-scout.md` + `references/external-research.md` — dùng MCP tools
 
 ### 5. Collect
 Aggregate: deduplicate paths/URLs, merge descriptions, note gaps/timeouts, list unresolved.
@@ -64,7 +64,7 @@ Xem `references/external-research.md` cho decision matrix đầy đủ.
 ## Report Format
 
 ```markdown
-# Explore Report
+# scout Report
 ## Relevant Files / Resources
 - path/to/file.ts - description
 - https://docs.example.com/page - description

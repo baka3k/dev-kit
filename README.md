@@ -16,7 +16,7 @@ A token-efficient agent skills kit for software engineering workflows. 13 compos
 
 | Skill | Purpose |
 |-------|---------|
-| `hi:explore` | Parallel codebase explorer (multi-agent file discovery) |
+| `hi:scout` | Parallel codebase scoutr (multi-agent file discovery) |
 | `hi:debug` | Systematic debugging + root cause tracing + verification gate |
 | `hi:knows` | Evidence retrieval (Git → MCP → memory) |
 | `hi:log` | Write session log entries to `./docs/logs/` |
@@ -26,7 +26,7 @@ A token-efficient agent skills kit for software engineering workflows. 13 compos
 
 | Skill | Purpose |
 |-------|---------|
-| `hi:scenario` | 12-dimension edge case explorer before implementation |
+| `hi:scenario` | 12-dimension edge case scoutr before implementation |
 | `hi:predict` | 5-persona pre-analysis debate |
 | `hi:security` | STRIDE + OWASP security audit with iterative auto-fix |
 | `hi:sequential-thinking` | Sequential reasoning with revision / branching / hypothesis testing |
@@ -35,10 +35,10 @@ A token-efficient agent skills kit for software engineering workflows. 13 compos
 
 ```
 Implement feature:  hi:cook (fast) → hi:plan inline → code → test → hi:log → commit
-Implement complex:  hi:cook (full) → hi:explore → hi:plan (full) → code → review → commit
+Implement complex:  hi:cook (full) → hi:scout → hi:plan (full) → code → review → commit
 Fix bug:            hi:fix (quick) → scout → diagnose → fix → verify → commit
-                    hi:fix (deep)  → hi:explore (parallel) → hi:debug → hi:problem-solving
-Pre-flight check:   hi:scenario (12 dim) → hi:predict (5 personas) → ship
+                    hi:fix (deep)  → hi:scout (parallel) → hi:debug → hi:problem-solving
+Pre-flight chehi:   hi:scenario (12 dim) → hi:predict (5 personas) → ship
 Security audit:     hi:security (STRIDE phases 0-6) → fix mode → re-verify
 ```
 
@@ -61,7 +61,7 @@ dev-kit/
 ├── hi-cook/          SKILL.md + references/ + agents/
 ├── hi-fix/
 ├── hi-plan/
-├── hi-explore/       (renamed from hi-ciu)
+├── hi-scout/       (renamed from hi-ciu)
 ├── hi-debug/         SKILL.md + references/ + scripts/
 ├── hi-knows/
 ├── hi-log/

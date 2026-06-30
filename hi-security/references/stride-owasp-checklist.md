@@ -124,5 +124,5 @@ Run the appropriate command for the detected stack and include output in the fin
 | Python | `pip-audit --format json` |
 | Go | `govulncheck ./...` |
 | Ruby | `bundle audit check --update` |
-| Java/Maven | `mvn dependency-check:check` |
+| Java/Maven | `mvn dependency-chehi:check` |
 | Rust | `cargo audit` |

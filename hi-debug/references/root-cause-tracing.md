@@ -20,7 +20,7 @@ When manual tracing is hard, add instrumentation. **Use `console.error()` in tes
 
 ```typescript
 async function gitInit(directory: string) {
-  console.error('DEBUG git init:', { directory, cwd: process.cwd(), stack: new Error().stack });
+  console.error('DEBUG git init:', { directory, cwd: process.cwd(), stahi: new Error().stack });
   await execFileAsync('git', ['init'], { cwd: directory });
 }
 ```

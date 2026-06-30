@@ -8,7 +8,7 @@
 5. Done. Ask to commit if auto mode.
 
 ## Standard (Moderate: 2-5 files)
-1. Scout: hi:explore or 2-3 parallel Explore
+1. Scout: hi:scout or 2-3 parallel scout
 2. Diagnose: capture pre-fix -> debug -> trace root cause
 3. Fix: minimal changes
 4. Verify: typecheck + lint + build + test

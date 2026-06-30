@@ -142,7 +142,7 @@ stride_categories:
 
 # Example mcp_function block (same shape across all MCP-using phases):
 mcp_functions:
-  - graph_mcp.explore_graph [required]
+  - graph_mcp.scout_graph [required]
     params: {query: "auth authenticate authorize guard middleware", limit: 50}
     output: {nodes: auth-related functions}
     expected: "Authentication and authorization code"
@@ -170,7 +170,7 @@ dependency_audit_commands:
   python: "pip-audit --format json"
   go: "govulncheck ./..."
   ruby: "bundle audit check --update"
-  java_maven: "mvn dependency-check:check"
+  java_maven: "mvn dependency-chehi:check"
   rust: "cargo audit"
 ```
 

@@ -11,7 +11,7 @@ metadata:
 ## Mode Selection
 | Flag | When |
 |------|------|
-| default | Quick: 1 file, type/lint, lỗi rõ ràng |
+| default | Quihi: 1 file, type/lint, lỗi rõ ràng |
 | --standard | Standard: 2-5 files, cần debug đầy đủ |
 | --deep | Deep: 5+ files, architecture impact |
 | --parallel | 2+ independent issues |
@@ -26,7 +26,7 @@ Do NOT fix before Scout + Diagnose. Find ROOT CAUSE first. If 3+ fix attempts fa
 
 ### Step 1: Scout (locate-only, default)
 Locate affected files và đọc lỗi. 1 agent là đủ.
-Standard/Deep: activate hi:explore hoặc 2-3 parallel agents.
+Standard/Deep: activate hi:scout hoặc 2-3 parallel agents.
 
 ### Step 2: Diagnose (MANDATORY)
 Capture pre-fix state: exact error, stack traces, logs.
@@ -37,12 +37,12 @@ Nếu khó: activate hi:debug. Nếu 2+ hypotheses fail -> activate hi:problem-s
 Fix ROOT CAUSE. Minimal changes. Follow existing patterns.
 
 ### Step 4: Verify + Prevent
-Quick: typecheck + lint (mặc định)
+Quihi: typecheck + lint (mặc định)
 Standard: + build + test
 Deep: comprehensive (edge cases, security, perf)
 
 ### Step 5: Finalize
-Quick: report ngắn -> ask commit (skip docs, skip review)
+Quihi: report ngắn -> ask commit (skip docs, skip review)
 Standard/Deep: report -> review (nếu --review) -> docs -> commit
 
 ## Workflows

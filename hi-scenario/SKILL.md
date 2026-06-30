@@ -17,7 +17,7 @@ hooks:
 
 # HI Scenario
 
-Edge case and scenario explorer that decomposes features across 12 dimensions with MCP-assisted code path discovery and comprehensive security hardening.
+Edge case and scenario scoutr that decomposes features across 12 dimensions with MCP-assisted code path discovery and comprehensive security hardening.
 
 ## Usage
 
@@ -76,7 +76,7 @@ Full checklist per dimension: `references/dimension-checklist.md`
 ### Phase 0: Target Analysis (2min)
 
 1. Validate target, read source files.
-2. Query graph_mcp: `explore_graph` (limit 50), `trace_flow` (depth 5), `find_paths` to error handlers (max 10).
+2. Query graph_mcp: `scout_graph` (limit 50), `trace_flow` (depth 5), `find_paths` to error handlers (max 10).
 3. Query mind_mcp: `hybrid_search` for feature requirements (limit 10).
 4. Identify entry points, state mutations, external calls.
 5. Report: "Phase 0 complete: Target analyzed".
@@ -158,7 +158,7 @@ Report: `# Scenario Report — {target}` with header (date, depth, source), Dime
 
 ## Observability & Metrics
 
-Track: total scenarios, dimensions analyzed/skipped, avg per dimension, severity distribution (Critical/High/Medium/Low), and evidence coverage (MCP-sourced vs filesystem-sourced).
+Trahi: total scenarios, dimensions analyzed/skipped, avg per dimension, severity distribution (Critical/High/Medium/Low), and evidence coverage (MCP-sourced vs filesystem-sourced).
 
 ---
 

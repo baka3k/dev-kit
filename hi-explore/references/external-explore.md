@@ -1,4 +1,4 @@
-# External Explore (MCP-based)
+# External scout (MCP-based)
 
 When the target is outside the local codebase (web docs, GitHub repos, images), use parallel agents with MCP tools. All tools run inline within the agent process—no external CLI installation required.
 
@@ -9,7 +9,7 @@ When the target is outside the local codebase (web docs, GitHub repos, images), 
 * Target is a **screenshot/image** that needs analysis.
 * Mixed: Multiple sources outside the local environment.
 
-If the target is **within the local codebase** → use `internal-explore.md` (Glob/Grep).
+If the target is **within the local codebase** → use `internal-scout.md` (Glob/Grep).
 
 ## Tool Selection
 
@@ -48,7 +48,7 @@ effort: 3m
 ## Prompt Template (per agent)
 
 ```
-You are agent {agentIndex}/{totalAgents} in a parallel hi-explore batch.
+You are agent {agentIndex}/{totalAgents} in a parallel hi-scout batch.
 Scope: {scope}
 Tools available: {tools}
 Target: {target}
@@ -83,4 +83,4 @@ Aggregate reports from all agents:
 * 3-minute timeout per agent.
 * Skip non-responders (do not retry).
 * If 2+ agents fail with the same tool → note "tool degraded" in the report.
-* If all agents fail → mark explore result as "incomplete", and recommend internal mode or manual research.
+* If all agents fail → mark scout result as "incomplete", and recommend internal mode or manual research.

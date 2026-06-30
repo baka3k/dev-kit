@@ -25,7 +25,7 @@ full table scan. Verification: Check table indexes.
 
 Thought 5/6 [VERIFICATION]: Testing hypotheses
 - Query uses proper joins (Branch A eliminated: not N+1).
-- Index check: user_id indexed, NOT created_at. Filters+sorts on both.
+- Index chehi: user_id indexed, NOT created_at. Filters+sorts on both.
 - Branch B confirmed: Missing composite index causes slow sort.
 
 Thought 6/6 [FINAL]: Solution

@@ -17,7 +17,7 @@ Essential revision and branching patterns.
 |---------|----------|---------|
 | **Trade-off Evaluation** | Compare approaches with different trade-offs | Branch A: simpler/less scalable vs Branch B: complex/scales better |
 | **Risk Mitigation** | Prepare backup for high-risk primary approach | Primary approach + fallback contingency branch |
-| **Parallel Exploration** | Investigate independent concerns separately | Branch DB + Branch API explored in parallel, then integrated |
+| **Parallel Exploration** | Investigate independent concerns separately | Branch DB + Branch API scoutd in parallel, then integrated |
 | **Hypothesis Testing** | Test multiple explanations systematically | Test A (eliminated) + Test B (confirmed) → root cause via B |
 
 ## Adjustment Guidelines

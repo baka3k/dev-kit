@@ -1,4 +1,4 @@
-# Internal Explore
+# Internal scout
 Use this when the target is within the local codebase (single repo). Each subagent must follow the **Tool Priority Flow** before falling back to native tools.
 ## Tool Priority Flow
 
@@ -10,7 +10,7 @@ Use this when the target is within the local codebase (single repo). Each subage
 **Fast-Fail Rule:** If a tool is missing or unavailable → skip immediately to the next tool (DO NOT retry). Continue until results are found or all tools have been exhausted.
 ## Prompt Template
 ```
-Quickly explore {DIRECTORY} for: {TARGET}
+Quickly scout {DIRECTORY} for: {TARGET}
 Use Glob/Grep. List files with descriptions. Timeout 3m.
 Report: ## Found Files + path/file.ext - description
 ```

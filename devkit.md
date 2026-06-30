@@ -8,7 +8,7 @@
 
 | Skill | Called by | Purpose |
 | --- | --- | --- |
-| `hi:explore` | cook, fix, debug | Codebase scanning & file discovery |
+| `hi:scout` | cook, fix, debug | Codebase scanning & file discovery |
 | `hi:log` | cook, plan | Session logging |
 | `sequential-thinking` | plan | Step-by-step analysis |
 | `docs-seeker` | plan, debug | Documentation lookup |
@@ -22,7 +22,7 @@
 | Mode | Research | Plan | Review | Test | Finalize |
 | --- | --- | --- | --- | --- | --- |
 | `fast` (default) | skip | inline `hi:plan --fast` | skip | run | commit + log |
-| `full` | yes (`explore` + researcher) | yes | MUST | run | commit + log + review |
+| `full` | yes (`scout` + researcher) | yes | MUST | run | commit + log + review |
 | `review` | skip | inline | MUST | run | commit + log + review |
 | `auto` | skip | inline | auto-pass | run | commit + log |
 | `no-test` | skip | inline | skip | skip | commit + log |
@@ -67,7 +67,7 @@ graph LR
 
 ```mermaid
 graph TD
-    A["Scout: hi:explore<br/>2-3 parallel"] --> B["Diagnose"]
+    A["Scout: hi:scout<br/>2-3 parallel"] --> B["Diagnose"]
 
     B --> B1{"Diagnosis stuck?"}
 
@@ -185,7 +185,7 @@ graph TD
     Cook -->|Step 3: Test fail ≥3| Fix
     Cook -->|Step 4: Finalize| Log[hi:log]
 
-    Fix -->|Step 1: Scout| Explore[hi:explore]
+    Fix -->|Step 1: Scout| scout[hi:scout]
     Fix -->|Step 2: Diagnose stuck| Debug[hi:debug]
     Fix -->|Step 2: 2+ hypotheses fail| PS[hi:problem-solving]
     Fix -->|Step 4: Verify| Log
@@ -194,11 +194,11 @@ graph TD
     Plan -->|research-phase| Docs[docs-seeker]
     Plan -->|archive-workflow.md| Log
 
-    Debug -->|Tools section| Explore
+    Debug -->|Tools section| scout
     Debug -->|Tools section| Docs
     Debug -->|Tools section| PS
 
-    Explore --> Output[Report: files + descriptions]
+    scout --> Output[Report: files + descriptions]
     Debug --> Output2[Root cause + fix recommendation]
     PS --> Output3[Stuck-unsticking framework]
     Log --> Output4[Session log entries]
@@ -209,7 +209,7 @@ graph TD
     classDef endnode fill:#f5f5f5,stroke:#333,color:#000
 
     class Cook,Fix,Plan primary
-    class Explore,Debug,Log,ST,Docs,PS linked
+    class scout,Debug,Log,ST,Docs,PS linked
     class Output,Output2,Output3,Output4 leaf
     class User,Detect endnode
 

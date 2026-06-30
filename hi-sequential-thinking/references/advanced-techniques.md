@@ -21,7 +21,7 @@ Each return is refinement, not restart.
 | Pattern | Use When | Approach |
 |---------|----------|----------|
 | **Hypothesis-Driven** | Debugging, root cause analysis, diagnostics | Generate → Test → Refine → Re-test loop until hypothesis confirmed |
-| **Multi-Branch Convergence** | Complex decisions where neither option clearly best | Explore Branch A benefits/drawbacks + Branch B benefits/drawbacks → `[CONVERGENCE]` hybrid combining best of each |
+| **Multi-Branch Convergence** | Complex decisions where neither option clearly best | scout Branch A benefits/drawbacks + Branch B benefits/drawbacks → `[CONVERGENCE]` hybrid combining best of each |
 
 ## Progressive Context Deepening
 
