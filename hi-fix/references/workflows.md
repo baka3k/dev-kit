@@ -1,14 +1,14 @@
 # Workflow Variants
 
 ## Quick (Simple: 1 file, type/lint, clear error)
-1. Scout: locate file + direct deps only
+1. Explorer: locate file + direct deps only
 2. Diagnose: read error, identify root cause
 3. Fix: apply fix
 4. Verify: typecheck + lint
 5. Done. Ask to commit if auto mode.
 
 ## Standard (Moderate: 2-5 files)
-1. Scout: hi:scout or 2-3 parallel scout
+1. Explorer: hi:explorer or 2-3 parallel explorer
 2. Diagnose: capture pre-fix -> debug -> trace root cause
 3. Fix: minimal changes
 4. Verify: typecheck + lint + build + test
@@ -16,7 +16,7 @@
 6. Finalize: report -> docs -> git -> log
 
 ## Deep (Complex: 5+ files, architecture impact)
-1. Parallel: Scout + Diagnose + Research
+1. Parallel: Explorer + Diagnose + Research
 2. Fix: root cause
 3. Verify: comprehensive (edge cases, security, perf)
 4. Review: code-reviewer

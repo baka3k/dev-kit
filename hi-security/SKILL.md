@@ -142,7 +142,7 @@ stride_categories:
 
 # Example mcp_function block (same shape across all MCP-using phases):
 mcp_functions:
-  - graph_mcp.scout_graph [required]
+  - graph_mcp.semantic_search [required]
     params: {query: "auth authenticate authorize guard middleware", limit: 50}
     output: {nodes: auth-related functions}
     expected: "Authentication and authorization code"

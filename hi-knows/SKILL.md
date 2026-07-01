@@ -34,7 +34,7 @@ git show <commit>
 
 **Phase 3 - MCP:**
 - `mind_mcp`: `hybrid_search`, `query_graph_rag_relation`, `sequential_search`
-- `graph_mcp`: `scout_graph`, `query_subgraph`, `find_paths`, `analyze_workflow_impact`
+- `graph_mcp`: `semantic_search`, `query_subgraph`, `find_paths`, `analyze_workflow_impact`
 
 **Phase 4 - Memory:** Workspace-first, then home. Allowlist: `memory*.md`, `agent*.md`, `claude*.md`, `cursor*.md`
 

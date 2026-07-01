@@ -16,7 +16,7 @@ For each hypothesis: What CONFIRMS it? REFUTES it? How to test?
 Common: recent regression, data/state mismatch, env difference, missing validation.
 
 ### Phase 3: Test (parallel)
-2-3 scout agents simultaneously to test hypotheses.
+2-3 explorer agents simultaneously to test hypotheses.
 Result: CONFIRMED / REFUTED / INCONCLUSIVE.
 
 ### Phase 4: Trace Root Cause

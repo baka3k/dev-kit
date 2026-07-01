@@ -8,7 +8,7 @@
 
 | Skill | Called by | Purpose |
 | --- | --- | --- |
-| `hi:scout` | cook, fix, debug | Codebase scanning & file discovery |
+| `hi:explorer` | cook, fix, debug | Codebase scanning & file discovery |
 | `hi:log` | cook, plan | Session logging |
 | `sequential-thinking` | plan | Step-by-step analysis |
 | `docs-seeker` | plan, debug | Documentation lookup |
@@ -22,7 +22,7 @@
 | Mode | Research | Plan | Review | Test | Finalize |
 | --- | --- | --- | --- | --- | --- |
 | `fast` (default) | skip | inline `hi:plan --fast` | skip | run | commit + log |
-| `full` | yes (`scout` + researcher) | yes | MUST | run | commit + log + review |
+| `full` | yes (`explorer` + researcher) | yes | MUST | run | commit + log + review |
 | `review` | skip | inline | MUST | run | commit + log + review |
 | `auto` | skip | inline | auto-pass | run | commit + log |
 | `no-test` | skip | inline | skip | skip | commit + log |
@@ -53,7 +53,7 @@ graph LR
 
 ```mermaid
 graph LR
-    A[1. Scout<br/>locate-only, 1 agent] --> B[2. Diagnose<br/>read error,<br/>find root cause]
+    A[1. Explorer<br/>locate-only, 1 agent] --> B[2. Diagnose<br/>read error,<br/>find root cause]
     B --> C[3. Fix<br/>root cause,<br/>minimal change]
     C --> D[4. Verify<br/>typecheck + lint]
     D --> E[5. Finalize<br/>report → commit]
@@ -67,7 +67,7 @@ graph LR
 
 ```mermaid
 graph TD
-    A["Scout: hi:scout<br/>2-3 parallel"] --> B["Diagnose"]
+    A["Explorer: hi:explorer<br/>2-3 parallel"] --> B["Diagnose"]
 
     B --> B1{"Diagnosis stuck?"}
 
@@ -185,7 +185,7 @@ graph TD
     Cook -->|Step 3: Test fail ≥3| Fix
     Cook -->|Step 4: Finalize| Log[hi:log]
 
-    Fix -->|Step 1: Scout| scout[hi:scout]
+    Fix -->|Step 1: Explorer| explorer[hi:explorer]
     Fix -->|Step 2: Diagnose stuck| Debug[hi:debug]
     Fix -->|Step 2: 2+ hypotheses fail| PS[hi:problem-solving]
     Fix -->|Step 4: Verify| Log
@@ -194,11 +194,11 @@ graph TD
     Plan -->|research-phase| Docs[docs-seeker]
     Plan -->|archive-workflow.md| Log
 
-    Debug -->|Tools section| scout
+    Debug -->|Tools section| explorer
     Debug -->|Tools section| Docs
     Debug -->|Tools section| PS
 
-    scout --> Output[Report: files + descriptions]
+    explorer --> Output[Report: files + descriptions]
     Debug --> Output2[Root cause + fix recommendation]
     PS --> Output3[Stuck-unsticking framework]
     Log --> Output4[Session log entries]
@@ -209,7 +209,7 @@ graph TD
     classDef endnode fill:#f5f5f5,stroke:#333,color:#000
 
     class Cook,Fix,Plan primary
-    class scout,Debug,Log,ST,Docs,PS linked
+    class explorer,Debug,Log,ST,Docs,PS linked
     class Output,Output2,Output3,Output4 leaf
     class User,Detect endnode
 
@@ -222,7 +222,7 @@ graph TD
 | Skill | HARD-GATE | Violation Behavior |
 | --- | --- | --- |
 | `hi:cook` | No code without plan + review | Stop, request `hi:plan` first (unless user says "just code it") |
-| `hi:fix` | No fix before Scout + Diagnose | Force Steps 1-2; if fail 3+ times → STOP, ask user for architecture |
+| `hi:fix` | No fix before Explorer + Diagnose | Force Steps 1-2; if fail 3+ times → STOP, ask user for architecture |
 | `hi:plan` | Cross-Plan Scan update **both plan.md** | Ensure bidirectional update, no plan left behind |
 
 ---

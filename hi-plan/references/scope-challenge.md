@@ -16,7 +16,7 @@ Ask user: EXPANSION / HOLD / REDUCTION
 
 | Mode | Behavior |
 |------|----------|
-| EXPANSION | --hard or --two mode, scout alternatives, stretch goals ok |
+| EXPANSION | --hard or --two mode, explorer alternatives, stretch goals ok |
 | HOLD | auto-detected mode, focus edge cases, test coverage |
 | REDUCTION | --fast mode, minimal version, defer non-critical |
 

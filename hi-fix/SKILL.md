@@ -18,15 +18,15 @@ metadata:
 | --review | Human-in-the-loop at each step |
 
 ## Process Flow
-`[Scout] -> [Diagnose] -> [Fix] -> [Verify+Prevent] -> [Finalize]`
+`[Explorer] -> [Diagnose] -> [Fix] -> [Verify+Prevent] -> [Finalize]`
 
 <HARD-GATE>
-Do NOT fix before Scout + Diagnose. Find ROOT CAUSE first. If 3+ fix attempts fail, STOP and question architecture with user.
+Do NOT fix before Explorer + Diagnose. Find ROOT CAUSE first. If 3+ fix attempts fail, STOP and question architecture with user.
 </HARD-GATE>
 
-### Step 1: Scout (locate-only, default)
+### Step 1: Explorer (locate-only, default)
 Locate affected files và đọc lỗi. 1 agent là đủ.
-Standard/Deep: activate hi:scout hoặc 2-3 parallel agents.
+Standard/Deep: activate hi:explorer hoặc 2-3 parallel agents.
 
 ### Step 2: Diagnose (MANDATORY)
 Capture pre-fix state: exact error, stack traces, logs.
@@ -48,13 +48,13 @@ Standard/Deep: report -> review (nếu --review) -> docs -> commit
 ## Workflows
 
 ### Quick (default, 1 file, type/lint, clear error)
-Scout (locate only) -> Diagnose (read error) -> Fix -> Verify (typecheck+lint) -> Done
+Explorer (locate only) -> Diagnose (read error) -> Fix -> Verify (typecheck+lint) -> Done
 
 ### Standard (--standard, 2-5 files)
-Full Scout -> Full Diagnose (gọi hi:debug nếu cần) -> Fix -> Verify (typecheck+lint+build+test) -> Review (nếu --review) -> Finalize
+Full Explorer -> Full Diagnose (gọi hi:debug nếu cần) -> Fix -> Verify (typecheck+lint+build+test) -> Review (nếu --review) -> Finalize
 
 ### Deep (--deep, 5+ files, architecture impact)
-Parallel Scout + Diagnose + Research -> Fix -> Comprehensive Verify -> Review -> Finalize
+Parallel Explorer + Diagnose + Research -> Fix -> Comprehensive Verify -> Review -> Finalize
 
 ### Parallel (2+ independent)
 Separate task tree per issue. Spawn fullstack-developer per issue.

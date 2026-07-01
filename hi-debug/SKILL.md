@@ -30,5 +30,5 @@ metadata:
 ## Tools Integration
 
 - **Database/CI:** `psql` for PostgreSQL; `gh` CLI for GitHub Actions logs and pipelines
-- **Codebase:** `hi:docs-seeker` (package docs), `hi:repomix` (summary), `/hi:ciu` (scout files)
+- **Codebase:** `hi:docs-seeker` (package docs), `hi:repomix` (summary), `/hi:ciu` (explorer files)
 - **Frontend/Problem-solving:** Chrome browser or `hi:chrome-devtools` for visual verification; `hi:problem-solving` when stuck

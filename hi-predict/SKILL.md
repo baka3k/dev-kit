@@ -57,7 +57,7 @@ Timeouts: phase 0=180s, phase 1=300s, phase 2=180s, phase 3=60s; total=720s (12m
 
 ## Orchestration Workflow
 
-**Phase 0 — Code Context (3min):** Parse proposal, query `mind_mcp.hybrid_search` (architecture docs) and `graph_mcp.scout_graph` + `trace_flow` (affected code/runtime path), build context package.
+**Phase 0 — Code Context (3min):** Parse proposal, query `mind_mcp.hybrid_search` (architecture docs) and `graph_mcp.semantic_search` + `trace_flow` (affected code/runtime path), build context package.
 
 **Phase 1 — Independent Analysis (5min):** Each persona analyzes in isolation (no cross-reading), using MCP context + code reading. Record findings per the `persona_output_format` below.
 

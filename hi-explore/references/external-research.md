@@ -2,7 +2,7 @@
 
 When the target is **outside the local codebase** (web docs, GitHub repos, images, UI), use MCP tools to gather information. All tools listed below run **within the same agent process**—no additional installation required.
 
-> If the target is **within the local codebase** → use `internal-scout.md` (Glob/Grep) instead.
+> If the target is **within the local codebase** → use `internal-explorer.md` (Glob/Grep) instead.
 
 ## Tool Categories
 
@@ -81,14 +81,14 @@ zread__read_file("vercel/next.js", "packages/next/src/server/config.ts")
 | Analyze architecture diagram | `zai.understand_technical_diagram` | Spec for system design |
 | OCR text/code from image | `zai.extract_text_from_screenshot` | Spec `programming_language` if it is code |
 | General image | `zai.analyze_image` | Fallback for any image type |
-| Mix multiple sources | Spawn parallel agents, one toolset per agent | Refer to `external-scout.md` |
+| Mix multiple sources | Spawn parallel agents, one toolset per agent | Refer to `external-explorer.md` |
 
 ---
 
 ## Spawn Pattern (parallel agents)
 
 ```yaml
-# Example: 3 parallel agents for 1 scout task
+# Example: 3 parallel agents for 1 explorer task
 agents:
   - id: agent-1
     scope: "GitHub repo structure"
