@@ -11,6 +11,7 @@ Essential revision and branching patterns.
 | **Approach Shift** | Initial strategy inadequate for requirements | `2/6: Optimize query` → `5/6 [REVISION]: + cache layer required` |
 | **Understanding Deepening** | Later insight fundamentally changes interpretation | `1/5: Feature broken` → `4/5 [REVISION]: UX confusion, not bug` |
 
+
 ## Branching Patterns
 
 | Pattern | Use When | Example |
