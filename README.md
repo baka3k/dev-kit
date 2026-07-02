@@ -8,6 +8,10 @@ Just simple in terminal
 ```
 npx skill-dev
 ```
+## Advanced Capabilities
+
+For complex codebases exceeding millions of lines of code (LOC) and massive documentation scale (tens of gigabytes), integrate cortex-harness (https://github.com/baka3k/cortex-harness).
+The pre-configured skills natively support hybrid querying across both Graph Databases (GraphDB) and Vector Databases (VectorDB). By combining graph-based relational queries with semantic search, the system optimizes context retrieval and dramatically accelerates project onboarding and codebase understanding.
 
 ## Skills
 
