@@ -10,7 +10,7 @@ npx skill-dev
 ```
 ## Advanced Capabilities
 
-For complex codebases exceeding millions of lines of code (LOC) and massive documentation scale (tens of gigabytes), integrate cortex-harness (https://github.com/baka3k/cortex-harness).
+For complex codebases exceeding millions of Lines of Code and massive documentation scale (tens of gigabytes), Please integrate with cortex-harness (https://github.com/baka3k/cortex-harness).
 
 The pre-configured skills natively support hybrid querying across both Graph Databases (GraphDB) and Vector Databases (VectorDB). 
 
