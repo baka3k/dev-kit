@@ -1,6 +1,13 @@
 # DevKit
 
 A token-efficient agent skills kit for software engineering workflows. 13 composable skills, designed for Claude Code / Cursor / Continue / Copilot.
+## Installation
+
+Just simple in terminal
+
+```
+npx skill-dev
+```
 
 ## Skills
 
