@@ -28,7 +28,7 @@ gh run view <run-id> --log-failed
 gh run view <run-id> --log > /tmp/ci-logs.txt
 ```
 
-For codebase: read `docs/codebase-summary.md` if exists and <2 days old, otherwise use `hi-repomix`; use `/hi-ciu` to find relevant files; use `hi-docs-seeker` for package docs.
+For codebase: read `docs/codebase-summary.md` if exists and <2 days old, otherwise use `hi-repo-search`; use `/hi-explorer` to find relevant files; use `hi-docs-seeker` for package docs.
 
 ## Step 3: Analysis Process
 

@@ -240,7 +240,7 @@ dev-kit/
 ├── hi-cook/          SKILL.md + references/ + agents/
 ├── hi-fix/
 ├── hi-plan/
-├── hi-explorer/       (renamed from hi-ciu)
+├── hi-explorer/
 ├── hi-debug/         SKILL.md + references/ + scripts/
 ├── hi-knows/
 ├── hi-log/
