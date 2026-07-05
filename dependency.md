@@ -121,7 +121,7 @@ graph TD
 | **Calls** | `docs-seeker`, `hi-explorer`, `hi-problem-solving` |
 | **Called by** | `hi-fix` (diagnosis-protocol.md) |
 | **Description** | Debug framework: systematic debugging, root cause tracing, defense-in-depth, log/CI analysis, performance diagnostics. |
-| **Other refs** | Also references `hi-chrome-devtools` ✗ and `hi-repomix` ✗ — no corresponding skills. |
+| **Other refs** | Also references `hi-chrome-devtools` ✗ and `hi-repo-search` ✗ — no corresponding skills. |
 
 ---
 
@@ -153,7 +153,7 @@ graph TD
 | --- | --- | --- | --- |
 | `hi-git` | `hi-plan/references/archive-workflow.md:17` | "stage+commit+push via /hi-git" | Delete or create skill |
 | `hi-chrome-devtools` | `hi-debug/SKILL.md:111` | "hi-chrome-devtools skill" | Delete or create skill |
-| `hi-repomix` | `hi-debug/SKILL.md:109` | "hi-repomix skill" | Delete or create skill |
+| `hi-repo-search` | `hi-debug/SKILL.md:109` | "hi-repo-search skill" | Delete or create skill |
 
 ---
 
