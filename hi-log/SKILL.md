@@ -1,5 +1,5 @@
 ---
-name: hi:log
+name: hi-log
 description: "Write log entries analyzing recent changes and session reflections."
 argument-hint: "[topic] [--since <ref>] [--scope <dir>]"
 metadata:
@@ -9,7 +9,7 @@ metadata:
 # Log
 
 Spawn log-writer subagent to explorer memories and recent code changes, write concise log entries to ./docs/logs/.
-Focus on key events, changes, impacts, and decisions. Run /hi:project-organization to organize outputs.
+Focus on key events, changes, impacts, and decisions. Run /hi-project-organization to organize outputs.
 
 ## Arguments
 - Default: summarize last session (claude-mem + recent diffs)
@@ -21,7 +21,7 @@ Focus on key events, changes, impacts, and decisions. Run /hi:project-organizati
 
 ### 1. Discover
 Pull context from claude-mem (recent observations) and git diff/log.
-Use hi:explorer if scope is ambiguous. Honor `--since` / `--scope` filters.
+Use hi-explorer if scope is ambiguous. Honor `--since` / `--scope` filters.
 
 ### 2. Filter
 Keep entries that change behavior, fix risk, or capture a decision.
@@ -32,7 +32,7 @@ Spawn log-writer subagent per `references/log-writer-contract.md`.
 One file per logical event. Filename: `YYYY-MM-DD-<slug>.md`.
 
 ### 4. Organize
-Run /hi:project-organization to index logs under ./docs/logs/.
+Run /hi-project-organization to index logs under ./docs/logs/.
 Ensure cross-links to plans (`./plans/`) and journal entries.
 
 ## Non-Negotiable Rules
@@ -62,4 +62,4 @@ Why this approach. Alternatives considered.
 ## References
 - Subagent contract: `references/log-writer-contract.md`
 - Output: `./docs/logs/`
-- Indexer: `/hi:project-organization`
+- Indexer: `/hi-project-organization`

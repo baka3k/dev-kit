@@ -1,6 +1,6 @@
 # Frontend Verification
 
-Visual verification of frontend implementations using Chrome MCP (Claude Chrome Extension) or `hi:chrome-devtools` skill fallback.
+Visual verification of frontend implementations using Chrome MCP (Claude Chrome Extension) or `hi-chrome-devtools` skill fallback.
 
 **Skip entirely if NOT frontend-related.** Indicators: files `*.tsx/jsx/vue/svelte/html/css/scss`, changes to components/layouts/pages/styles/DOM, keywords render/display/layout/responsive/animation/visual/UI/UX.
 
@@ -32,7 +32,7 @@ node "$SKILL_DIR/screenshot.js" --url http://localhost:3000 --output ./verificat
 node "$SKILL_DIR/console.js" --url http://localhost:3000 --types error,pageerror --duration 5000
 ```
 
-If `hi:chrome-devtools` also unavailable, skip and note in report: "Visual verification skipped — no Chrome MCP or chrome-devtools available."
+If `hi-chrome-devtools` also unavailable, skip and note in report: "Visual verification skipped — no Chrome MCP or chrome-devtools available."
 
 ## Step 3: Analyze Results
 

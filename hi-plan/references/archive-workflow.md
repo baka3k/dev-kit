@@ -4,7 +4,7 @@
 Read plan.md + first 20 lines of each phase-*.md.
 
 ## Step 2: Log (optional)
-Ask user: document plans with /hi:log? If yes -> log-writer agent -> ./docs/logs/
+Ask user: document plans with /hi-log? If yes -> log-writer agent -> ./docs/logs/
 
 ## Step 3: Confirm
 Ask user: archive specific plans or all completed? Delete or move to ./plans/archive?
@@ -14,7 +14,7 @@ Ask user: archive specific plans or all completed? Delete or move to ./plans/arc
 - Delete permanently: rm -rf
 
 ## Step 5: Git (optional)
-Ask user: stage+commit or stage+commit+push via /hi:git
+Ask user: stage+commit or stage+commit+push via /hi-git
 
 ## Output
 - Plans archived/deleted count

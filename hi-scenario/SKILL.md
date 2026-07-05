@@ -158,7 +158,7 @@ Report: `# Scenario Report — {target}` with header (date, depth, source), Dime
 
 ## Observability & Metrics
 
-Trahi: total scenarios, dimensions analyzed/skipped, avg per dimension, severity distribution (Critical/High/Medium/Low), and evidence coverage (MCP-sourced vs filesystem-sourced).
+Trahi- total scenarios, dimensions analyzed/skipped, avg per dimension, severity distribution (Critical/High/Medium/Low), and evidence coverage (MCP-sourced vs filesystem-sourced).
 
 ---
 

@@ -9,7 +9,7 @@ Record: exact error, stack trace, log snippets, git log --oneline -10.
 
 ### Phase 1: Observe
 What is the exact error? Where (file, line)? When did it start?
-Activate hi:debug (systematic-debugging).
+Activate hi-debug (systematic-debugging).
 
 ### Phase 2: Hypothesize
 For each hypothesis: What CONFIRMS it? REFUTES it? How to test?
@@ -24,7 +24,7 @@ Trace backward: Symptom -> Immediate cause -> Contributing factor -> ROOT CAUSE.
 NEVER fix where the error appears. Fix the source.
 
 ### Phase 5: Escalate
-2+ hypotheses refuted -> activate hi:problem-solving.
+2+ hypotheses refuted -> activate hi-problem-solving.
 3+ fix attempts fail -> STOP, question architecture with user.
 
 ## Diagnosis Report

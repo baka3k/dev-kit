@@ -1,5 +1,5 @@
 ---
-name: hi:plan
+name: hi-plan
 description: "Plan implementations, design architectures, create technical roadmaps with detailed phases."
 argument-hint: "[task] [--full|--hard|--parallel|--two|--no-tasks]  — default: fast mode. Sub: archive|red-team|validate"
 metadata:
@@ -53,15 +53,15 @@ Add `--no-tasks` to skip task hydration.
 4. **Research** -> Spawn 1 researcher
 5. **Codebase Analysis** -> Read docs, scan if needed
 6. **Plan Documentation** -> Write plan.md + phase-XX.md
-7. **Red Team** -> `/hi:plan red-team {path}`
-8. **Validate** -> `/hi:plan validate {path}`
+7. **Red Team** -> `/hi-plan red-team {path}`
+8. **Validate** -> `/hi-plan validate {path}`
 9. **Hydrate Tasks** -> TaskCreate per phase
 10. **Output** -> Absolute path + cook command
 
 ## Output Requirements
 - Plans in CURRENT WORKING PROJECT DIRECTORY (not user home)
 - Plan files = persistent. Tasks = session-scoped
-- Invoke /hi:project-organization after output
+- Invoke /hi-project-organization after output
 - Respect `./docs/development-rules.md`
 
 ## Task Management
@@ -72,6 +72,6 @@ Add `--no-tasks` to skip task hydration.
 ## Subcommands
 | Subcommand | Purpose |
 |------------|---------|
-| `/hi:plan archive` | Archive plans + log |
-| `/hi:plan red-team {path}` | Adversarial review |
-| `/hi:plan validate {path}` | Critical questions interview |
+| `/hi-plan archive` | Archive plans + log |
+| `/hi-plan red-team {path}` | Adversarial review |
+| `/hi-plan validate {path}` | Critical questions interview |

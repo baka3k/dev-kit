@@ -33,4 +33,4 @@ Phase 1 (no blockers) -> Phase 2 (blockedBy: [P1-id]) -> Phase 3 (blockedBy: [P2
 ## Cook Handoff
 - Same session: TaskList -> finds existing tasks -> picks up
 - New session: TaskList -> empty -> re-hydrate from unchecked [ ] items
-- Sync-bahi: project-manager updates [ ] -> [x] in phase files
+- Sync-bahi- project-manager updates [ ] -> [x] in phase files

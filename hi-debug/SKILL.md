@@ -1,5 +1,5 @@
 ---
-name: hi:debug
+name: hi-debug
 description: "Debug systematically with root cause analysis before fixes. Use for bugs, test failures, unexpected behavior, performance issues, call stack tracing, multi-layer validation, log analysis, CI/CD failures, database diagnostics, system investigation."
 languages: all
 argument-hint: "[error or issue description]"
@@ -30,5 +30,5 @@ metadata:
 ## Tools Integration
 
 - **Database/CI:** `psql` for PostgreSQL; `gh` CLI for GitHub Actions logs and pipelines
-- **Codebase:** `hi:docs-seeker` (package docs), `hi:repomix` (summary), `/hi:ciu` (explorer files)
-- **Frontend/Problem-solving:** Chrome browser or `hi:chrome-devtools` for visual verification; `hi:problem-solving` when stuck
+- **Codebase:** `hi-docs-seeker` (package docs), `hi-repomix` (summary), `/hi-explorer` (explorer files)
+- **Frontend/Problem-solving:** Chrome browser or `hi-chrome-devtools` for visual verification; `hi-problem-solving` when stuck

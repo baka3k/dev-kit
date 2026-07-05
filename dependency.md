@@ -9,15 +9,15 @@
 ```mermaid
 graph TD
     knows[knows] --> standalone
-    cook[hi:cook] --> |Step 1| explorer[hi:explorer]
-    cook --> |Step 2| plan[hi:plan]
-    cook --> |Step 6| log[hi:log]
+    cook[hi-cook] --> |Step 1| explorer[hi-explorer]
+    cook --> |Step 2| plan[hi-plan]
+    cook --> |Step 6| log[hi-log]
     plan --> |research-phase| seqthink[sequential-thinking]
     plan --> |research-phase| docs[docs-seeker]
     plan -.-> |optional| log
-    fix[hi:fix] --> explorer
-    fix --> |diagnosis-protocol| debug[hi:debug]
-    fix --> |diagnosis-protocol| probsolve[hi:problem-solving]
+    fix[hi-fix] --> explorer
+    fix --> |diagnosis-protocol| debug[hi-debug]
+    fix --> |diagnosis-protocol| probsolve[hi-problem-solving]
     debug --> |Tools section| docs
     debug --> |Tools section| explorer
     debug --> |Tools section| probsolve
@@ -39,12 +39,12 @@ graph TD
 
 ---
 
-### 2.2 `hi:cook` — Feature Implementation
+### 2.2 `hi-cook` — Feature Implementation
 
 | Property | Value |
 | --- | --- |
 | **Status** | 🟢 Primary — called directly |
-| **Calls** | `hi:explorer`, `hi:plan`, `hi:log` |
+| **Calls** | `hi-explorer`, `hi-plan`, `hi-log` |
 | **Called by** | *None.* |
 | **Description** | Main orchestrator for implementation: research → plan → code → test → review → finalize. |
 
@@ -52,41 +52,41 @@ graph TD
 
 | Step | Call | File:Line | Purpose |
 | --- | --- | --- | --- |
-| Step 1: Research | `hi:explorer` | `hi-cook/SKILL.md:41` | "Spawn researcher + hi:explorer. Reports <=150 lines." |
-| Step 2: Plan | `hi:plan` | `hi-cook/SKILL.md:44` | "Spawn planner. Fast: /hi:plan --fast." |
-| Step 6: Finalize | `hi:log` | `hi-cook/SKILL.md:62` | "/hi:log" — log after completion |
+| Step 1: Research | `hi-explorer` | `hi-cook/SKILL.md:41` | "Spawn researcher + hi-explorer. Reports <=150 lines." |
+| Step 2: Plan | `hi-plan` | `hi-cook/SKILL.md:44` | "Spawn planner. Fast: /hi-plan --fast." |
+| Step 6: Finalize | `hi-log` | `hi-cook/SKILL.md:62` | "/hi-log" — log after completion |
 
 ---
 
-### 2.3 `hi:plan` — Implementation Planning
+### 2.3 `hi-plan` — Implementation Planning
 
 | Property | Value |
 | --- | --- |
 | **Status** | 🟢 Primary — called directly |
-| **Calls** | `sequential-thinking`, `docs-seeker`, `hi:log` (optional) |
-| **Called by** | `hi:cook` (Step 2) |
+| **Calls** | `sequential-thinking`, `docs-seeker`, `hi-log` (optional) |
+| **Called by** | `hi-cook` (Step 2) |
 | **Description** | Designs architecture, implementation plans, scope challenges, and red-team reviews. |
 
 ---
 
-### 2.4 `hi:explorer` — Parallel Codebase explore
+### 2.4 `hi-explorer` — Parallel Codebase explore
 
 | Property | Value |
 | --- | --- |
-| **Status** | 🔵 Linked — called by `hi:cook` and `hi:fix` |
+| **Status** | 🔵 Linked — called by `hi-cook` and `hi-fix` |
 | **Calls** | *None. Standalone.* |
-| **Called by** | `hi:cook` (Step 1), `hi:fix` (Step 1) |
+| **Called by** | `hi-cook` (Step 1), `hi-fix` (Step 1) |
 | **Description** | Uses parallel agents to scan codebase, find files, and collect context. |
 
 ---
 
-### 2.5 `hi:log` — Session Logging
+### 2.5 `hi-log` — Session Logging
 
 | Property | Value |
 | --- | --- |
-| **Status** | 🔵 Linked — called by `hi:cook` and `hi:plan` |
+| **Status** | 🔵 Linked — called by `hi-cook` and `hi-plan` |
 | **Calls** | *None. Standalone.* |
-| **Called by** | `hi:cook` (Step 6), `hi:plan` (optional, archive-workflow) |
+| **Called by** | `hi-cook` (Step 6), `hi-plan` (optional, archive-workflow) |
 | **Description** | Logs analysis of changes and decisions. |
 
 ---
@@ -95,9 +95,9 @@ graph TD
 
 | Property | Value |
 | --- | --- |
-| **Status** | 🔵 Linked — called by `hi:plan` |
+| **Status** | 🔵 Linked — called by `hi-plan` |
 | **Calls** | *None. Standalone.* |
-| **Called by** | `hi:plan` (research-phase) |
+| **Called by** | `hi-plan` (research-phase) |
 | **Description** | Step-by-step analysis for complex problems using revision, branching, and hypothesis testing. |
 
 ---
@@ -106,42 +106,42 @@ graph TD
 
 | Property | Value |
 | --- | --- |
-| **Status** | 🔵 Linked — called by `hi:plan` |
+| **Status** | 🔵 Linked — called by `hi-plan` |
 | **Calls** | *None. Standalone.* |
-| **Called by** | `hi:plan` (research-phase) |
+| **Called by** | `hi-plan` (research-phase) |
 | **Description** | Script-first documentation discovery via llms.txt standard. |
 
 ---
 
-### 2.8 `hi:debug` — Debugging & System Investigation
+### 2.8 `hi-debug` — Debugging & System Investigation
 
 | Property | Value |
 | --- | --- |
-| **Status** | 🔵 Linked — called by `hi:fix` |
-| **Calls** | `docs-seeker`, `hi:explorer`, `hi:problem-solving` |
-| **Called by** | `hi:fix` (diagnosis-protocol.md) |
+| **Status** | 🔵 Linked — called by `hi-fix` |
+| **Calls** | `docs-seeker`, `hi-explorer`, `hi-problem-solving` |
+| **Called by** | `hi-fix` (diagnosis-protocol.md) |
 | **Description** | Debug framework: systematic debugging, root cause tracing, defense-in-depth, log/CI analysis, performance diagnostics. |
-| **Other refs** | Also references `hi:chrome-devtools` ✗ and `hi:repomix` ✗ — no corresponding skills. |
+| **Other refs** | Also references `hi-chrome-devtools` ✗ and `hi-repomix` ✗ — no corresponding skills. |
 
 ---
 
-### 2.9 `hi:problem-solving` — Problem-Solving Techniques
+### 2.9 `hi-problem-solving` — Problem-Solving Techniques
 
 | Property | Value |
 | --- | --- |
-| **Status** | 🔵 Linked — called by `hi:fix` and `hi:debug` |
+| **Status** | 🔵 Linked — called by `hi-fix` and `hi-debug` |
 | **Calls** | *None. Standalone.* |
-| **Called by** | `hi:fix` (diagnosis-protocol.md), `hi:debug` (Tools Integration) |
+| **Called by** | `hi-fix` (diagnosis-protocol.md), `hi-debug` (Tools Integration) |
 | **Description** | Systematic stuck-unsticking: simplification, collision-zone thinking, pattern recognition, inversion, scale games. |
 
 ---
 
-### 2.10 `hi:fix` — Bug Fixing (Orchestrator Layer)
+### 2.10 `hi-fix` — Bug Fixing (Orchestrator Layer)
 
 | Property | Value |
 | --- | --- |
 | **Status** | ⚪ Unused — **NOT called by any primary skill** |
-| **Calls** | `hi:explorer`, `hi:debug`, `hi:problem-solving` |
+| **Calls** | `hi-explorer`, `hi-debug`, `hi-problem-solving` |
 | **Called by** | *None.* |
 | **Description** | Orchestrator for bug fixing: locate → diagnose → fix → verify → finalize. |
 
@@ -151,9 +151,9 @@ graph TD
 
 | Skill name | Referenced from | File:Line | Suggestion |
 | --- | --- | --- | --- |
-| `hi:git` | `hi-plan/references/archive-workflow.md:17` | "stage+commit+push via /hi:git" | Delete or create skill |
-| `hi:chrome-devtools` | `hi-debug/SKILL.md:111` | "hi:chrome-devtools skill" | Delete or create skill |
-| `hi:repomix` | `hi-debug/SKILL.md:109` | "hi:repomix skill" | Delete or create skill |
+| `hi-git` | `hi-plan/references/archive-workflow.md:17` | "stage+commit+push via /hi-git" | Delete or create skill |
+| `hi-chrome-devtools` | `hi-debug/SKILL.md:111` | "hi-chrome-devtools skill" | Delete or create skill |
+| `hi-repomix` | `hi-debug/SKILL.md:109` | "hi-repomix skill" | Delete or create skill |
 
 ---
 
@@ -162,14 +162,14 @@ graph TD
 | Skill | Primary | Calls others? | Called by? | Missing Ref? | Note |
 | --- | --- | --- | --- | --- | --- |
 | `knows` | ✅ | ❌ | ❌ | ❌ | Fully standalone |
-| `hi:cook` | ✅ | `explorer`, `plan`, `log` | ❌ | ❌ | Main orchestrator |
-| `hi:plan` | ✅ | `sequential`, `docs`, `log` | `cook` | ❌ | Refs fixed |
-| `hi:explorer` | 🔵 | ❌ | `cook`, `fix` | ❌ | Service skill |
-| `hi:log` | 🔵 | ❌ | `cook`, `plan` | ❌ | Service skill |
+| `hi-cook` | ✅ | `explorer`, `plan`, `log` | ❌ | ❌ | Main orchestrator |
+| `hi-plan` | ✅ | `sequential`, `docs`, `log` | `cook` | ❌ | Refs fixed |
+| `hi-explorer` | 🔵 | ❌ | `cook`, `fix` | ❌ | Service skill |
+| `hi-log` | 🔵 | ❌ | `cook`, `plan` | ❌ | Service skill |
 | `sequential-thinking` | 🔵 | ❌ | `plan` | ❌ | Added |
 | `docs-seeker` | 🔵 | ❌ | `plan` | ❌ | Added |
-| `hi:debug` | 🔵 | `docs`, `explorer`, `probsolve` | `fix` | ❌ | Added |
-| `hi:problem-solving` | 🔵 | ❌ | `fix`, `debug` | ❌ | Added |
-| `hi:fix` | ⚪ | `explorer`, `debug`, `probsolve` | ❌ | ❌ | Safe to delete |
+| `hi-debug` | 🔵 | `docs`, `explorer`, `probsolve` | `fix` | ❌ | Added |
+| `hi-problem-solving` | 🔵 | ❌ | `fix`, `debug` | ❌ | Added |
+| `hi-fix` | ⚪ | `explorer`, `debug`, `probsolve` | ❌ | ❌ | Safe to delete |
 
 ---

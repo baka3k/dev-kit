@@ -18,18 +18,18 @@ $ npx skill-dev
 ┌   devkit   Dev Kit Installer
 │
 ◆  Select skills
-│  ◼ hi:cook (ALWAYS activate before implementing ANY feature, plan, or fix.)
-│  ◼ hi:debug
-│  ◼ hi:explorer
-│  ◼ hi:fix
+│  ◼ hi-cook (ALWAYS activate before implementing ANY feature, plan, or fix.)
+│  ◼ hi-debug
+│  ◼ hi-explorer
+│  ◼ hi-fix
 │  ◼ knows
-│  ◼ hi:log
-│  ◼ hi:plan
+│  ◼ hi-log
+│  ◼ hi-plan
 │  ◼ hi-predict
-│  ◼ hi:problem-solving
+│  ◼ hi-problem-solving
 │  ◼ hi-scenario
 │  ◼ hi-security
-│  ◼ hi:sequential-thinking
+│  ◼ hi-sequential-thinking
 └ ....
 
 ◇ Select target agent
@@ -187,38 +187,38 @@ The package is published as ESM (`"type": "module"`).
 
 | Skill | Purpose | Default mode |
 |-------|---------|--------------|
-| `hi:cook` | Implement features (plan → code → test → finalize) | `fast` |
-| `hi:fix` | Fix bugs (explorer → diagnose → fix → verify → finalize) | `quick` |
-| `hi:plan` | Multi-mode planning (fast / full / hard / parallel) | `fast` |
+| `hi-cook` | Implement features (plan → code → test → finalize) | `fast` |
+| `hi-fix` | Fix bugs (explorer → diagnose → fix → verify → finalize) | `quick` |
+| `hi-plan` | Multi-mode planning (fast / full / hard / parallel) | `fast` |
 
 ### Leaf skills (called by orchestrators)
 
 | Skill | Purpose |
 |-------|---------|
-| `hi:explorer` | Parallel codebase explore (multi-agent file discovery) |
-| `hi:debug` | Systematic debugging + root cause tracing + verification gate |
-| `hi:knows` | Evidence retrieval (Git → MCP → memory) |
-| `hi:log` | Write session log entries to `./docs/logs/` |
-| `hi:problem-solving` | Stuck-unsticking techniques (inversion, collision-zone, scale-game) |
+| `hi-explorer` | Parallel codebase explore (multi-agent file discovery) |
+| `hi-debug` | Systematic debugging + root cause tracing + verification gate |
+| `hi-knows` | Evidence retrieval (Git → MCP → memory) |
+| `hi-log` | Write session log entries to `./docs/logs/` |
+| `hi-problem-solving` | Stuck-unsticking techniques (inversion, collision-zone, scale-game) |
 
 ### Analysis & methodology
 
 | Skill | Purpose |
 |-------|---------|
-| `hi:scenario` | 12-dimension edge case explore before implementation |
-| `hi:predict` | 5-persona pre-analysis debate |
-| `hi:security` | STRIDE + OWASP security audit with iterative auto-fix |
-| `hi:sequential-thinking` | Sequential reasoning with revision / branching / hypothesis testing |
+| `hi-scenario` | 12-dimension edge case explore before implementation |
+| `hi-predict` | 5-persona pre-analysis debate |
+| `hi-security` | STRIDE + OWASP security audit with iterative auto-fix |
+| `hi-sequential-thinking` | Sequential reasoning with revision / branching / hypothesis testing |
 
 ## Typical Workflows
 
 ```
-Implement feature:  hi:cook (fast) → hi:plan inline → code → test → hi:log → commit
-Implement complex:  hi:cook (full) → hi:explorer → hi:plan (full) → code → review → commit
-Fix bug:            hi:fix (quick) → explorer → diagnose → fix → verify → commit
-                    hi:fix (deep)  → hi:explorer (parallel) → hi:debug → hi:problem-solving
-Pre-flight chehi:   hi:scenario (12 dim) → hi:predict (5 personas) → ship
-Security audit:     hi:security (STRIDE phases 0-6) → fix mode → re-verify
+Implement feature:  hi-cook (fast) → hi-plan inline → code → test → hi-log → commit
+Implement complex:  hi-cook (full) → hi-explorer → hi-plan (full) → code → review → commit
+Fix bug:            hi-fix (quick) → explorer → diagnose → fix → verify → commit
+                    hi-fix (deep)  → hi-explorer (parallel) → hi-debug → hi-problem-solving
+Pre-flight chehi-   hi-scenario (12 dim) → hi-predict (5 personas) → ship
+Security audit:     hi-security (STRIDE phases 0-6) → fix mode → re-verify
 ```
 
 ## Quick Start
@@ -259,7 +259,7 @@ dev-kit/
 
 ## Key Conventions
 
-- **HARD-GATE** — non-negotiable rules per skill (e.g. `hi:fix` blocks before Explorer + Diagnose complete)
+- **HARD-GATE** — non-negotiable rules per skill (e.g. `hi-fix` blocks before Explorer + Diagnose complete)
 - **Inline > Spawn** — only spawn sub-skills when really needed (>2 fail, scope too large)
 - **Mode flags** — every orchestrator has `--fast` / `--full` / `--review`; default = lightest
 - **Evidence over assumption** — every claim cites `file:line` or `commit:sha`
@@ -290,7 +290,7 @@ See [optimize.md](optimize.md) for the full token-burn analysis.
 
 # DevKit — Workflow Diagrams
 
-> Visual workflows for the 3 core skills: `hi:cook`, `hi:fix`, `hi:plan`. Mapped to current `SKILL.md` versions (cook v3.0.0, fix v2.0.0, plan v2.0.0).
+> Visual workflows for the 3 core skills: `hi-cook`, `hi-fix`, `hi-plan`. Mapped to current `SKILL.md` versions (cook v3.0.0, fix v2.0.0, plan v2.0.0).
 
 ---
 
@@ -298,20 +298,20 @@ See [optimize.md](optimize.md) for the full token-burn analysis.
 
 | Skill | Called by | Purpose |
 | --- | --- | --- |
-| `hi:explorer` | cook, fix, debug | Codebase scanning & file discovery |
-| `hi:log` | cook, plan | Session logging |
+| `hi-explorer` | cook, fix, debug | Codebase scanning & file discovery |
+| `hi-log` | cook, plan | Session logging |
 | `sequential-thinking` | plan | Step-by-step analysis |
 | `docs-seeker` | plan, debug | Documentation lookup |
-| `hi:debug` | fix | Advanced debugging |
-| `hi:problem-solving` | fix, debug | Stuck-unsticking framework |
+| `hi-debug` | fix | Advanced debugging |
+| `hi-problem-solving` | fix, debug | Stuck-unsticking framework |
 
-## 1. `hi:cook` — Feature Implementation
+## 1. `hi-cook` — Feature Implementation
 
 ### 1.1 Mode Matrix
 
 | Mode | Research | Plan | Review | Test | Finalize |
 | --- | --- | --- | --- | --- | --- |
-| `fast` (default) | skip | inline `hi:plan --fast` | skip | run | commit + log |
+| `fast` (default) | skip | inline `hi-plan --fast` | skip | run | commit + log |
 | `full` | yes (`explorer` + researcher) | yes | MUST | run | commit + log + review |
 | `review` | skip | inline | MUST | run | commit + log + review |
 | `auto` | skip | inline | auto-pass | run | commit + log |
@@ -324,9 +324,9 @@ See [optimize.md](optimize.md) for the full token-burn analysis.
 graph LR
     A[1. Plan<br/>sequential-thinking<br/>+ docs-seeker] --> B[2. Implement<br/>direct execution]
     B --> C[3. Test<br/>run command]
-    C -->|pass| D[4. Finalize<br/>commit + /hi:log]
+    C -->|pass| D[4. Finalize<br/>commit + /hi-log]
     C -->|fail ≤2| C
-    C -->|fail ≥3| E[spawn hi:fix]
+    C -->|fail ≥3| E[spawn hi-fix]
 
     classDef step fill:#bbdefb,stroke:#0d47a1,color:#000
     classDef fail fill:#ffcdd2,stroke:#b71c1c,color:#000
@@ -337,7 +337,7 @@ graph LR
 
 ---
 
-## 2. `hi:fix` — Issue Resolution
+## 2. `hi-fix` — Issue Resolution
 
 ### 2.1 Quick (default) — Linear Flow
 
@@ -357,12 +357,12 @@ graph LR
 
 ```mermaid
 graph TD
-    A["Explorer: hi:explorer<br/>2-3 parallel"] --> B["Diagnose"]
+    A["Explorer: hi-explorer<br/>2-3 parallel"] --> B["Diagnose"]
 
     B --> B1{"Diagnosis stuck?"}
 
-    B1 -->|Yes| B2["activate hi:debug"]
-    B1 -->|"2+ hypo fail"| B3["activate hi:problem-solving"]
+    B1 -->|Yes| B2["activate hi-debug"]
+    B1 -->|"2+ hypo fail"| B3["activate hi-problem-solving"]
     B1 -->|No| C
 
     B2 --> B
@@ -388,7 +388,7 @@ graph TD
 
 ---
 
-## 3. `hi:plan` — Implementation Planning
+## 3. `hi-plan` — Implementation Planning
 
 ### 3.1 Fast (default) — Linear Flow
 
@@ -421,8 +421,8 @@ graph TD
     C --> D[4. Research<br/>Spawn 1 researcher]
     D --> E[5. Codebase Analysis<br/>Read docs, scan if needed]
     E --> F[6. Plan Documentation<br/>plan.md + phase-XX.md]
-    F --> G[7. Red Team<br/>/hi:plan red-team path]
-    G --> H[8. Validate<br/>/hi:plan validate path]
+    F --> G[7. Red Team<br/>/hi-plan red-team path]
+    G --> H[8. Validate<br/>/hi-plan validate path]
     H --> I{Phases ≥ 3?}
     I -->|Yes| J[9. Hydrate Tasks<br/>TaskCreate/phase]
     I -->|No| K[Skip tasks]
@@ -442,15 +442,15 @@ graph TD
 
 ```mermaid
 graph LR
-    Main[hi:plan] --> Default[default<br/>fast mode]
+    Main[hi-plan] --> Default[default<br/>fast mode]
     Main --> Full[--full<br/>full flow]
     Main --> Hard[--hard<br/>2 researchers + red team]
     Main --> Parallel[--parallel<br/>2 researchers + red team]
     Main --> Two[--two<br/>2+ researchers,<br/>select after]
     Main --> NoTasks[--no-tasks<br/>skip task hydration]
-    Main --> Archive[/hi:plan archive<br/>Archive plans + log/]
-    Main --> RedTeam[/hi:plan red-team path<br/>Adversarial review/]
-    Main --> Validate[/hi:plan validate path<br/>Critical questions interview/]
+    Main --> Archive[/hi-plan archive<br/>Archive plans + log/]
+    Main --> RedTeam[/hi-plan red-team path<br/>Adversarial review/]
+    Main --> Validate[/hi-plan validate path<br/>Critical questions interview/]
 
     classDef mode fill:#e3f2fd,stroke:#0d47a1,color:#000
     classDef sub fill:#c8e6c9,stroke:#1b5e20,color:#000
@@ -467,17 +467,17 @@ graph LR
 graph TD
     User([User request]) --> Detect{Detect intent}
 
-    Detect -->|Implement feature| Cook[hi:cook]
-    Detect -->|Fix bug| Fix[hi:fix]
-    Detect -->|Plan / architecture| Plan[hi:plan]
+    Detect -->|Implement feature| Cook[hi-cook]
+    Detect -->|Fix bug| Fix[hi-fix]
+    Detect -->|Plan / architecture| Plan[hi-plan]
 
     Cook -->|Step 1: Plan| Plan
     Cook -->|Step 3: Test fail ≥3| Fix
-    Cook -->|Step 4: Finalize| Log[hi:log]
+    Cook -->|Step 4: Finalize| Log[hi-log]
 
-    Fix -->|Step 1: Explorer| explorer[hi:explorer]
-    Fix -->|Step 2: Diagnose stuck| Debug[hi:debug]
-    Fix -->|Step 2: 2+ hypotheses fail| PS[hi:problem-solving]
+    Fix -->|Step 1: Explorer| explorer[hi-explorer]
+    Fix -->|Step 2: Diagnose stuck| Debug[hi-debug]
+    Fix -->|Step 2: 2+ hypotheses fail| PS[hi-problem-solving]
     Fix -->|Step 4: Verify| Log
 
     Plan -->|research-phase| ST[sequential-thinking]
@@ -511,9 +511,9 @@ graph TD
 
 | Skill | HARD-GATE | Violation Behavior |
 | --- | --- | --- |
-| `hi:cook` | No code without plan + review | Stop, request `hi:plan` first (unless user says "just code it") |
-| `hi:fix` | No fix before Explorer + Diagnose | Force Steps 1-2; if fail 3+ times → STOP, ask user for architecture |
-| `hi:plan` | Cross-Plan Scan update **both plan.md** | Ensure bidirectional update, no plan left behind |
+| `hi-cook` | No code without plan + review | Stop, request `hi-plan` first (unless user says "just code it") |
+| `hi-fix` | No fix before Explorer + Diagnose | Force Steps 1-2; if fail 3+ times → STOP, ask user for architecture |
+| `hi-plan` | Cross-Plan Scan update **both plan.md** | Ensure bidirectional update, no plan left behind |
 
 ---
 
@@ -524,7 +524,7 @@ graph TD
 3. **Token budget** — each subagent spawn = 10-15K tokens. Prioritize inline methodology.
 4. **Test/Verify just enough** — `typecheck+lint` for quick, `+build+test` for standard, `comprehensive` for deep.
 5. **Review optional** — run only via `--review` or `full` mode. Auto-approve requires score ≥ 9.5 + 0 critical.
-6. **Finalize = commit + log** — always conclude with git commit + `/hi:log` (recording decisions, root causes, impacts).
+6. **Finalize = commit + log** — always conclude with git commit + `/hi-log` (recording decisions, root causes, impacts).
 
 ## License
 This project is licensed under the MIT License. See [LICENSE](LICENSE) for details.

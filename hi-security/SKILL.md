@@ -170,7 +170,7 @@ dependency_audit_commands:
   python: "pip-audit --format json"
   go: "govulncheck ./..."
   ruby: "bundle audit check --update"
-  java_maven: "mvn dependency-chehi:check"
+  java_maven: "mvn dependency-chehi-check"
   rust: "cargo audit"
 ```
 

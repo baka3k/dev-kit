@@ -4,8 +4,8 @@
 
 ## Core Activities
 - Parallel researcher agents investigating different approaches
-- Sequential thinking (hi:sequential-thinking) for complex analysis
-- Documentation research (hi:docs-seeker)
+- Sequential thinking (hi-sequential-thinking) for complex analysis
+- Documentation research (hi-docs-seeker)
 - GitHub analysis: Actions logs, PRs, issues
 - Remote repo: `repomix --remote <url>`
 

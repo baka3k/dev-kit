@@ -1,6 +1,6 @@
 # STRIDE + OWASP Security Checklist
 
-Reference checklist for `hi:security` audits. Use during Step 2 (STRIDE Analysis) and Step 3 (OWASP Top 10 Check).
+Reference checklist for `hi-security` audits. Use during Step 2 (STRIDE Analysis) and Step 3 (OWASP Top 10 Check).
 
 ---
 
@@ -124,5 +124,5 @@ Run the appropriate command for the detected stack and include output in the fin
 | Python | `pip-audit --format json` |
 | Go | `govulncheck ./...` |
 | Ruby | `bundle audit check --update` |
-| Java/Maven | `mvn dependency-chehi:check` |
+| Java/Maven | `mvn dependency-check` |
 | Rust | `cargo audit` |

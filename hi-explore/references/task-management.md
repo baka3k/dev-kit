@@ -1,6 +1,6 @@
 # Task Management for Parallel Agents
 
-Lightweight patterns for spawning and tracking parallel subagents. Used by `hi:explorer` to coordinate parallel codebase scoutrs.
+Lightweight patterns for spawning and tracking parallel subagents. Used by `hi-explorer` to coordinate parallel codebase scoutrs.
 
 ## When To Use
 

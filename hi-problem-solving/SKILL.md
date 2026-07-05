@@ -1,5 +1,5 @@
 ---
-name: hi:problem-solving
+name: hi-problem-solving
 description: Apply systematic problem-solving techniques when stuck. Use for complexity spirals, innovation blocks, recurring patterns, assumption constraints, simplification cascades, scale uncertainty.
 argument-hint: "[problem description]"
 metadata:

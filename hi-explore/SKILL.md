@@ -1,5 +1,5 @@
 ---
-name: hi:explorer
+name: hi-explorer
 description: "Fast parallel codebase explore using multiple subagents with MCP-based external research. Use for file discovery (local), web/docs lookup, GitHub repo analysis, image/UI understanding."
 argument-hint: "[search-target]"
 metadata:
@@ -79,4 +79,4 @@ Xem `references/external-research.md` cho decision matrix đầy đủ.
 ## Configuration
 MCPs phải được cấu hình ở client (Claude Code / Cursor / Copilot). Không cần config file trong repo.
 
-Invoke /hi:project-organization để organize outputs (nếu có).
+Invoke /hi-project-organization để organize outputs (nếu có).
