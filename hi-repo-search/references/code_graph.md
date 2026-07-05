@@ -108,7 +108,9 @@ Finds code snippets by matching text inside function bodies.
 
 ---
 
-### `semantic_search`
+### ⭐ `semantic_search` — GO-TO FOR QUICK SEARCH
+
+> **This is the most commonly used discovery function.** Start here when you don't know exact function names — describe what you're looking for in plain English and it finds semantically similar code via Qdrant vector embeddings. Much faster and more intuitive than `search_functions` for initial exploration.
 
 **Vector semantic code search** — finds conceptually similar code using natural language.
 
@@ -120,7 +122,7 @@ Finds code snippets by matching text inside function bodies.
 | `collection` | str | No | None | Qdrant collection name |
 | `qdrant_url` | str | No | None |  |
 
-**Use when**: Describing the functionality in natural language rather than using an exact name. For example: "allocate memory safely".
+**Use when**: Describing the functionality in natural language rather than using an exact name. For example: "allocate memory safely", "how does authentication work", "error handling for database connections".
 
 ---
 

@@ -55,10 +55,10 @@ Objective: Find code/documents relevant to the query.
 
 **Code side**:
 
-* `search_functions(query, limit)` — search for functions/classes by name
-* `search_by_code(query, limit)` — search for code by content
-* `semantic_search(query, mode, top_k)` — search for code semantically (using natural language)
-* `explore_graph(query, mode, top_k)` — hybrid search combining semantic + keyword + graph expansion
+- ⭐ `semantic_search(query, mode, top_k)` — **GO-TO**: find code by meaning using plain English. Always start here when you don't know exact names
+- `search_functions(query, limit)` — search for functions/classes by name (when you already know the name)
+- `search_by_code(query, limit)` — search for code by content
+- `explore_graph(query, mode, top_k)` — hybrid search combining semantic + keyword + graph expansion (most powerful but slower)
 
 **Doc side**:
 
@@ -106,12 +106,10 @@ Synthesize results from both MCPs into a comprehensive report covering:
 ### Pattern B: "How does feature X work?"
 
 ```
-1. search_functions("X|FeatureX") → find relevant functions
-2. get_symbol(node_id) → read the code
+1. semantic_search("how X works", mode="hybrid") → find relevant code by meaning
+2. get_symbol(best_match_id) → read the code
 3. query_subgraph(function_id, direction="both") → understand dependencies
-4. semantic_search("how X works") → find relevant documentation
-5. query_graph_rag_langextract("X implementation") → doc + entities
-
+4. query_graph_rag_langextract("X implementation") → doc + entities
 ```
 
 ### Pattern C: "Find all callers/callees of function Y"
@@ -149,16 +147,18 @@ Synthesize results from both MCPs into a comprehensive report covering:
 
 ## Important Notes
 
-* Always call `list_databases()` first to identify available projects.
-* Always call `activate_project()` before querying the code graph.
-* `explore_graph` is the most powerful tool for code search — use it before `search_functions` when the exact name is unknown.
-* `query_graph_rag_langextract` with `expand_related=True` returns both entities and relations — use it when a broad context is needed.
-* Limit `max_depth` and `top_k` reasonably to prevent excessively large outputs.
-* When analyzing large repositories, prioritize a pattern-based approach rather than attempting to dump everything.
+- Always call `list_databases()` first to identify available projects
+- Always call `activate_project()` before querying the code graph
+- ⭐ `semantic_search` is the **go-to first function** for code discovery — describe what you're looking for keywords. 
+- `search_functions` when the exact name is unknown.
+- `explore_graph` only when you need deeper graph expansion and multi-signal analysis
+- `query_graph_rag_langextract` with `expand_related=True` when you need document information returns both entities and relations — use when you need broad context
+- Limit `max_depth` and `top_k` reasonably to avoid excessively large outputs
+- When analyzing large repositories, prioritize a pattern-based approach over dumping everything
 
 ## Reference Docs
 
-* [Code Graph MCP Functions](https://www.google.com/search?q=./references/code_graph.md) — all functions for code_graph MCP
-* [Document Graph RAG MCP Functions](https://www.google.com/search?q=./references/doc_graph_rag.md) — all functions for graph_rag MCP
+- [Code Graph MCP Functions](./references/code_graph.md) — all code_graph MCP functions with full parameter details
+- [Document Graph RAG MCP Functions](./references/graph_rag.md) — all graph_rag MCP functions with full parameter details
 
 ---
