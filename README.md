@@ -1,8 +1,6 @@
 # DevKit
 
 A token-efficient agent skills kit for software engineering workflows. 13 composable skills, designed for Claude Code / Cursor / Continue / Copilot...etc
-## Installation
-
 
 ## Advanced Capabilities
 
@@ -13,27 +11,26 @@ The pre-configured skills **natively** support hybrid querying across both Graph
 By combining **graph-code-based relational** queries with **semantic search**, the system optimizes context retrieval and dramatically accelerates project onboarding and codebase understanding.
 
 
-#Installation
+# Installation
 
 ```bash
 $ npx skill-dev
-
-┌  devkit  Dev Kit Installer
+┌   devkit   Dev Kit Installer
 │
-◇ Select skills
-│  Space to toggle · Enter to continue
-│
-│ ◉ all
-│ ◉ code-review
-│ ◉ debugging
-│ ◉ root-cause-analysis
-│ ◉ architecture-review
-│ ◉ refactoring
-│ ◉ performance-analysis
-│ ◉ security-review
-│ ◉ test-generation
-│ ◉ ...
-└
+◆  Select skills
+│  ◼ hi:cook (ALWAYS activate before implementing ANY feature, plan, or fix.)
+│  ◼ hi:debug
+│  ◼ hi:explorer
+│  ◼ hi:fix
+│  ◼ knows
+│  ◼ hi:log
+│  ◼ hi:plan
+│  ◼ hi-predict
+│  ◼ hi:problem-solving
+│  ◼ hi-scenario
+│  ◼ hi-security
+│  ◼ hi:sequential-thinking
+└ ....
 
 ◇ Select target agent
 ❯ Claude Code
@@ -50,7 +47,7 @@ $ npx skill-dev
 
 ◇ Summary
 Agent: Claude Code
-Skills: 13 selected
+Skills: 12 selected
 Location: Global
 Install? (Y/n)
 ```
@@ -82,29 +79,36 @@ Whenever the source repo (or local directory / well-known endpoint) carries `AGE
 
 For **project scope** every file lands at the project root (`<cwd>/AGENTS.md`, `<cwd>/CLAUDE.md`) — same convention as the rest of the ecosystem.
 
-Existing files are **not** silently overwritten — the install dialog flags which files would be replaced and asks once for an explicit yes/no. New files are always installed. Pass `--no-manifest` to skip the feature entirely. Missing source files are skipped without an error.
-
-```bash
-npx skill-dev                       # auto-installs manifests (asks before overwriting)
-npx skill-dev --no-manifest         # skills only
+## AGENTS.md
 ```
+# Root Agent: Context Search Directive
 
-See [`src/constants.ts`](src/constants.ts) for the canonical list of manifest filenames. To add `GEMINI.md`, change one line and every provider will pick it up.
+**Objective:** Gather project context before executing tasks.
+**Fast-Fail Rule:** If a tool is missing or disconnected -> SKIP IMMEDIATELY to the next level (Do NOT retry).
 
-## Syncing extra files
+## Strict Priority Flow
+*Proceed to the next step ONLY if the current step yields no results or the tool is unavailable.*
 
-Use `--sync-file <path>` (repeatable) or `SKILL_DEV_SYNC_FILES` (comma-separated) to copy extra files into the install target alongside the skills. Useful for keeping a project-level `AGENTS.md` or `CLAUDE.md` in sync with a master copy:
+1. **`mind_mcp`**: Retrieve project docs, concepts, and foundational knowledge.
+2. **`graph_mcp` (`semantic_search`)**: Find codebase relationships and logic (rely on semantics, not exact string matching).
+3. **`serena` (search)**: Broad codebase search.
+4. **`grep`/`rg` (Native tools)**: File system sweep for exact strings (Absolute last resort).
 
-```bash
-# One-off
-npx skill-dev --sync-file ~/notes/AGENTS.md --sync-file ~/notes/CLAUDE.md
-
-# Persistent via env
-export SKILL_DEV_SYNC_FILES="~/notes/AGENTS.md,~/notes/CLAUDE.md"
-npx skill-dev
+## Mandatory Rules
+- **No Hallucination:** If the entire search chain fails, stop and ask the user for details. Never fabricate context.
+- **Merge Context:** Prioritize structured data from `graph_mcp` if tools return overlapping information.
+- **No Assumptions:** Ask, don't guess. Highlight tradeoffs and admit confusion.
+- **Minimal Code:** Solve only the target problem. No over-engineering.
+- **Strict Scope:** Touch only what's necessary. Clean up your own mess.
+- **Success Criteria:** Iterate until explicitly verified.
 ```
+**NOTICE**: For complex codebases exceeding millions of Lines of Code and massive documentation scale (tens of gigabytes), you need mind_mcp & graph_mcp - please integrate with **cortex-harness** (https://github.com/baka3k/cortex-harness).
 
-For project scope the files land in the current working directory; for global scope, in `$HOME`. Existing files are overwritten. Missing source files are skipped with a warning (no failure).
+- mind_mcp: **GraphRAG** – Handles project document processing and retrieval.
+- graph_mcp: **GraphCode** – Maps the source code call graph, visualizing function-level node interactions.
+
+About Serena - refer https://github.com/oraios/serena
+
 
 ## Supported agents
 
