@@ -1,6 +1,6 @@
 # DevKit
 
-A token-efficient agent skills kit for software engineering workflows. 13 composable skills, designed for Claude Code / Cursor / Continue / Copilot...etc
+A token-efficient agent skills kit for software engineering workflows. 15 composable skills, designed for Claude Code / Cursor / Continue / Copilot...etc
 
 ## Advanced Capabilities
 
@@ -210,6 +210,13 @@ The package is published as ESM (`"type": "module"`).
 | `hi-security` | STRIDE + OWASP security audit with iterative auto-fix |
 | `hi-sequential-thinking` | Sequential reasoning with revision / branching / hypothesis testing |
 
+### Tool integration & exploration
+
+| Skill | Purpose |
+|-------|---------|
+| `hi-repo-search` | Search & explore ingested repos via code graph + document graph RAG |
+| `hi-chrome-devtools` | Browser automation via Puppeteer CLI (screenshots, perf, scraping, form auth) |
+
 ## Typical Workflows
 
 ```
@@ -249,6 +256,8 @@ dev-kit/
 ├── hi-predict/
 ├── hi-security/      SKILL.md + references/ + scripts/
 ├── hi-sequential-thinking/  SKILL.md + references/ (5 files)
+├── hi-repo-search/   SKILL.md + references/ + agents/
+├── hi-chrome-devtools/
 ├── knows/            Standalone evidence retrieval
 ├── .cursorrules      Cursor auto-load rules
 ├── AGENTS.md         Agent harness instructions

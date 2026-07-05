@@ -21,6 +21,10 @@ graph TD
     debug --> |Tools section| docs
     debug --> |Tools section| explorer
     debug --> |Tools section| probsolve
+    debug -.-> |Tools section| reposearch[hi-repo-search]
+    debug -.-> |Tools section| chromedev[hi-chrome-devtools]
+    reposearch --> standalone2
+    chromedev --> standalone3
 
 ```
 
@@ -121,7 +125,7 @@ graph TD
 | **Calls** | `docs-seeker`, `hi-explorer`, `hi-problem-solving` |
 | **Called by** | `hi-fix` (diagnosis-protocol.md) |
 | **Description** | Debug framework: systematic debugging, root cause tracing, defense-in-depth, log/CI analysis, performance diagnostics. |
-| **Other refs** | Also references `hi-chrome-devtools` ✗ and `hi-repo-search` ✗ — no corresponding skills. |
+| **Other refs** | Also references `hi-chrome-devtools` ✅ and `hi-repo-search` ✅ — skills now exist. |
 
 ---
 
@@ -147,13 +151,33 @@ graph TD
 
 ---
 
+### 2.11 `hi-repo-search` — Repository Exploration
+
+| Property | Value |
+| --- | --- |
+| **Status** | 🟣 Tool — standalone, referenced by `hi-debug` |
+| **Calls** | `code_graph` MCP, `graph_rag` MCP |
+| **Called by** | `hi-debug` (Tools section) |
+| **Description** | Search & explore ingested repos via code graph (Neo4j) + document graph RAG (Qdrant/Neo4j). Semantic search, call graph tracing, dependency analysis, entity extraction. |
+
+---
+
+### 2.12 `hi-chrome-devtools` — Browser Automation
+
+| Property | Value |
+| --- | --- |
+| **Status** | 🟣 Tool — standalone, referenced by `hi-debug` |
+| **Calls** | Puppeteer CLI |
+| **Called by** | `hi-debug` (Tools section) |
+| **Description** | Browser automation via Puppeteer CLI with persistent sessions. Screenshots, performance, network, scraping, form automation, auth, debugging. |
+
+---
+
 ## 3. External References — Missing Skills
 
 | Skill name | Referenced from | File:Line | Suggestion |
 | --- | --- | --- | --- |
 | `hi-git` | `hi-plan/references/archive-workflow.md:17` | "stage+commit+push via /hi-git" | Delete or create skill |
-| `hi-chrome-devtools` | `hi-debug/SKILL.md:111` | "hi-chrome-devtools skill" | Delete or create skill |
-| `hi-repo-search` | `hi-debug/SKILL.md:109` | "hi-repo-search skill" | Delete or create skill |
 
 ---
 
@@ -171,5 +195,7 @@ graph TD
 | `hi-debug` | 🔵 | `docs`, `explorer`, `probsolve` | `fix` | ❌ | Added |
 | `hi-problem-solving` | 🔵 | ❌ | `fix`, `debug` | ❌ | Added |
 | `hi-fix` | ⚪ | `explorer`, `debug`, `probsolve` | ❌ | ❌ | Safe to delete |
+| `hi-repo-search` | 🟣 | ❌ | `debug` (Tools) | ❌ | **NEW** — code + doc exploration |
+| `hi-chrome-devtools` | 🟣 | ❌ | `debug` (Tools) | ❌ | **NEW** — browser automation |
 
 ---

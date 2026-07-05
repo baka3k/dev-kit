@@ -15,6 +15,13 @@
 | `hi-debug` | fix | Advanced debugging |
 | `hi-problem-solving` | fix, debug | Stuck-unsticking framework |
 
+### Tool Integration Skills (Standalone)
+
+| Skill | Type | Purpose |
+| --- | --- | --- |
+| `hi-repo-search` | Code + Doc exploration | Search & explore ingested repos via code graph (Neo4j) + document graph RAG (Qdrant/Neo4j). Semantic search, call graph tracing, dependency analysis, entity extraction. |
+| `hi-chrome-devtools` | Browser automation | Browser automation via Puppeteer CLI with persistent sessions. Screenshots, performance, network, scraping, form automation, auth, debugging. |
+
 ## 1. `hi-cook` — Feature Implementation
 
 ### 1.1 Mode Matrix
@@ -180,6 +187,8 @@ graph TD
     Detect -->|Implement feature| Cook[hi-cook]
     Detect -->|Fix bug| Fix[hi-fix]
     Detect -->|Plan / architecture| Plan[hi-plan]
+    Detect -->|Explore repo / code search| RepoSearch[hi-repo-search]
+    Detect -->|Browser automation| Chrome[hi-chrome-devtools]
 
     Cook -->|Step 1: Plan| Plan
     Cook -->|Step 3: Test fail ≥3| Fix
@@ -204,11 +213,13 @@ graph TD
     Log --> Output4[Session log entries]
 
     classDef primary fill:#c8e6c9,stroke:#1b5e20,color:#000
+    classDef tool fill:#e1bee7,stroke:#6a1b9a,color:#000
     classDef linked fill:#bbdefb,stroke:#0d47a1,color:#000
     classDef leaf fill:#fff9c4,stroke:#f57f17,color:#000
     classDef endnode fill:#f5f5f5,stroke:#333,color:#000
 
     class Cook,Fix,Plan primary
+    class RepoSearch,Chrome tool
     class explorer,Debug,Log,ST,Docs,PS linked
     class Output,Output2,Output3,Output4 leaf
     class User,Detect endnode
