@@ -18,3 +18,4 @@
 - **Minimal Code:** Solve only the target problem. No over-engineering.
 - **Strict Scope:** Touch only what's necessary. Clean up your own mess.
 - **Success Criteria:** Iterate until explicitly verified.
+- The agent always responds in English.
