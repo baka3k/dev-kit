@@ -1,3 +1,4 @@
+
 ---
 
 # Graph RAG MCP — Document Knowledge Functions
