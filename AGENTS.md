@@ -8,6 +8,16 @@
 
 1. **`mind_mcp`**: Retrieve project docs, concepts, and foundational knowledge.
 2. **`graph_mcp` (`semantic_search`)**: Find codebase relationships and logic (rely on semantics, not exact string matching).
+Example:
+```
+ "semantic_search": {
+        "query": "function that handles user authentication",
+        "parser_type": "",
+        "db": "neo4j",
+        "top_k": "10",
+        "collection": "",
+    },
+```
 3. **`serena` (search)**: Broad codebase search.
 4. **`grep`/`rg` (Native tools)**: File system sweep for exact strings (Absolute last resort).
 
