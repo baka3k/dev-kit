@@ -1,12 +1,12 @@
 ---
-name: hi-cook
+name: hi-brew
 description: "ALWAYS activate before implementing ANY feature, plan, or fix."
 argument-hint: "[task] [--full|--review|--auto|--no-test]  — default: fast mode"
 metadata:
   author: baka3k
   version: "3.0.0"
 ---
-# Cook - Feature Implementation
+# Brew - Feature Implementation
 
 <HARD-GATE>
 Do NOT write code until a plan exists and has been reviewed.

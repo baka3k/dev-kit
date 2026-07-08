@@ -9,7 +9,7 @@
 ```mermaid
 graph TD
     knows[knows] --> standalone
-    cook[hi-cook] --> |Step 1| explorer[hi-explorer]
+    cook[hi-brew] --> |Step 1| explorer[hi-explorer]
     cook --> |Step 2| plan[hi-plan]
     cook --> |Step 6| log[hi-log]
     plan --> |research-phase| seqthink[sequential-thinking]
@@ -43,7 +43,7 @@ graph TD
 
 ---
 
-### 2.2 `hi-cook` — Feature Implementation
+### 2.2 `hi-brew` — Feature Implementation
 
 | Property | Value |
 | --- | --- |
@@ -56,9 +56,9 @@ graph TD
 
 | Step | Call | File:Line | Purpose |
 | --- | --- | --- | --- |
-| Step 1: Research | `hi-explorer` | `hi-cook/SKILL.md:41` | "Spawn researcher + hi-explorer. Reports <=150 lines." |
-| Step 2: Plan | `hi-plan` | `hi-cook/SKILL.md:44` | "Spawn planner. Fast: /hi-plan --fast." |
-| Step 6: Finalize | `hi-log` | `hi-cook/SKILL.md:62` | "/hi-log" — log after completion |
+| Step 1: Research | `hi-explorer` | `hi-brew/SKILL.md:41` | "Spawn researcher + hi-explorer. Reports <=150 lines." |
+| Step 2: Plan | `hi-plan` | `hi-brew/SKILL.md:44` | "Spawn planner. Fast: /hi-plan --fast." |
+| Step 6: Finalize | `hi-log` | `hi-brew/SKILL.md:62` | "/hi-log" — log after completion |
 
 ---
 
@@ -68,7 +68,7 @@ graph TD
 | --- | --- |
 | **Status** | 🟢 Primary — called directly |
 | **Calls** | `sequential-thinking`, `docs-seeker`, `hi-log` (optional) |
-| **Called by** | `hi-cook` (Step 2) |
+| **Called by** | `hi-brew` (Step 2) |
 | **Description** | Designs architecture, implementation plans, scope challenges, and red-team reviews. |
 
 ---
@@ -77,9 +77,9 @@ graph TD
 
 | Property | Value |
 | --- | --- |
-| **Status** | 🔵 Linked — called by `hi-cook` and `hi-fix` |
+| **Status** | 🔵 Linked — called by `hi-brew` and `hi-fix` |
 | **Calls** | *None. Standalone.* |
-| **Called by** | `hi-cook` (Step 1), `hi-fix` (Step 1) |
+| **Called by** | `hi-brew` (Step 1), `hi-fix` (Step 1) |
 | **Description** | Uses parallel agents to scan codebase, find files, and collect context. |
 
 ---
@@ -88,9 +88,9 @@ graph TD
 
 | Property | Value |
 | --- | --- |
-| **Status** | 🔵 Linked — called by `hi-cook` and `hi-plan` |
+| **Status** | 🔵 Linked — called by `hi-brew` and `hi-plan` |
 | **Calls** | *None. Standalone.* |
-| **Called by** | `hi-cook` (Step 6), `hi-plan` (optional, archive-workflow) |
+| **Called by** | `hi-brew` (Step 6), `hi-plan` (optional, archive-workflow) |
 | **Description** | Logs analysis of changes and decisions. |
 
 ---
@@ -186,7 +186,7 @@ graph TD
 | Skill | Primary | Calls others? | Called by? | Missing Ref? | Note |
 | --- | --- | --- | --- | --- | --- |
 | `knows` | ✅ | ❌ | ❌ | ❌ | Fully standalone |
-| `hi-cook` | ✅ | `explorer`, `plan`, `log` | ❌ | ❌ | Main orchestrator |
+| `hi-brew` | ✅ | `explorer`, `plan`, `log` | ❌ | ❌ | Main orchestrator |
 | `hi-plan` | ✅ | `sequential`, `docs`, `log` | `cook` | ❌ | Refs fixed |
 | `hi-explorer` | 🔵 | ❌ | `cook`, `fix` | ❌ | Service skill |
 | `hi-log` | 🔵 | ❌ | `cook`, `plan` | ❌ | Service skill |
