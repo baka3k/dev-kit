@@ -1,6 +1,6 @@
 # DevKit — Workflow Diagrams
 
-> Visual workflows for the 3 core skills: `hi-brew`, `hi-fix`, `hi-plan`. Mapped to current `SKILL.md` versions (brew v3.0.0, fix v2.0.0, plan v2.0.0).
+> Visual workflows for the 3 core skills: `hi-craft`, `hi-fix`, `hi-plan`. Mapped to current `SKILL.md` versions (craft v3.0.0, fix v2.0.0, plan v2.0.0).
 
 ---
 
@@ -8,8 +8,8 @@
 
 | Skill | Called by | Purpose |
 | --- | --- | --- |
-| `hi-explorer` | brew, fix, debug | Codebase scanning & file discovery |
-| `hi-log` | brew, plan | Session logging |
+| `hi-explorer` | craft, fix, debug | Codebase scanning & file discovery |
+| `hi-log` | craft, plan | Session logging |
 | `sequential-thinking` | plan | Step-by-step analysis |
 | `docs-seeker` | plan, debug | Documentation lookup |
 | `hi-debug` | fix | Advanced debugging |
@@ -22,7 +22,7 @@
 | `hi-repo-search` | Code + Doc exploration | Search & explore ingested repos via code graph (Neo4j) + document graph RAG (Qdrant/Neo4j). Semantic search, call graph tracing, dependency analysis, entity extraction. |
 | `hi-chrome-devtools` | Browser automation | Browser automation via Puppeteer CLI with persistent sessions. Screenshots, performance, network, scraping, form automation, auth, debugging. |
 
-## 1. `hi-brew` — Feature Implementation
+## 1. `hi-craft` — Feature Implementation
 
 ### 1.1 Mode Matrix
 
@@ -143,7 +143,7 @@ graph TD
     H --> I{Phases ≥ 3?}
     I -->|Yes| J[9. Hydrate Tasks<br/>TaskCreate/phase]
     I -->|No| K[Skip tasks]
-    J --> L[10. Output<br/>absolute path<br/>+ brew command]
+    J --> L[10. Output<br/>absolute path<br/>+ craft command]
     K --> L
 
     classDef step fill:#bbdefb,stroke:#0d47a1,color:#000
@@ -184,15 +184,15 @@ graph LR
 graph TD
     User([User request]) --> Detect{Detect intent}
 
-    Detect -->|Implement feature| Brew[hi-brew]
+    Detect -->|Implement feature| Craft[hi-craft]
     Detect -->|Fix bug| Fix[hi-fix]
     Detect -->|Plan / architecture| Plan[hi-plan]
     Detect -->|Explore repo / code search| RepoSearch[hi-repo-search]
     Detect -->|Browser automation| Chrome[hi-chrome-devtools]
 
-    Brew -->|Step 1: Plan| Plan
-    Brew -->|Step 3: Test fail ≥3| Fix
-    Brew -->|Step 4: Finalize| Log[hi-log]
+    Craft -->|Step 1: Plan| Plan
+    Craft -->|Step 3: Test fail ≥3| Fix
+    Craft -->|Step 4: Finalize| Log[hi-log]
 
     Fix -->|Step 1: Explorer| explorer[hi-explorer]
     Fix -->|Step 2: Diagnose stuck| Debug[hi-debug]
@@ -218,7 +218,7 @@ graph TD
     classDef leaf fill:#fff9c4,stroke:#f57f17,color:#000
     classDef endnode fill:#f5f5f5,stroke:#333,color:#000
 
-    class Brew,Fix,Plan primary
+    class Craft,Fix,Plan primary
     class RepoSearch,Chrome tool
     class explorer,Debug,Log,ST,Docs,PS linked
     class Output,Output2,Output3,Output4 leaf
@@ -232,7 +232,7 @@ graph TD
 
 | Skill | HARD-GATE | Violation Behavior |
 | --- | --- | --- |
-| `hi-brew` | No code without plan + review | Stop, request `hi-plan` first (unless user says "just code it") |
+| `hi-craft` | No code without plan + review | Stop, request `hi-plan` first (unless user says "just code it") |
 | `hi-fix` | No fix before Explorer + Diagnose | Force Steps 1-2; if fail 3+ times → STOP, ask user for architecture |
 | `hi-plan` | Cross-Plan Scan update **both plan.md** | Ensure bidirectional update, no plan left behind |
 

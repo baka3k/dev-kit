@@ -18,7 +18,7 @@ $ npx skill-dev
 ┌   devkit   Dev Kit Installer
 │
 ◆  Select skills
-│  ◼ hi-brew (ALWAYS activate before implementing ANY feature, plan, or fix.)
+│  ◼ hi-craft (ALWAYS activate before implementing ANY feature, plan, or fix.)
 │  ◼ hi-debug
 │  ◼ hi-explorer
 │  ◼ hi-fix
@@ -187,7 +187,7 @@ The package is published as ESM (`"type": "module"`).
 
 | Skill | Purpose | Default mode |
 |-------|---------|--------------|
-| `hi-brew` | Implement features (plan → code → test → finalize) | `fast` |
+| `hi-craft` | Implement features (plan → code → test → finalize) | `fast` |
 | `hi-fix` | Fix bugs (explorer → diagnose → fix → verify → finalize) | `quick` |
 | `hi-plan` | Multi-mode planning (fast / full / hard / parallel) | `fast` |
 
@@ -220,8 +220,8 @@ The package is published as ESM (`"type": "module"`).
 ## Typical Workflows
 
 ```
-Implement feature:  hi-brew (fast) → hi-plan inline → code → test → hi-log → commit
-Implement complex:  hi-brew (full) → hi-explorer → hi-plan (full) → code → review → commit
+Implement feature:  hi-craft (fast) → hi-plan inline → code → test → hi-log → commit
+Implement complex:  hi-craft (full) → hi-explorer → hi-plan (full) → code → review → commit
 Fix bug:            hi-fix (quick) → explorer → diagnose → fix → verify → commit
                     hi-fix (deep)  → hi-explorer (parallel) → hi-debug → hi-problem-solving
 Pre-flight chehi-   hi-scenario (12 dim) → hi-predict (5 personas) → ship
@@ -244,7 +244,7 @@ See [USAGE_GUIDE.md](USAGE_GUIDE.md) for per-skill usage, inputs, and outputs.
 
 ```
 dev-kit/
-├── hi-brew/          SKILL.md + references/ + agents/
+├── hi-craft/          SKILL.md + references/ + agents/
 ├── hi-fix/
 ├── hi-plan/
 ├── hi-explorer/
@@ -299,7 +299,7 @@ See [optimize.md](optimize.md) for the full token-burn analysis.
 
 # DevKit — Workflow Diagrams
 
-> Visual workflows for the 3 core skills: `hi-brew`, `hi-fix`, `hi-plan`. Mapped to current `SKILL.md` versions (brew v3.0.0, fix v2.0.0, plan v2.0.0).
+> Visual workflows for the 3 core skills: `hi-craft`, `hi-fix`, `hi-plan`. Mapped to current `SKILL.md` versions (craft v3.0.0, fix v2.0.0, plan v2.0.0).
 
 ---
 
@@ -307,14 +307,14 @@ See [optimize.md](optimize.md) for the full token-burn analysis.
 
 | Skill | Called by | Purpose |
 | --- | --- | --- |
-| `hi-explorer` | brew, fix, debug | Codebase scanning & file discovery |
-| `hi-log` | brew, plan | Session logging |
+| `hi-explorer` | craft, fix, debug | Codebase scanning & file discovery |
+| `hi-log` | craft, plan | Session logging |
 | `sequential-thinking` | plan | Step-by-step analysis |
 | `docs-seeker` | plan, debug | Documentation lookup |
 | `hi-debug` | fix | Advanced debugging |
 | `hi-problem-solving` | fix, debug | Stuck-unsticking framework |
 
-## 1. `hi-brew` — Feature Implementation
+## 1. `hi-craft` — Feature Implementation
 
 ### 1.1 Mode Matrix
 
@@ -435,7 +435,7 @@ graph TD
     H --> I{Phases ≥ 3?}
     I -->|Yes| J[9. Hydrate Tasks<br/>TaskCreate/phase]
     I -->|No| K[Skip tasks]
-    J --> L[10. Output<br/>absolute path<br/>+ brew command]
+    J --> L[10. Output<br/>absolute path<br/>+ craft command]
     K --> L
 
     classDef step fill:#bbdefb,stroke:#0d47a1,color:#000
@@ -476,13 +476,13 @@ graph LR
 graph TD
     User([User request]) --> Detect{Detect intent}
 
-    Detect -->|Implement feature| Brew[hi-brew]
+    Detect -->|Implement feature| Craft[hi-craft]
     Detect -->|Fix bug| Fix[hi-fix]
     Detect -->|Plan / architecture| Plan[hi-plan]
 
-    Brew -->|Step 1: Plan| Plan
-    Brew -->|Step 3: Test fail ≥3| Fix
-    Brew -->|Step 4: Finalize| Log[hi-log]
+    Craft -->|Step 1: Plan| Plan
+    Craft -->|Step 3: Test fail ≥3| Fix
+    Craft -->|Step 4: Finalize| Log[hi-log]
 
     Fix -->|Step 1: Explorer| explorer[hi-explorer]
     Fix -->|Step 2: Diagnose stuck| Debug[hi-debug]
@@ -507,7 +507,7 @@ graph TD
     classDef leaf fill:#fff9c4,stroke:#f57f17,color:#000
     classDef endnode fill:#f5f5f5,stroke:#333,color:#000
 
-    class Brew,Fix,Plan primary
+    class Craft,Fix,Plan primary
     class explorer,Debug,Log,ST,Docs,PS linked
     class Output,Output2,Output3,Output4 leaf
     class User,Detect endnode
@@ -520,7 +520,7 @@ graph TD
 
 | Skill | HARD-GATE | Violation Behavior |
 | --- | --- | --- |
-| `hi-brew` | No code without plan + review | Stop, request `hi-plan` first (unless user says "just code it") |
+| `hi-craft` | No code without plan + review | Stop, request `hi-plan` first (unless user says "just code it") |
 | `hi-fix` | No fix before Explorer + Diagnose | Force Steps 1-2; if fail 3+ times → STOP, ask user for architecture |
 | `hi-plan` | Cross-Plan Scan update **both plan.md** | Ensure bidirectional update, no plan left behind |
 
