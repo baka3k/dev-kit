@@ -6,10 +6,9 @@ A token-efficient agent skills kit for software engineering workflows. 15 compos
 
 For complex codebases exceeding millions of Lines of Code and massive documentation scale (tens of gigabytes) - please integrate with **cortex-harness** (https://github.com/baka3k/cortex-harness).
 
-The pre-configured skills **natively** support hybrid querying across both Graph Databases (GraphDB) and Vector Databases (VectorDB). 
+The pre-configured skills **natively** support hybrid querying across both Graph Databases (GraphDB) and Vector Databases (VectorDB).
 
 By combining **graph-code-based relational** queries with **semantic search**, the system optimizes context retrieval and dramatically accelerates project onboarding and codebase understanding.
-
 
 # Installation
 
@@ -18,13 +17,13 @@ $ npx skill-dev
 ┌   devkit   Dev Kit Installer
 │
 ◆  Select skills
-│  ◼ hi-craft (ALWAYS activate before implementing ANY feature, plan, or fix.)
+│  ◼ hi-craft
 │  ◼ hi-debug
 │  ◼ hi-explorer
 │  ◼ hi-fix
 │  ◼ knows
 │  ◼ hi-log
-│  ◼ hi-plan
+│  ◼ hi-plan (Should ALWAYS activate before implementing ANY implement , or fix.)
 │  ◼ hi-predict
 │  ◼ hi-problem-solving
 │  ◼ hi-scenario
@@ -71,15 +70,16 @@ npx skill-dev --no-manifest         # skip AGENTS.md / CLAUDE.md auto-install
 
 Whenever the source repo (or local directory / well-known endpoint) carries `AGENTS.md` or `CLAUDE.md` at its root, `skill-dev` automatically copies them. Each file routes to its own "natural home" so the install mirrors how the skills directory is laid out:
 
-| File | Global scope target | Why |
-| --- | --- | --- |
-| `AGENTS.md` | `~/.agents/AGENTS.md` | Universal, agent-neutral. Sibling of the canonical `~/.agents/skills/` so the same content is shared by every agent. |
-| `CLAUDE.md` | `~/.claude/CLAUDE.md` | Claude-Code-specific. Sits alongside the `skills/` symlink that points into `~/.agents/skills/`. Respects `$CLAUDE_CONFIG_DIR` if set. |
+| File                     | Global scope target     | Why                                                                                                                                                                        |
+| ------------------------ | ----------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `AGENTS.md`              | `~/.agents/AGENTS.md`   | Universal, agent-neutral. Sibling of the canonical `~/.agents/skills/` so the same content is shared by every agent.                                                       |
+| `CLAUDE.md`              | `~/.claude/CLAUDE.md`   | Claude-Code-specific. Sits alongside the `skills/` symlink that points into `~/.agents/skills/`. Respects `$CLAUDE_CONFIG_DIR` if set.                                     |
 | Other (e.g. `GEMINI.md`) | `~/.agents/` (fallback) | Unknown filenames default to the canonical `~/.agents/` — add a new switch case in [`src/install/manifest.ts`](src/install/manifest.ts) to route a new manifest elsewhere. |
 
 For **project scope** every file lands at the project root (`<cwd>/AGENTS.md`, `<cwd>/CLAUDE.md`) — same convention as the rest of the ecosystem.
 
 ## AGENTS.md
+
 ```
 # Root Agent: Context Search Directive
 
@@ -102,6 +102,7 @@ For **project scope** every file lands at the project root (`<cwd>/AGENTS.md`, `
 - **Strict Scope:** Touch only what's necessary. Clean up your own mess.
 - **Success Criteria:** Iterate until explicitly verified.
 ```
+
 **NOTICE**: For complex codebases exceeding millions of Lines of Code and massive documentation scale (tens of gigabytes), you need mind_mcp & graph_mcp - please integrate with **cortex-harness** (https://github.com/baka3k/cortex-harness).
 
 - mind_mcp: **GraphRAG** – Handles project document processing and retrieval.
@@ -109,18 +110,17 @@ For **project scope** every file lands at the project root (`<cwd>/AGENTS.md`, `
 
 About Serena - refer https://github.com/oraios/serena
 
-
 ## Supported agents
 
-| Agent | Global install | Project install |
-| --- | --- | --- |
-| Claude Code | `~/.claude/skills` | `.claude/skills` |
-| OpenCode | `~/.config/opencode/skills` | `.opencode/skills` |
-| Qwen Code | `~/.qwen/skills` | `.qwen/skills` |
-| GitHub Copilot | `~/.copilot/skills` | `.github/skills` |
-| Cursor | `~/.cursor/skills` | `.cursor/skills` |
-| Continue | `~/.continue/skills` | `.continue/skills` |
-| Generic | `~/.devkit/skills` | `.devkit/skills` |
+| Agent          | Global install              | Project install    |
+| -------------- | --------------------------- | ------------------ |
+| Claude Code    | `~/.claude/skills`          | `.claude/skills`   |
+| OpenCode       | `~/.config/opencode/skills` | `.opencode/skills` |
+| Qwen Code      | `~/.qwen/skills`            | `.qwen/skills`     |
+| GitHub Copilot | `~/.copilot/skills`         | `.github/skills`   |
+| Cursor         | `~/.cursor/skills`          | `.cursor/skills`   |
+| Continue       | `~/.continue/skills`        | `.continue/skills` |
+| Generic        | `~/.devkit/skills`          | `.devkit/skills`   |
 
 Set `CLAUDE_CONFIG_DIR`, `CODEX_HOME`, or `XDG_CONFIG_HOME` to override the base config directory.
 
@@ -128,12 +128,12 @@ Set `CLAUDE_CONFIG_DIR`, `CODEX_HOME`, or `XDG_CONFIG_HOME` to override the base
 
 The CLI uses a **provider pattern** — no `git clone`, only HTTP. To publish your own skill set, point `skill-dev` at any of:
 
-| Provider | Example | Notes |
-| --- | --- | --- |
-| **GitHub** | `https://github.com/owner/repo` | Uses the Git Trees API + `raw.githubusercontent.com` |
-| **GitLab** | `https://gitlab.com/owner/repo` | Uses the GitLab Repository Tree API |
-| **Well-known** | `https://example.com` (serves `/.well-known/agent-skills/index.json`) | RFC 8615–style discovery |
-| **Local** | `./my-skills` | Reads `SKILL.md` files from a directory tree |
+| Provider       | Example                                                               | Notes                                                |
+| -------------- | --------------------------------------------------------------------- | ---------------------------------------------------- |
+| **GitHub**     | `https://github.com/owner/repo`                                       | Uses the Git Trees API + `raw.githubusercontent.com` |
+| **GitLab**     | `https://gitlab.com/owner/repo`                                       | Uses the GitLab Repository Tree API                  |
+| **Well-known** | `https://example.com` (serves `/.well-known/agent-skills/index.json`) | RFC 8615–style discovery                             |
+| **Local**      | `./my-skills`                                                         | Reads `SKILL.md` files from a directory tree         |
 
 A "skill" is any directory that contains a `SKILL.md` file with YAML frontmatter:
 
@@ -162,19 +162,23 @@ The result: **one copy on disk** that every agent reads from, and updates apply 
 
 ## Environment variables
 
-| Var | Effect |
-| --- | --- |
-| `GITHUB_TOKEN` | Use a GitHub token to avoid rate limits (private repos too) |
-| `GITLAB_TOKEN` | Use a GitLab token to avoid rate limits (private repos too) |
-| `INSTALL_INTERNAL_SKILLS=1` | Include skills marked `metadata.internal: true` |
-| `CLAUDE_CONFIG_DIR` | Override the Claude Code base config directory |
-| `CODEX_HOME` | Override the Qwen Code base config directory |
-| `XDG_CONFIG_HOME` | Override the OpenCode base config directory |
+| Var                         | Effect                                                      |
+| --------------------------- | ----------------------------------------------------------- |
+| `GITHUB_TOKEN`              | Use a GitHub token to avoid rate limits (private repos too) |
+| `GITLAB_TOKEN`              | Use a GitLab token to avoid rate limits (private repos too) |
+| `INSTALL_INTERNAL_SKILLS=1` | Include skills marked `metadata.internal: true`             |
+| `CLAUDE_CONFIG_DIR`         | Override the Claude Code base config directory              |
+| `CODEX_HOME`                | Override the Qwen Code base config directory                |
+| `XDG_CONFIG_HOME`           | Override the OpenCode base config directory                 |
 
 ## Programmatic API
 
 ```ts
-import { parseSource, findProvider, loadSkillsFromSource } from "skill-dev/source";
+import {
+  parseSource,
+  findProvider,
+  loadSkillsFromSource,
+} from "skill-dev/source";
 import { discover } from "skill-dev/source/discover";
 import { installSkill } from "skill-dev/install/run";
 ```
@@ -185,36 +189,36 @@ The package is published as ESM (`"type": "module"`).
 
 ### Orchestrators (drive end-to-end work)
 
-| Skill | Purpose | Default mode |
-|-------|---------|--------------|
-| `hi-craft` | Implement features (plan → code → test → finalize) | `fast` |
-| `hi-fix` | Fix bugs (explorer → diagnose → fix → verify → finalize) | `quick` |
-| `hi-plan` | Multi-mode planning (fast / full / hard / parallel) | `fast` |
+| Skill      | Purpose                                                  | Default mode |
+| ---------- | -------------------------------------------------------- | ------------ |
+| `hi-craft` | Implement features (plan → code → test → finalize)       | `fast`       |
+| `hi-fix`   | Fix bugs (explorer → diagnose → fix → verify → finalize) | `quick`      |
+| `hi-plan`  | Multi-mode planning (fast / full / hard / parallel)      | `fast`       |
 
 ### Leaf skills (called by orchestrators)
 
-| Skill | Purpose |
-|-------|---------|
-| `hi-explorer` | Parallel codebase explore (multi-agent file discovery) |
-| `hi-debug` | Systematic debugging + root cause tracing + verification gate |
-| `hi-knows` | Evidence retrieval (Git → MCP → memory) |
-| `hi-log` | Write session log entries to `./docs/logs/` |
+| Skill                | Purpose                                                             |
+| -------------------- | ------------------------------------------------------------------- |
+| `hi-explorer`        | Parallel codebase explore (multi-agent file discovery)              |
+| `hi-debug`           | Systematic debugging + root cause tracing + verification gate       |
+| `hi-knows`           | Evidence retrieval (Git → MCP → memory)                             |
+| `hi-log`             | Write session log entries to `./docs/logs/`                         |
 | `hi-problem-solving` | Stuck-unsticking techniques (inversion, collision-zone, scale-game) |
 
 ### Analysis & methodology
 
-| Skill | Purpose |
-|-------|---------|
-| `hi-scenario` | 12-dimension edge case explore before implementation |
-| `hi-predict` | 5-persona pre-analysis debate |
-| `hi-security` | STRIDE + OWASP security audit with iterative auto-fix |
+| Skill                    | Purpose                                                             |
+| ------------------------ | ------------------------------------------------------------------- |
+| `hi-scenario`            | 12-dimension edge case explore before implementation                |
+| `hi-predict`             | 5-persona pre-analysis debate                                       |
+| `hi-security`            | STRIDE + OWASP security audit with iterative auto-fix               |
 | `hi-sequential-thinking` | Sequential reasoning with revision / branching / hypothesis testing |
 
 ### Tool integration & exploration
 
-| Skill | Purpose |
-|-------|---------|
-| `hi-repo-search` | Search & explore ingested repos via code graph + document graph RAG |
+| Skill                | Purpose                                                                       |
+| -------------------- | ----------------------------------------------------------------------------- |
+| `hi-repo-search`     | Search & explore ingested repos via code graph + document graph RAG           |
 | `hi-chrome-devtools` | Browser automation via Puppeteer CLI (screenshots, perf, scraping, form auth) |
 
 ## Typical Workflows
@@ -277,6 +281,7 @@ dev-kit/
 ## Token Economy
 
 Designed for minimum token burn:
+
 - Default modes skip heavy sub-skill spawns (~80% reduction vs naive workflow)
 - Parallel subagents only when 3+ files / 2+ independent issues
 - Verification gates prevent over-fixing (typecheck+lint beats full test suite when not needed)
@@ -292,10 +297,10 @@ See [optimize.md](optimize.md) for the full token-burn analysis.
 
 ## Reference Docs
 
-| Doc | What's in it |
-|-----|--------------|
-| [devkit.md](devkit.md) | Mermaid workflow diagrams + HARD-GATEs + cross-skill integration |
-| [dependency.md](dependency.md) | Skill call graph, missing skills, external refs to fix |
+| Doc                            | What's in it                                                     |
+| ------------------------------ | ---------------------------------------------------------------- |
+| [devkit.md](devkit.md)         | Mermaid workflow diagrams + HARD-GATEs + cross-skill integration |
+| [dependency.md](dependency.md) | Skill call graph, missing skills, external refs to fix           |
 
 # DevKit — Workflow Diagrams
 
@@ -305,27 +310,27 @@ See [optimize.md](optimize.md) for the full token-burn analysis.
 
 ## 0. Leaf Skills (Called automatically by main skills)
 
-| Skill | Called by | Purpose |
-| --- | --- | --- |
-| `hi-explorer` | craft, fix, debug | Codebase scanning & file discovery |
-| `hi-log` | craft, plan | Session logging |
-| `sequential-thinking` | plan | Step-by-step analysis |
-| `docs-seeker` | plan, debug | Documentation lookup |
-| `hi-debug` | fix | Advanced debugging |
-| `hi-problem-solving` | fix, debug | Stuck-unsticking framework |
+| Skill                 | Called by         | Purpose                            |
+| --------------------- | ----------------- | ---------------------------------- |
+| `hi-explorer`         | craft, fix, debug | Codebase scanning & file discovery |
+| `hi-log`              | craft, plan       | Session logging                    |
+| `sequential-thinking` | plan              | Step-by-step analysis              |
+| `docs-seeker`         | plan, debug       | Documentation lookup               |
+| `hi-debug`            | fix               | Advanced debugging                 |
+| `hi-problem-solving`  | fix, debug        | Stuck-unsticking framework         |
 
 ## 1. `hi-craft` — Feature Implementation
 
 ### 1.1 Mode Matrix
 
-| Mode | Research | Plan | Review | Test | Finalize |
-| --- | --- | --- | --- | --- | --- |
-| `fast` (default) | skip | inline `hi-plan --fast` | skip | run | commit + log |
-| `full` | yes (`explorer` + researcher) | yes | MUST | run | commit + log + review |
-| `review` | skip | inline | MUST | run | commit + log + review |
-| `auto` | skip | inline | auto-pass | run | commit + log |
-| `no-test` | skip | inline | skip | skip | commit + log |
-| `code` (path to plan) | skip | — | optional | run | commit + log |
+| Mode                  | Research                      | Plan                    | Review    | Test | Finalize              |
+| --------------------- | ----------------------------- | ----------------------- | --------- | ---- | --------------------- |
+| `fast` (default)      | skip                          | inline `hi-plan --fast` | skip      | run  | commit + log          |
+| `full`                | yes (`explorer` + researcher) | yes                     | MUST      | run  | commit + log + review |
+| `review`              | skip                          | inline                  | MUST      | run  | commit + log + review |
+| `auto`                | skip                          | inline                  | auto-pass | run  | commit + log          |
+| `no-test`             | skip                          | inline                  | skip      | skip | commit + log          |
+| `code` (path to plan) | skip                          | —                       | optional  | run  | commit + log          |
 
 ### 1.2 Quick (default) — Linear Flow
 
@@ -518,11 +523,11 @@ graph TD
 
 ## 5. HARD-GATEs
 
-| Skill | HARD-GATE | Violation Behavior |
-| --- | --- | --- |
-| `hi-craft` | No code without plan + review | Stop, request `hi-plan` first (unless user says "just code it") |
-| `hi-fix` | No fix before Explorer + Diagnose | Force Steps 1-2; if fail 3+ times → STOP, ask user for architecture |
-| `hi-plan` | Cross-Plan Scan update **both plan.md** | Ensure bidirectional update, no plan left behind |
+| Skill      | HARD-GATE                               | Violation Behavior                                                  |
+| ---------- | --------------------------------------- | ------------------------------------------------------------------- |
+| `hi-craft` | No code without plan + review           | Stop, request `hi-plan` first (unless user says "just code it")     |
+| `hi-fix`   | No fix before Explorer + Diagnose       | Force Steps 1-2; if fail 3+ times → STOP, ask user for architecture |
+| `hi-plan`  | Cross-Plan Scan update **both plan.md** | Ensure bidirectional update, no plan left behind                    |
 
 ---
 
@@ -536,4 +541,5 @@ graph TD
 6. **Finalize = commit + log** — always conclude with git commit + `/hi-log` (recording decisions, root causes, impacts).
 
 ## License
+
 This project is licensed under the MIT License. See [LICENSE](LICENSE) for details.
