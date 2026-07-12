@@ -16,12 +16,12 @@ User override: "just code it" or "skip planning" - then respect.
 ## Intent Detection
 | Input | Mode | Behavior |
 |-------|------|----------|
-| --full, "full" | full | Full workflow với research + review |
-| --review | review | Có review gate ở cuối |
+| --full, "full" | full | Full workflow with research + review |
+| --review | review |There are gate reviews at the end. |
 | --auto, "trust me", "yolo" | auto | Auto-approve all |
 | --no-test | no-test | Skip testing |
 | Path to plan.md/phase-*.md | code | Execute existing plan |
-| Default | fast | Skip research, skip review, test nhanh |
+| Default | fast | Skip research, skip review, fast test |
 
 ## Process Flow
 `[Plan] -> [Implement] -> [Test] -> [Finalize]`
@@ -59,4 +59,4 @@ Không spawn tester riêng.
 
 ## Review (optional, flag --review hoặc full mode)
 Run code-reviewer. Score>=9.5 + 0 critical = auto-approve (auto mode only).
-Max 3 fix cycles. Critical issues always blohi- Security, Performance, Architecture violations.
+Max 3 fix cycles. Critical issues always block: Security, Performance, Architecture violations.

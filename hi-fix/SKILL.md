@@ -11,8 +11,8 @@ metadata:
 ## Mode Selection
 | Flag | When |
 |------|------|
-| default |  1 file, type/lint, lỗi rõ ràng |
-| --standard | Standard: 2-5 files, cần debug đầy đủ |
+| default |  1 file, type/lint, clear error |
+| --standard | Standard: 2-5 files, full debug needed |
 | --deep | Deep: 5+ files, architecture impact |
 | --parallel | 2+ independent issues |
 | --review | Human-in-the-loop at each step |
@@ -25,25 +25,25 @@ Do NOT fix before Explorer + Diagnose. Find ROOT CAUSE first. If 3+ fix attempts
 </HARD-GATE>
 
 ### Step 1: Explorer (locate-only, default)
-Locate affected files và đọc lỗi. 1 agent là đủ.
-Standard/Deep: activate hi-explorer hoặc 2-3 parallel agents.
+Locate affected files and  clear error. One agent is sufficient.
+Standard/Deep: activate hi-explorer Or 2-3 parallel agents.
 
 ### Step 2: Diagnose (MANDATORY)
 Capture pre-fix state: exact error, stack traces, logs.
 Trace backward: symptom -> immediate cause -> contributing factor -> ROOT CAUSE.
-Nếu khó: activate hi-debug. Nếu 2+ hypotheses fail -> activate hi-problem-solving.
+If difficult: activate hi-debug. If 2+ hypotheses fail -> activate hi-problem-solving.
 
 ### Step 3: Fix
 Fix ROOT CAUSE. Minimal changes. Follow existing patterns.
 
 ### Step 4: Verify + Prevent
-Quick: typecheck + lint (mặc định)
+Quick: typecheck + lint (default)
 Standard: + build + test
 Deep: comprehensive (edge cases, security, perf)
 
 ### Step 5: Finalize
-Quick: report ngắn -> ask commit (skip docs, skip review)
-Standard/Deep: report -> review (nếu --review) -> docs -> commit
+Quick: short report -> ask commit (skip docs, skip review)
+Standard/Deep: report -> review (if --review) -> docs -> commit
 
 ## Workflows
 
@@ -51,7 +51,7 @@ Standard/Deep: report -> review (nếu --review) -> docs -> commit
 Explorer (locate only) -> Diagnose (read error) -> Fix -> Verify (typecheck+lint) -> Done
 
 ### Standard (--standard, 2-5 files)
-Full Explorer -> Full Diagnose (gọi hi-debug nếu cần) -> Fix -> Verify (typecheck+lint+build+test) -> Review (nếu --review) -> Finalize
+Full Explorer -> Full Diagnose (call hi-debug if needed) -> Fix -> Verify (typecheck+lint+build+test) -> Review (if --review) -> Finalize
 
 ### Deep (--deep, 5+ files, architecture impact)
 Parallel Explorer + Diagnose + Research -> Fix -> Comprehensive Verify -> Review -> Finalize
