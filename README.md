@@ -3,12 +3,15 @@
 A token-efficient agent skills kit for software engineering workflows. 15 composable skills, designed for Claude Code / Cursor / Continue / Copilot...etc
 
 ## Advanced Capabilities
+Integrated with Cortex Harness, the Dev Kit delivers an end-to-end Software Development Life Cycle (SDLC) framework, providing a unified execution model for planning, implementation, debugging, repository evidence search, security review, scenario generation, browser automation, session logging, and other extensible engineering workflows.
 
-For complex codebases exceeding millions of Lines of Code and massive documentation scale (tens of gigabytes) - please integrate with **cortex-harness** (https://github.com/baka3k/cortex-harness).
+For enterprise-scale projects with codebases containing millions of lines of code (LOC) and documentation repositories spanning tens of gigabytes, integration with Cortex Harness is recommended:
+https://github.com/baka3k/cortex-harness
 
-The pre-configured skills **natively** support hybrid querying across both Graph Databases (GraphDB) and Vector Databases (VectorDB).
+The pre-configured skills provide native support for hybrid retrieval across both Graph Databases (GraphDB) and Vector Databases (VectorDB).
 
-By combining **graph-code-based relational** queries with **semantic search**, the system optimizes context retrieval and dramatically accelerates project onboarding and codebase understanding.
+By combining graph-based code relationship queries with semantic vector search, the system delivers high-quality contextual retrieval, significantly accelerating project onboarding, codebase comprehension, and AI-assisted software development.
+
 
 # Installation
 
@@ -124,421 +127,375 @@ About Serena - refer https://github.com/oraios/serena
 
 Set `CLAUDE_CONFIG_DIR`, `CODEX_HOME`, or `XDG_CONFIG_HOME` to override the base config directory.
 
-## Custom sources
+## What Is Included
 
-The CLI uses a **provider pattern** — no `git clone`, only HTTP. To publish your own skill set, point `skill-dev` at any of:
+### Core Workflow Skills
 
-| Provider       | Example                                                               | Notes                                                |
-| -------------- | --------------------------------------------------------------------- | ---------------------------------------------------- |
-| **GitHub**     | `https://github.com/owner/repo`                                       | Uses the Git Trees API + `raw.githubusercontent.com` |
-| **GitLab**     | `https://gitlab.com/owner/repo`                                       | Uses the GitLab Repository Tree API                  |
-| **Well-known** | `https://example.com` (serves `/.well-known/agent-skills/index.json`) | RFC 8615–style discovery                             |
-| **Local**      | `./my-skills`                                                         | Reads `SKILL.md` files from a directory tree         |
+| Directory | Skill name | Purpose |
+| --- | --- | --- |
+| `hi-craft/` | `hi-craft` | Feature implementation workflow: plan, implement, test, and finalize. |
+| `hi-fix/` | `hi-fix` | Bug, test, CI, type, lint, UI, and runtime issue resolution. |
+| `hi-plan/` | `hi-plan` | Implementation plans, architecture plans, phased roadmaps, and plan validation. |
+| `hi-debug/` | `hi-debug` | Root-cause debugging for failures, logs, CI, databases, performance, and system behavior. |
 
-A "skill" is any directory that contains a `SKILL.md` file with YAML frontmatter:
+### Evidence And Exploration
+
+| Directory | Skill name | Purpose |
+| --- | --- | --- |
+| `hi-repo-search/` | `hi-repo-search` | Traceable repository evidence from project docs, semantic code search, symbols, call paths, dependency analysis, and documents. |
+| `hi-explore/` | `hi-explorer` | Fast parallel codebase and external research for file discovery, web/docs lookup, GitHub analysis, and UI/image understanding. |
+| `hi-knows/` | `knows` | Unified knowledge retrieval from Git, MCP, and memory files. |
+
+### Analysis And Review
+
+| Directory | Skill name | Purpose |
+| --- | --- | --- |
+| `hi-scenario/` | `hi-scenario` | Edge-case and test-scenario generation across 12 dimensions. |
+| `hi-predict/` | `hi-predict` | Five-persona pre-analysis before risky features, refactors, or releases. |
+| `hi-security/` | `hi-security` | STRIDE + OWASP security audit with MCP-assisted code analysis and optional iterative auto-fix. |
+| `hi-sequential-thinking/` | `hi-sequential-thinking` | Step-by-step reasoning with revision, branching, and hypothesis testing. |
+| `hi-problem-solving/` | `hi-problem-solving` | Structured techniques for stuck points, recurring patterns, constraints, and scale uncertainty. |
+
+### Utilities
+
+| Directory | Skill name | Purpose |
+| --- | --- | --- |
+| `hi-log/` | `hi-log` | Session log entries for recent changes, decisions, impacts, and reflections. |
+| `hi-project-organization/` | `hi-project-organization` | File placement, output naming, directory organization, and Markdown structure. |
+| `hi-chrome-devtools/` | `hi-chrome-devtools` | Browser automation through Puppeteer CLI scripts with persistent sessions, screenshots, performance, network, scraping, forms, auth, and debugging. |
+
+## Repository Search Integration
+
+`hi-repo-search` is the shared evidence layer for questions that require verified repository context. Use it before planning or changing code when the answer depends on codebase structure, architecture, cross-file behavior, impact analysis, or project documentation.
+
+The expected context search chain is:
+
+1. `mind_mcp` for project documents, concepts, and foundational knowledge.
+2. `graph_mcp` semantic search for code relationships and logic.
+3. `serena` search for broad codebase discovery.
+4. `rg` or `grep` only as the final exact-string filesystem sweep.
+
+If one level is missing or disconnected, skip immediately to the next level. If the full chain yields no evidence, stop and ask for more details instead of guessing.
+
+`hi-repo-search` is intentionally evidence-only. It gathers and verifies context; orchestration remains with `hi-craft`, `hi-fix`, `hi-plan`, `hi-debug`, `hi-scenario`, `hi-security`, or the calling agent.
+
+Recommended modes:
+
+| Mode | Use when |
+| --- | --- |
+| `--code` | You need symbol, file, call path, or implementation evidence. |
+| `--doc` | You need project docs, concepts, requirements, or architectural notes. |
+| `--deep` | You need to reconcile code and docs. |
+| `--impact` | You need dependency, blast-radius, caller, or workflow impact evidence. |
+
+## Installation
+
+```bash
+npx skill-dev                       # default: baka3/dev-kit on GitHub
+npx skill-dev <url>                 # any supported source
+npx skill-dev owner/repo            # GitHub shorthand
+npx skill-dev ./local-skills        # local directory
+npx skill-dev https://example.com   # well-known endpoint
+npx skill-dev --no-manifest         # skip AGENTS.md / CLAUDE.md auto-install
+npx skill-dev -h                    # help
+npx skill-dev -v                    # version
+```
+
+During installation, select the skills, target agent, and install location. DevKit supports global and project-local installation.
+
+## Supported Agents
+
+| Agent | Global install | Project install |
+| --- | --- | --- |
+| Claude Code | `~/.claude/skills` | `.claude/skills` |
+| OpenCode | `~/.config/opencode/skills` | `.opencode/skills` |
+| Qwen Code | `~/.qwen/skills` | `.qwen/skills` |
+| GitHub Copilot | `~/.copilot/skills` | `.github/skills` |
+| Cursor | `~/.cursor/skills` | `.cursor/skills` |
+| Continue | `~/.continue/skills` | `.continue/skills` |
+| Generic | `~/.devkit/skills` | `.devkit/skills` |
+
+Set `CLAUDE_CONFIG_DIR`, `CODEX_HOME`, or `XDG_CONFIG_HOME` to override base config directories where supported by the target agent.
+
+## Manifest Files
+
+When the source repo or local directory includes `AGENTS.md` or `CLAUDE.md`, `skill-dev` copies those files with the installed skills.
+
+| File | Global scope target | Purpose |
+| --- | --- | --- |
+| `AGENTS.md` | `~/.agents/AGENTS.md` | Agent-neutral operating instructions and context search priority. |
+| `CLAUDE.md` | `~/.claude/CLAUDE.md` | Claude Code specific project instructions. |
+| Other root manifests | `~/.agents/` fallback | Generic manifest placement for unknown agent-specific files. |
+
+For project scope, manifests land at the project root, such as `<cwd>/AGENTS.md` and `<cwd>/CLAUDE.md`.
+
+## Custom Sources
+
+`skill-dev` uses source providers instead of requiring a local `git clone`.
+
+| Provider | Example | Notes |
+| --- | --- | --- |
+| GitHub | `https://github.com/owner/repo` | Uses GitHub tree and raw file APIs. |
+| GitLab | `https://gitlab.com/owner/repo` | Uses GitLab repository tree APIs. |
+| Well-known | `https://example.com` | Reads `/.well-known/agent-skills/index.json`. |
+| Local | `./my-skills` | Reads `SKILL.md` files from a directory tree. |
+
+A skill is any directory containing a `SKILL.md` with YAML frontmatter:
 
 ```markdown
 ---
 name: Code Review
-description: Carefully review code for correctness, performance, and style
+description: Carefully review code for correctness, performance, and style.
 ---
 
 # Code Review
-
-When reviewing code, follow these steps…
 ```
 
-A repository may lay out skills under any of `skills/`, `skills/.curated/`, `.agents/skills/`, or at the repo root.
+Skill repositories may lay out skills under `skills/`, `skills/.curated/`, `.agents/skills/`, or at the repo root.
 
-## How install works
+## How Installation Works
 
-For each (skill, agent, scope) pair, the CLI:
+For each selected skill and target agent, the installer:
 
-1. Writes the skill's `SKILL.md` to **`.agents/skills/<name>`** (the canonical location).
-2. Symlinks the agent's skills directory to the canonical one (single source of truth, easy updates).
-3. Falls back to a recursive copy on Windows when symlinks aren't available.
+1. Writes the skill to the canonical `.agents/skills/<name>` location.
+2. Links the target agent skills directory to that canonical copy when possible.
+3. Falls back to recursive copy on Windows or when links are unavailable.
 
-The result: **one copy on disk** that every agent reads from, and updates apply everywhere.
-
-## Environment variables
-
-| Var                         | Effect                                                      |
-| --------------------------- | ----------------------------------------------------------- |
-| `GITHUB_TOKEN`              | Use a GitHub token to avoid rate limits (private repos too) |
-| `GITLAB_TOKEN`              | Use a GitLab token to avoid rate limits (private repos too) |
-| `INSTALL_INTERNAL_SKILLS=1` | Include skills marked `metadata.internal: true`             |
-| `CLAUDE_CONFIG_DIR`         | Override the Claude Code base config directory              |
-| `CODEX_HOME`                | Override the Qwen Code base config directory                |
-| `XDG_CONFIG_HOME`           | Override the OpenCode base config directory                 |
-
-## Programmatic API
-
-```ts
-import {
-  parseSource,
-  findProvider,
-  loadSkillsFromSource,
-} from "skill-dev/source";
-import { discover } from "skill-dev/source/discover";
-import { installSkill } from "skill-dev/install/run";
-```
-
-The package is published as ESM (`"type": "module"`).
-
-## Skills
-
-### Orchestrators (drive end-to-end work)
-
-| Skill      | Purpose                                                  | Default mode |
-| ---------- | -------------------------------------------------------- | ------------ |
-| `hi-craft` | Implement features (plan → code → test → finalize)       | `fast`       |
-| `hi-fix`   | Fix bugs (explorer → diagnose → fix → verify → finalize) | `quick`      |
-| `hi-plan`  | Multi-mode planning (fast / full / hard / parallel)      | `fast`       |
-
-### Leaf skills (called by orchestrators)
-
-| Skill                | Purpose                                                             |
-| -------------------- | ------------------------------------------------------------------- |
-| `hi-explorer`        | Parallel codebase explore (multi-agent file discovery)              |
-| `hi-debug`           | Systematic debugging + root cause tracing + verification gate       |
-| `hi-knows`           | Evidence retrieval (Git → MCP → memory)                             |
-| `hi-log`             | Write session log entries to `./docs/logs/`                         |
-| `hi-problem-solving` | Stuck-unsticking techniques (inversion, collision-zone, scale-game) |
-
-### Analysis & methodology
-
-| Skill                    | Purpose                                                             |
-| ------------------------ | ------------------------------------------------------------------- |
-| `hi-scenario`            | 12-dimension edge case explore before implementation                |
-| `hi-predict`             | 5-persona pre-analysis debate                                       |
-| `hi-security`            | STRIDE + OWASP security audit with iterative auto-fix               |
-| `hi-sequential-thinking` | Sequential reasoning with revision / branching / hypothesis testing |
-
-### Tool integration & exploration
-
-| Skill                | Purpose                                                                       |
-| -------------------- | ----------------------------------------------------------------------------- |
-| `hi-repo-search`     | Search & explore ingested repos via code graph + document graph RAG           |
-| `hi-chrome-devtools` | Browser automation via Puppeteer CLI (screenshots, perf, scraping, form auth) |
+The result is one canonical skill copy that multiple agents can consume.
 
 ## Typical Workflows
 
-```
-Implement feature:  hi-craft (fast) → hi-plan inline → code → test → hi-log → commit
-Implement complex:  hi-craft (full) → hi-explorer → hi-plan (full) → code → review → commit
-Fix bug:            hi-fix (quick) → explorer → diagnose → fix → verify → commit
-                    hi-fix (deep)  → hi-explorer (parallel) → hi-debug → hi-problem-solving
-Pre-flight chehi-   hi-scenario (12 dim) → hi-predict (5 personas) → ship
-Security audit:     hi-security (STRIDE phases 0-6) → fix mode → re-verify
-```
-
-## Quick Start
-
-```bash
-# Skills are picked up automatically by Claude Code / Cursor / Continue.
-# Trigger via slash command or natural language.
+```text
+Implement feature:    hi-craft -> hi-plan --fast -> implement -> test -> hi-log
+Fix bug:              hi-fix -> hi-explorer -> diagnose -> fix -> verify
+Plan architecture:    hi-plan --full -> hi-repo-search --deep -> phases -> validate
+Investigate failure:  hi-debug -> logs/traces -> root cause -> fix recommendation
+Impact analysis:      hi-repo-search --impact -> hi-predict -> scoped plan
+Security audit:       hi-security -> findings -> optional auto-fix -> re-verify
+Scenario coverage:    hi-scenario -> edge cases -> tests or review checklist
+Browser task:         hi-chrome-devtools -> inspect/click/screenshot/network
 ```
 
-**Install on Cursor (global)**: copy `.cursorrules` + skill folders to `~/.cursor/skills/`.
-**Install on Claude Code**: copy skill folders to `~/.claude/skills/`.
+## Workflow Diagrams
 
-See [USAGE_GUIDE.md](USAGE_GUIDE.md) for per-skill usage, inputs, and outputs.
+### Supporting Skills
+
+| Skill | Called by | Purpose |
+| --- | --- | --- |
+| `hi-repo-search` | `hi-craft`, `hi-fix`, `hi-plan`, `hi-debug`, `hi-scenario`, `hi-security` | Evidence bundle from docs, semantic code search, symbols, call paths, and impact analysis. |
+| `hi-explorer` | `hi-fix`, `hi-debug`, ad-hoc exploration | Parallel file discovery and external research. |
+| `knows` | Any evidence-heavy answer | Traceable knowledge retrieval from Git, MCP, and memory. |
+| `hi-log` | `hi-craft`, `hi-plan`, finalization flows | Session logs for changes, decisions, impacts, and reflections. |
+| `hi-project-organization` | Any file-producing workflow | Output paths, names, directory structure, and Markdown organization. |
+| `hi-sequential-thinking` | `hi-plan`, complex debugging, design reasoning | Step-by-step reasoning with revision and hypothesis tracking. |
+| `hi-problem-solving` | `hi-fix`, `hi-debug` | Stuck-point techniques after failed hypotheses or complexity spirals. |
+
+### `hi-craft` - Feature Implementation
+
+| Mode | Context | Plan | Review | Test |
+| --- | --- | --- | --- | --- |
+| default / `--fast` | Reuse existing plan evidence | Required | Optional | Yes |
+| `--full` | Refresh evidence as needed | Required | Required | Yes |
+| `--review` | Reuse evidence | Required | Required | Yes |
+| `--auto` | Reuse evidence | Required | Auto-pass noncritical | Yes |
+| `--no-test` | Reuse evidence | Required | Optional | No |
+| plan path | Execute supplied plan | Supplied | As specified | Yes |
+
+```mermaid
+graph LR
+    A["User request"] --> B["hi-craft"]
+    B --> C["Plan exists?<br/>hi-plan --fast if missing"]
+    C --> D["Gather missing evidence<br/>hi-repo-search narrowly"]
+    D --> E["Implement minimal scoped change"]
+    E --> F["Run proportionate checks"]
+    F -->|pass| G["Finalize<br/>report / log if needed"]
+    F -->|fail x1-x2| E
+    F -->|fail x3 or root cause unclear| H["hi-fix"]
+
+    classDef primary fill:#c8e6c9,stroke:#1b5e20,color:#000
+    classDef evidence fill:#e1bee7,stroke:#6a1b9a,color:#000
+    classDef gate fill:#ffe0b2,stroke:#e65100,color:#000
+    class B,E,G primary
+    class D evidence
+    class C,F,H gate
+```
+
+### `hi-fix` - Issue Resolution
+
+| Mode | Scope | Repository evidence | Delegation |
+| --- | --- | --- | --- |
+| default | Clear, local issue | Direct inspection | None |
+| `--standard` | 2-5 files | `hi-repo-search --code` | None |
+| `--deep` | 5+ files or architectural impact | `hi-repo-search --deep --impact` | Up to 2 investigators |
+| `--parallel` | Independent issues | One evidence bundle per issue | One agent per issue |
+| `--review` | Any scope | Mode-dependent | Human review at gates |
+
+```mermaid
+graph LR
+    A["Capture symptom<br/>error / log / failing check"] --> B["Explore affected area"]
+    B --> C["Diagnose<br/>symptom -> cause -> root cause"]
+    C --> D["Fix root cause<br/>minimal change"]
+    D --> E["Verify"]
+    E -->|pass| F["Finalize<br/>evidence + change + verification"]
+    E -->|fail x1-x2| C
+    E -->|fail x3| G["Stop and question architecture"]
+
+    classDef step fill:#bbdefb,stroke:#0d47a1,color:#000
+    classDef gate fill:#ffe0b2,stroke:#e65100,color:#000
+    classDef fail fill:#ffcdd2,stroke:#b71c1c,color:#000
+    class A,B,C,D,F step
+    class E gate
+    class G fail
+```
+
+### `hi-plan` - Implementation Planning
+
+| Mode | Research | Delegation | Review |
+| --- | --- | --- | --- |
+| default / `--fast` | Targeted `hi-repo-search` | None | None |
+| `--full` | Deep evidence refresh | Up to 2 investigators | Optional red-team |
+| `--hard` | Deep impact analysis | Up to 2 investigators | Required red-team |
+| `--parallel` | Hard scope | One agent per independent track | Required red-team |
+| `--two` | Shared evidence | One agent per approach | Review after selection |
+
+```mermaid
+graph LR
+    A["Scan active plans"] --> B["Gather evidence<br/>hi-repo-search"]
+    B --> C["Define assumptions<br/>dependencies / gaps"]
+    C --> D["Write plan.md<br/>and phase files"]
+    D --> E{"3+ phases?"}
+    E -->|yes| F["Hydrate tasks"]
+    E -->|no| G["Skip task overhead"]
+    F --> H["Return plan path<br/>and execution command"]
+    G --> H
+
+    classDef step fill:#bbdefb,stroke:#0d47a1,color:#000
+    classDef evidence fill:#e1bee7,stroke:#6a1b9a,color:#000
+    classDef gate fill:#ffe0b2,stroke:#e65100,color:#000
+    class A,C,D,F,G,H step
+    class B evidence
+    class E gate
+```
+
+## Cross-Skill Integration
+
+```mermaid
+graph TD
+    User(["User request"]) --> Detect{"Intent"}
+
+    Detect -->|feature / implementation| Craft["hi-craft"]
+    Detect -->|bug / failure| Fix["hi-fix"]
+    Detect -->|plan / architecture| Plan["hi-plan"]
+    Detect -->|repo question / impact| RepoSearch["hi-repo-search"]
+    Detect -->|debug investigation| Debug["hi-debug"]
+    Detect -->|security audit| Security["hi-security"]
+    Detect -->|edge cases / tests| Scenario["hi-scenario"]
+    Detect -->|browser task| Chrome["hi-chrome-devtools"]
+
+    Craft -->|missing or stale evidence| RepoSearch
+    Craft -->|plan needed| Plan
+    Craft -->|verification fails repeatedly| Fix
+    Craft -->|final record| Log["hi-log"]
+
+    Fix -->|2-5 files| RepoSearch
+    Fix -->|large / impact scope| RepoSearch
+    Fix -->|root cause difficult| Debug
+    Fix -->|2+ failed hypotheses| ProblemSolving["hi-problem-solving"]
+    Fix -->|final record| Log
+
+    Plan -->|code/doc evidence| RepoSearch
+    Plan -->|complex reasoning| Sequential["hi-sequential-thinking"]
+    Plan -->|outputs / naming| Org["hi-project-organization"]
+    Plan -->|archive / final record| Log
+
+    Debug -->|find files / external research| Explorer["hi-explorer"]
+    Debug -->|repo evidence| RepoSearch
+    Debug -->|stuck| ProblemSolving
+
+    Security -->|code graph + policy context| RepoSearch
+    Scenario -->|feature paths + business rules| RepoSearch
+    RepoSearch --> Knows["knows"]
+
+    classDef primary fill:#c8e6c9,stroke:#1b5e20,color:#000
+    classDef evidence fill:#e1bee7,stroke:#6a1b9a,color:#000
+    classDef analysis fill:#bbdefb,stroke:#0d47a1,color:#000
+    classDef utility fill:#fff9c4,stroke:#f57f17,color:#000
+    classDef external fill:#f5f5f5,stroke:#333,color:#000
+
+    class Craft,Fix,Plan primary
+    class RepoSearch,Knows evidence
+    class Debug,Security,Scenario,Sequential,ProblemSolving,Explorer analysis
+    class Log,Org,Chrome utility
+    class User,Detect external
+```
+
+## HARD-GATEs
+
+| Skill | HARD-GATE | Violation behavior |
+| --- | --- | --- |
+| `hi-craft` | Do not edit until a reviewed plan exists, unless the user explicitly skips planning. | Stop, create or reuse a plan, then continue. |
+| `hi-fix` | Do not fix before locating the failure and identifying root cause. | Return to explore/diagnose; after 3 failed fix attempts, question architecture with the user. |
+| `hi-plan` | Scan active plans first and record relevant `blockedBy` / `blocks` relationships. | Update the related plans before producing the new plan. |
+| `hi-repo-search` | Provide traceable evidence only; do not invent context or own implementation decisions. | Report search coverage and ask for details if evidence is missing. |
+| `hi-security` | Security findings need source evidence and severity-ranked remediation. | Do not auto-fix outside the requested audit/fix scope. |
+| `hi-project-organization` | Do not override established project layout without evidence. | Use existing conventions or return an advisory recommendation. |
+
+## General Rules
+
+1. Hard-gates first, fast path after that.
+2. Use `hi-repo-search` when codebase structure, docs, relationships, or impact matter.
+3. Prefer direct execution for small local tasks; escalate to deeper modes when risk, uncertainty, or file count grows.
+4. Verify proportionally: quick checks for narrow edits, broader tests for shared behavior or user-facing flows.
+5. Keep `hi-repo-search` as evidence gathering; orchestration and final decisions stay with the calling skill or agent.
 
 ## Folder Structure
 
-```
+```text
 dev-kit/
-├── hi-craft/          SKILL.md + references/ + agents/
+├── AGENTS.md
+├── CLAUDE.md
+├── README.md
+├── devkit.md
+├── hi-chrome-devtools/
+├── hi-craft/
+├── hi-debug/
+├── hi-explore/
 ├── hi-fix/
-├── hi-plan/
-├── hi-explorer/
-├── hi-debug/         SKILL.md + references/ + scripts/
 ├── hi-knows/
 ├── hi-log/
-├── hi-problem-solving/  SKILL.md + references/ (7 techniques)
-├── hi-scenario/      SKILL.md + references/
+├── hi-plan/
 ├── hi-predict/
-├── hi-security/      SKILL.md + references/ + scripts/
-├── hi-sequential-thinking/  SKILL.md + references/ (5 files)
-├── hi-repo-search/   SKILL.md + references/ + agents/
-├── hi-chrome-devtools/
-├── knows/            Standalone evidence retrieval
-├── .cursorrules      Cursor auto-load rules
-├── AGENTS.md         Agent harness instructions
-├── CLAUDE.md         Project-level Claude instructions
-├── devkit.md         Workflow diagrams (mermaid) + HARD-GATEs
-├── dependency.md     Skill-to-skill call graph + missing skills
+├── hi-problem-solving/
+├── hi-project-organization/
+├── hi-repo-search/
+├── hi-scenario/
+├── hi-security/
+└── hi-sequential-thinking/
 ```
 
 ## Key Conventions
 
-- **HARD-GATE** — non-negotiable rules per skill (e.g. `hi-fix` blocks before Explorer + Diagnose complete)
-- **Inline > Spawn** — only spawn sub-skills when really needed (>2 fail, scope too large)
-- **Mode flags** — every orchestrator has `--fast` / `--full` / `--review`; default = lightest
-- **Evidence over assumption** — every claim cites `file:line` or `commit:sha`
-- **Vietnamese by default** — human-readable outputs (logs, plans) are Vietnamese; technical artifacts keep English
+- Evidence comes before assumptions. Prefer traceable context from `mind_mcp`, `graph_mcp`, `serena`, then native search.
+- Keep changes scoped. Skills should solve the target problem without unrelated refactors or cleanup.
+- Use the lightest useful mode first. Escalate to deep, review, parallel, or impact modes when risk or uncertainty justifies it.
+- `hi-repo-search` gathers evidence; implementation and final decisions stay with the orchestrating skill or agent.
+- Human-facing skill output may be localized by the calling agent. Technical artifacts, identifiers, paths, and commands stay precise.
 
-## Token Economy
+## Adding A Skill
 
-Designed for minimum token burn:
-
-- Default modes skip heavy sub-skill spawns (~80% reduction vs naive workflow)
-- Parallel subagents only when 3+ files / 2+ independent issues
-- Verification gates prevent over-fixing (typecheck+lint beats full test suite when not needed)
-
-See [optimize.md](optimize.md) for the full token-burn analysis.
-
-## Adding a Skill
-
-1. Create `your-skill/SKILL.md` with frontmatter: `name`, `description`, `argument-hint`, `metadata`
-2. Add `references/` for supporting docs (optional)
-3. Add `agents/openai.yaml` for Cursor / Copilot picker (optional)
-4. Run `python scripts/sync_manifest.py` (auto-regenerates MANIFEST.json)
+1. Create `your-skill/SKILL.md` with `name`, `description`, and optional `argument-hint` / `metadata`.
+2. Add `references/` when the skill needs supporting procedures or deeper instructions.
+3. Add `scripts/` only for reusable automation that the skill should call instead of retyping.
+4. Add `agents/openai.yaml` when the skill should appear in an agent picker.
+5. Update this README when the skill changes the public catalog or workflow integration.
 
 ## Reference Docs
 
-| Doc                            | What's in it                                                     |
-| ------------------------------ | ---------------------------------------------------------------- |
-| [devkit.md](devkit.md)         | Mermaid workflow diagrams + HARD-GATEs + cross-skill integration |
-| [dependency.md](dependency.md) | Skill call graph, missing skills, external refs to fix           |
-
-# DevKit — Workflow Diagrams
-
-> Visual workflows for the 3 core skills: `hi-craft`, `hi-fix`, `hi-plan`. Mapped to current `SKILL.md` versions (craft v3.0.0, fix v2.0.0, plan v2.0.0).
-
----
-
-## 0. Leaf Skills (Called automatically by main skills)
-
-| Skill                 | Called by         | Purpose                            |
-| --------------------- | ----------------- | ---------------------------------- |
-| `hi-explorer`         | craft, fix, debug | Codebase scanning & file discovery |
-| `hi-log`              | craft, plan       | Session logging                    |
-| `sequential-thinking` | plan              | Step-by-step analysis              |
-| `docs-seeker`         | plan, debug       | Documentation lookup               |
-| `hi-debug`            | fix               | Advanced debugging                 |
-| `hi-problem-solving`  | fix, debug        | Stuck-unsticking framework         |
-
-## 1. `hi-craft` — Feature Implementation
-
-### 1.1 Mode Matrix
-
-| Mode                  | Research                      | Plan                    | Review    | Test | Finalize              |
-| --------------------- | ----------------------------- | ----------------------- | --------- | ---- | --------------------- |
-| `fast` (default)      | skip                          | inline `hi-plan --fast` | skip      | run  | commit + log          |
-| `full`                | yes (`explorer` + researcher) | yes                     | MUST      | run  | commit + log + review |
-| `review`              | skip                          | inline                  | MUST      | run  | commit + log + review |
-| `auto`                | skip                          | inline                  | auto-pass | run  | commit + log          |
-| `no-test`             | skip                          | inline                  | skip      | skip | commit + log          |
-| `code` (path to plan) | skip                          | —                       | optional  | run  | commit + log          |
-
-### 1.2 Quick (default) — Linear Flow
-
-```mermaid
-graph LR
-    A[1. Plan<br/>sequential-thinking<br/>+ docs-seeker] --> B[2. Implement<br/>direct execution]
-    B --> C[3. Test<br/>run command]
-    C -->|pass| D[4. Finalize<br/>commit + /hi-log]
-    C -->|fail ≤2| C
-    C -->|fail ≥3| E[spawn hi-fix]
-
-    classDef step fill:#bbdefb,stroke:#0d47a1,color:#000
-    classDef fail fill:#ffcdd2,stroke:#b71c1c,color:#000
-    class A,B,C,D step
-    class E fail
-
-```
-
----
-
-## 2. `hi-fix` — Issue Resolution
-
-### 2.1 Quick (default) — Linear Flow
-
-```mermaid
-graph LR
-    A[1. Explorer<br/>locate-only, 1 agent] --> B[2. Diagnose<br/>read error,<br/>find root cause]
-    B --> C[3. Fix<br/>root cause,<br/>minimal change]
-    C --> D[4. Verify<br/>typecheck + lint]
-    D --> E[5. Finalize<br/>report → commit]
-
-    classDef step fill:#bbdefb,stroke:#0d47a1,color:#000
-    class A,B,C,D,E step
-
-```
-
-### 2.2 Standard / Deep — Escalation Path
-
-```mermaid
-graph TD
-    A["Explorer: hi-explorer<br/>2-3 parallel"] --> B["Diagnose"]
-
-    B --> B1{"Diagnosis stuck?"}
-
-    B1 -->|Yes| B2["activate hi-debug"]
-    B1 -->|"2+ hypo fail"| B3["activate hi-problem-solving"]
-    B1 -->|No| C
-
-    B2 --> B
-    B3 --> B
-
-    C["Fix: root cause"] --> D{"Verify level"}
-
-    D -->|Standard| D1["typecheck+lint<br/>+ build + test"]
-    D -->|Deep| D2["comprehensive:<br/>edge cases,<br/>security, perf"]
-
-    D1 --> E["Finalize: report →<br/>review (if --review)<br/>→ docs → commit"]
-    D2 --> E
-
-    classDef step fill:#bbdefb,stroke:#0d47a1,color:#000
-    classDef skill fill:#c8e6c9,stroke:#1b5e20,color:#000
-    classDef gate fill:#ffe0b2,stroke:#e65100,color:#000
-
-    class A,C,E step
-    class B2,B3 skill
-    class B,B1,D gate
-
-```
-
----
-
-## 3. `hi-plan` — Implementation Planning
-
-### 3.1 Fast (default) — Linear Flow
-
-```mermaid
-graph LR
-    A[1. Cross-Plan Scan<br/>scan if<br/>plan active] --> B[2. Scope Challenge<br/>SKIP - fast]
-    B --> C[3. Codebase Analysis<br/>Read docs, scan<br/>no subagent]
-    C --> D[4. Plan Documentation<br/>plan.md + phase-XX.md]
-    D --> E{Phases ≥ 3?}
-    E -->|Yes| F[5. Hydrate Tasks<br/>TaskCreate/phase]
-    E -->|No| G[Skip: overhead > benefit]
-    F --> H[6. Output<br/>absolute path]
-    G --> H
-
-    classDef step fill:#bbdefb,stroke:#0d47a1,color:#000
-    classDef skip fill:#e0e0e0,stroke:#616161,color:#000
-    classDef gate fill:#ffe0b2,stroke:#e65100,color:#000
-    class A,C,D,F,H step
-    class B,G skip
-    class E gate
-
-```
-
-### 3.2 Full (--full) — 10 Steps
-
-```mermaid
-graph TD
-    A[1. Pre-Creation Check<br/>Check Plan Context] --> B[2. Cross-Plan Scan<br/>Detect blockedBy/blocks,<br/>update both plans]
-    B --> C[3. Scope Challenge<br/>3 questions,<br/>select mode]
-    C --> D[4. Research<br/>Spawn 1 researcher]
-    D --> E[5. Codebase Analysis<br/>Read docs, scan if needed]
-    E --> F[6. Plan Documentation<br/>plan.md + phase-XX.md]
-    F --> G[7. Red Team<br/>/hi-plan red-team path]
-    G --> H[8. Validate<br/>/hi-plan validate path]
-    H --> I{Phases ≥ 3?}
-    I -->|Yes| J[9. Hydrate Tasks<br/>TaskCreate/phase]
-    I -->|No| K[Skip tasks]
-    J --> L[10. Output<br/>absolute path<br/>+ craft command]
-    K --> L
-
-    classDef step fill:#bbdefb,stroke:#0d47a1,color:#000
-    classDef skip fill:#e0e0e0,stroke:#616161,color:#000
-    classDef gate fill:#ffe0b2,stroke:#e65100,color:#000
-    class A,B,C,D,E,F,G,H,J,L step
-    class K skip
-    class I gate
-
-```
-
-### 3.3 Subcommands
-
-```mermaid
-graph LR
-    Main[hi-plan] --> Default[default<br/>fast mode]
-    Main --> Full[--full<br/>full flow]
-    Main --> Hard[--hard<br/>2 researchers + red team]
-    Main --> Parallel[--parallel<br/>2 researchers + red team]
-    Main --> Two[--two<br/>2+ researchers,<br/>select after]
-    Main --> NoTasks[--no-tasks<br/>skip task hydration]
-    Main --> Archive[/hi-plan archive<br/>Archive plans + log/]
-    Main --> RedTeam[/hi-plan red-team path<br/>Adversarial review/]
-    Main --> Validate[/hi-plan validate path<br/>Critical questions interview/]
-
-    classDef mode fill:#e3f2fd,stroke:#0d47a1,color:#000
-    classDef sub fill:#c8e6c9,stroke:#1b5e20,color:#000
-    class Default,Full,Hard,Parallel,Two,NoTasks mode
-    class Archive,RedTeam,Validate sub
-
-```
-
----
-
-## 4. Cross-skill Integration
-
-```mermaid
-graph TD
-    User([User request]) --> Detect{Detect intent}
-
-    Detect -->|Implement feature| Craft[hi-craft]
-    Detect -->|Fix bug| Fix[hi-fix]
-    Detect -->|Plan / architecture| Plan[hi-plan]
-
-    Craft -->|Step 1: Plan| Plan
-    Craft -->|Step 3: Test fail ≥3| Fix
-    Craft -->|Step 4: Finalize| Log[hi-log]
-
-    Fix -->|Step 1: Explorer| explorer[hi-explorer]
-    Fix -->|Step 2: Diagnose stuck| Debug[hi-debug]
-    Fix -->|Step 2: 2+ hypotheses fail| PS[hi-problem-solving]
-    Fix -->|Step 4: Verify| Log
-
-    Plan -->|research-phase| ST[sequential-thinking]
-    Plan -->|research-phase| Docs[docs-seeker]
-    Plan -->|archive-workflow.md| Log
-
-    Debug -->|Tools section| explorer
-    Debug -->|Tools section| Docs
-    Debug -->|Tools section| PS
-
-    explorer --> Output[Report: files + descriptions]
-    Debug --> Output2[Root cause + fix recommendation]
-    PS --> Output3[Stuck-unsticking framework]
-    Log --> Output4[Session log entries]
-
-    classDef primary fill:#c8e6c9,stroke:#1b5e20,color:#000
-    classDef linked fill:#bbdefb,stroke:#0d47a1,color:#000
-    classDef leaf fill:#fff9c4,stroke:#f57f17,color:#000
-    classDef endnode fill:#f5f5f5,stroke:#333,color:#000
-
-    class Craft,Fix,Plan primary
-    class explorer,Debug,Log,ST,Docs,PS linked
-    class Output,Output2,Output3,Output4 leaf
-    class User,Detect endnode
-
-```
-
----
-
-## 5. HARD-GATEs
-
-| Skill      | HARD-GATE                               | Violation Behavior                                                  |
-| ---------- | --------------------------------------- | ------------------------------------------------------------------- |
-| `hi-craft` | No code without plan + review           | Stop, request `hi-plan` first (unless user says "just code it")     |
-| `hi-fix`   | No fix before Explorer + Diagnose       | Force Steps 1-2; if fail 3+ times → STOP, ask user for architecture |
-| `hi-plan`  | Cross-Plan Scan update **both plan.md** | Ensure bidirectional update, no plan left behind                    |
-
----
-
-## 6. General Rules (Cross-cutting)
-
-1. **Hard-gate first, fast-path later** — default to lightweight mode, use flags for expansion.
-2. **Inline > Spawn** — only spawn sub-skills when necessary (3+ fails, 2+ hypothesis fails, large scope).
-3. **Token budget** — each subagent spawn = 10-15K tokens. Prioritize inline methodology.
-4. **Test/Verify just enough** — `typecheck+lint` for quick, `+build+test` for standard, `comprehensive` for deep.
-5. **Review optional** — run only via `--review` or `full` mode. Auto-approve requires score ≥ 9.5 + 0 critical.
-6. **Finalize = commit + log** — always conclude with git commit + `/hi-log` (recording decisions, root causes, impacts).
+| Doc | What it contains |
+| --- | --- |
+| [AGENTS.md](AGENTS.md) | Root agent context-search directive and mandatory operating rules. |
+| [CLAUDE.md](CLAUDE.md) | Claude Code specific project instructions. |
+| [devkit.md](devkit.md) | Detailed workflow diagrams and cross-skill integration notes. |
 
 ## License
 
