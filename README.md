@@ -290,50 +290,96 @@ Browser task:         hi-chrome-devtools -> inspect/click/screenshot/network
 | `hi-sequential-thinking` | `hi-plan`, complex debugging, design reasoning | Step-by-step reasoning with revision and hypothesis tracking. |
 | `hi-problem-solving` | `hi-fix`, `hi-debug` | Stuck-point techniques after failed hypotheses or complexity spirals. |
 
+### Agent Spawning And Delegation
+
+Most DevKit skills stay single-agent by default. Subagents are used only when the skill file explicitly allows delegation and the work has independent tracks, repeated failures, or a mode that asks for parallel execution.
+
+| Skill | Spawns agents? | Trigger / condition |
+| --- | --- | --- |
+| `hi-explorer` | Yes, by design | Splits local, external, or hybrid exploration into `1-5` non-overlapping agents. Skips task registration when `<=2` agents or task tools are unavailable. Each agent has a 3-minute timeout. |
+| `hi-craft` | Conditional | Parallel mode launches `fullstack-developer` per phase. Test failures are handled directly for attempts 1-2; attempt 3+ spawns `hi-fix`. Planner and tester agents are explicitly not spawned. |
+| `hi-fix` | Conditional | Standard/deep modes can activate `hi-explorer` or `2-3` parallel agents. `--parallel` creates a separate task tree and spawns `fullstack-developer` per independent issue. |
+| `hi-plan` | Conditional | `--full` spawns 1 researcher. `--hard` and `--parallel` use 2 researchers. `--two` uses 2+ researchers for competing approaches. Fast/default mode does not spawn a researcher. |
+| `hi-debug` | Conditional | Multi-component investigations, parallel log/data collection, or CI/CD failures with 3+ possible causes may spawn parallel collection agents. |
+| `hi-log` | Yes | Spawns a `log-writer` subagent after filtering material changes. If there is no material change, logging aborts. |
+| `hi-repo-search` | Conditional | Does not spawn by default. Uses at most two investigators, code and documents, only when delegation is permitted and the work has independent tracks, spans 3+ subsystems, or needs independent conflict verification. |
+
+```mermaid
+graph TD
+    A["Task / workflow request"] --> B{"Delegation allowed by skill?"}
+    B -->|no| C["Single-agent execution"]
+    B -->|yes| D{"Independent tracks or explicit parallel mode?"}
+    D -->|no| C
+    D -->|yes| E["Spawn scoped subagents"]
+    E --> F["Collect outputs<br/>dedupe / reconcile conflicts"]
+    F --> G["Main agent owns synthesis<br/>integration and verification"]
+
+    E --> H["hi-explorer<br/>1-5 scoped agents"]
+    E --> I["hi-plan<br/>researchers by mode"]
+    E --> J["hi-fix / hi-craft<br/>fullstack-developer or hi-fix escalation"]
+    E --> K["hi-debug<br/>parallel evidence collection"]
+    E --> L["hi-log<br/>log-writer"]
+    E --> M["hi-repo-search<br/>max 2 investigators"]
+
+    classDef decision fill:#ffe0b2,stroke:#e65100,color:#000
+    classDef primary fill:#c8e6c9,stroke:#1b5e20,color:#000
+    classDef delegated fill:#bbdefb,stroke:#0d47a1,color:#000
+    classDef synthesis fill:#e1bee7,stroke:#6a1b9a,color:#000
+    class B,D decision
+    class C,G primary
+    class E,H,I,J,K,L,M delegated
+    class F synthesis
+```
+
 ### `hi-craft` - Feature Implementation
 
 | Mode | Context | Plan | Review | Test |
 | --- | --- | --- | --- | --- |
-| default / `--fast` | Reuse existing plan evidence | Required | Optional | Yes |
-| `--full` | Refresh evidence as needed | Required | Required | Yes |
-| `--review` | Reuse evidence | Required | Required | Yes |
-| `--auto` | Reuse evidence | Required | Auto-pass noncritical | Yes |
-| `--no-test` | Reuse evidence | Required | Optional | No |
+| default / `--fast` | Skip research | Required unless user explicitly skips planning | Skip | Yes |
+| `--full` | Research enabled | Required unless user explicitly skips planning | Required | Yes |
+| `--review` | Skip research | Required unless user explicitly skips planning | Required | Yes |
+| `--auto` | Skip research | Required unless user explicitly skips planning | Auto-pass | Yes |
+| `--no-test` | Skip research | Required unless user explicitly skips planning | Skip | No |
 | plan path | Execute supplied plan | Supplied | As specified | Yes |
 
 ```mermaid
 graph LR
     A["User request"] --> B["hi-craft"]
     B --> C["Plan exists?<br/>hi-plan --fast if missing"]
-    C --> D["Gather missing evidence<br/>hi-repo-search narrowly"]
-    D --> E["Implement minimal scoped change"]
+    C --> D{"Parallel mode?"}
+    D -->|no| E["Implement directly"]
+    D -->|yes| P["Launch fullstack-developer<br/>per phase"]
+    P --> E
     E --> F["Run proportionate checks"]
     F -->|pass| G["Finalize<br/>report / log if needed"]
     F -->|fail x1-x2| E
-    F -->|fail x3 or root cause unclear| H["hi-fix"]
+    F -->|fail x3+| H["Spawn hi-fix<br/>deep debug"]
 
     classDef primary fill:#c8e6c9,stroke:#1b5e20,color:#000
-    classDef evidence fill:#e1bee7,stroke:#6a1b9a,color:#000
+    classDef delegated fill:#bbdefb,stroke:#0d47a1,color:#000
     classDef gate fill:#ffe0b2,stroke:#e65100,color:#000
     class B,E,G primary
-    class D evidence
-    class C,F,H gate
+    class P,H delegated
+    class C,D,F gate
 ```
 
 ### `hi-fix` - Issue Resolution
 
 | Mode | Scope | Repository evidence | Delegation |
 | --- | --- | --- | --- |
-| default | Clear, local issue | Direct inspection | None |
-| `--standard` | 2-5 files | `hi-repo-search --code` | None |
-| `--deep` | 5+ files or architectural impact | `hi-repo-search --deep --impact` | Up to 2 investigators |
-| `--parallel` | Independent issues | One evidence bundle per issue | One agent per issue |
+| default | 1 file, type/lint, or clear issue | Direct inspection | 1 agent is enough |
+| `--standard` | 2-5 files | Full explorer and diagnosis | `hi-explorer` or `2-3` parallel agents when useful |
+| `--deep` | 5+ files or architectural impact | Parallel explorer, diagnosis, and research | Parallel agents for exploration/research |
+| `--parallel` | 2+ independent issues | Separate task tree per issue | Spawn `fullstack-developer` per issue |
 | `--review` | Any scope | Mode-dependent | Human review at gates |
 
 ```mermaid
 graph LR
     A["Capture symptom<br/>error / log / failing check"] --> B["Explore affected area"]
-    B --> C["Diagnose<br/>symptom -> cause -> root cause"]
+    B --> P{"Standard / deep / parallel?"}
+    P -->|no| C["Diagnose<br/>symptom -> cause -> root cause"]
+    P -->|yes| X["hi-explorer or parallel agents<br/>locate evidence"]
+    X --> C
     C --> D["Fix root cause<br/>minimal change"]
     D --> E["Verify"]
     E -->|pass| F["Finalize<br/>evidence + change + verification"]
@@ -343,8 +389,8 @@ graph LR
     classDef step fill:#bbdefb,stroke:#0d47a1,color:#000
     classDef gate fill:#ffe0b2,stroke:#e65100,color:#000
     classDef fail fill:#ffcdd2,stroke:#b71c1c,color:#000
-    class A,B,C,D,F step
-    class E gate
+    class A,B,C,D,F,X step
+    class P,E gate
     class G fail
 ```
 
@@ -352,16 +398,19 @@ graph LR
 
 | Mode | Research | Delegation | Review |
 | --- | --- | --- | --- |
-| default / `--fast` | Targeted `hi-repo-search` | None | None |
-| `--full` | Deep evidence refresh | Up to 2 investigators | Optional red-team |
-| `--hard` | Deep impact analysis | Up to 2 investigators | Required red-team |
-| `--parallel` | Hard scope | One agent per independent track | Required red-team |
-| `--two` | Shared evidence | One agent per approach | Review after selection |
+| default / `--fast` | Skip formal research; read docs or scan only if needed | None | None |
+| `--full` | Research enabled | 1 researcher | Optional red-team and validation |
+| `--hard` | Deep research and impact analysis | 2 researchers | Required red-team |
+| `--parallel` | Parallel-track research | 2 researchers | Required red-team |
+| `--two` | Competing approaches | 2+ researchers | Review after selection |
 
 ```mermaid
 graph LR
     A["Scan active plans"] --> B["Gather evidence<br/>hi-repo-search"]
-    B --> C["Define assumptions<br/>dependencies / gaps"]
+    B --> R{"Research mode?"}
+    R -->|fast| C["Define assumptions<br/>dependencies / gaps"]
+    R -->|full / hard / parallel / two| S["Spawn researcher agents<br/>by selected mode"]
+    S --> C
     C --> D["Write plan.md<br/>and phase files"]
     D --> E{"3+ phases?"}
     E -->|yes| F["Hydrate tasks"]
@@ -371,10 +420,12 @@ graph LR
 
     classDef step fill:#bbdefb,stroke:#0d47a1,color:#000
     classDef evidence fill:#e1bee7,stroke:#6a1b9a,color:#000
+    classDef delegated fill:#bbdefb,stroke:#0d47a1,color:#000
     classDef gate fill:#ffe0b2,stroke:#e65100,color:#000
     class A,C,D,F,G,H step
     class B evidence
-    class E gate
+    class S delegated
+    class R,E gate
 ```
 
 ## Cross-Skill Integration
