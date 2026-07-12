@@ -1,4 +1,4 @@
 interface:
   display_name: "Repo Search"
-  short_description: "Search and explore code repositories using Code Graph + Document Graph RAG. Understand architecture, trace call paths, find entities, and answer questions about any ingested codebase."
-  default_prompt: "Use $hi-repo-search to explore repositories: discover databases, search code and documents, trace call graphs, analyze dependencies, and synthesize findings. Supports modes: --code (code only), --doc (doc only), --deep (cross-reference both)."
+  short_description: "Gather traceable repository evidence from project knowledge, semantic code search, symbols, call paths, dependencies, and documents."
+  default_prompt: "Use $hi-repo-search to answer repository questions with verified evidence and explicit search coverage. Use the narrowest mode: --code, --doc, --deep for code-document reconciliation, or --impact for dependency and blast-radius analysis."
