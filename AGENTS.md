@@ -13,7 +13,6 @@ Example:
  "semantic_search": {
         "query": "function that handles user authentication",
         "parser_type": "",
-        "db": "neo4j",
         "top_k": "10",
         "collection": "",
     },

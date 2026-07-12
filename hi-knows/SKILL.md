@@ -42,13 +42,13 @@ git show <commit>
 
 ## Output Format
 
-`## Kết luận ngắn` → `## Độ tin cậy` (confidence + sources) → `## Bằng chứng` (Git/MCP/Memory) → `## Điểm chưa chắc chắn` → `## Neo4j Query Suggestion (optional)`
+`## Kết luận ngắn` → `## Độ tin cậy` (confidence + sources) → `## Bằng chứng` (Git/MCP/Memory) → `## Điểm chưa chắc chắn` → `## Neo4j/FalkorDb Query Suggestion (optional)`
 
 ## Guardrails
 
 - Never claim from single weak source
 - Every high-impact claim needs citation
-- Do not execute direct Neo4j queries
+- Do not execute direct Neo4j/FalkorDB queries
 - Redact secrets before citing
 
 ## Limits

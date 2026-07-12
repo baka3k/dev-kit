@@ -5,13 +5,13 @@
 
 MCP server: `graph_rag` | Transport: `streamable-http` | Default port: `8789`
 
-Backend: **Neo4j** (entities, relations, paragraphs) + **Qdrant** (vector embeddings of documents)
+Backend: **Neo4j/FalkorDB** (entities, relations, paragraphs) + **Qdrant** (vector embeddings of documents)
 
 ## Functions
 
 ### `list_source_ids`
 
-Lists all source_ids (documents) that have been ingested into Neo4j.
+Lists all source_ids (documents) that have been ingested into VectorDB/GraphDb.
 
 | Param | Type | Required | Default | Description |
 | --- | --- | --- | --- | --- |
@@ -77,7 +77,7 @@ Vector-only search within Qdrant. **Does not expand the graph.** Only returns pa
 
 ### `query_graph_rag_langextract`
 
-**Primary function** — search + entity/relation expansion. Queries Qdrant to retrieve passages, then fetches entities and relations from Neo4j based on the entity_ids found in those passages.
+**Primary function** — search + entity/relation expansion. Queries Qdrant to retrieve passages, then fetches entities and relations from Neo4j/FalkorDb based on the entity_ids found in those passages.
 
 | Param | Type | Required | Default | Description |
 | --- | --- | --- | --- | --- |
@@ -85,7 +85,7 @@ Vector-only search within Qdrant. **Does not expand the graph.** Only returns pa
 | `top_k` | int | No | 5 | Number of passages to return |
 | `source_id` | str | No | None | Filter by document |
 | `collection` | str | No | "documents" | Qdrant collection |
-| `include_entities` | bool | No | True | Fetch entity details from Neo4j |
+| `include_entities` | bool | No | True | Fetch entity details from Neo4j/FalkorDb |
 | `include_relations` | bool | No | True | Fetch relations between entities |
 | `expand_related` | bool | No | True | Expand relationships (only works if `include_relations` is enabled) |
 | `related_k` | int | No | 50 | Maximum number of relations |
@@ -135,7 +135,7 @@ Vector-only search within Qdrant. **Does not expand the graph.** Only returns pa
 
 ### `get_paragraph_text`
 
-Fetches the full text of a specific paragraph from Neo4j.
+Fetches the full text of a specific paragraph from Neo4j/FalkorDb.
 
 | Param | Type | Required | Default | Description |
 | --- | --- | --- | --- | --- |

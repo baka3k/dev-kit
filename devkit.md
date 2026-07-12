@@ -19,7 +19,7 @@
 
 | Skill | Type | Purpose |
 | --- | --- | --- |
-| `hi-repo-search` | Code + Doc exploration | Search & explore ingested repos via code graph (Neo4j) + document graph RAG (Qdrant/Neo4j). Semantic search, call graph tracing, dependency analysis, entity extraction. |
+| `hi-repo-search` | Code + Doc exploration | Search & explore ingested repos via code graph (Qdrant/Neo4j/FalkorDb) + document graph RAG (Qdrant/Neo4j/FalkorDb). Semantic search, call graph tracing, dependency analysis, entity extraction. |
 | `hi-chrome-devtools` | Browser automation | Browser automation via Puppeteer CLI with persistent sessions. Screenshots, performance, network, scraping, form automation, auth, debugging. |
 
 ## 1. `hi-craft` — Feature Implementation

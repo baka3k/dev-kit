@@ -17,8 +17,8 @@ Two MCP servers work together:
 
 | MCP | Database | Purpose |
 | --- | --- | --- |
-| **code_graph** | Neo4j + Qdrant | Code structure: functions, classes, call graphs, dependencies |
-| **graph_rag** | Neo4j + Qdrant | Document knowledge: paragraphs, entities, relations, semantic search |
+| **code_graph** | Qdrant+Neo4j/FalkorDB | Code structure: functions, classes, call graphs, dependencies |
+| **graph_rag** | Qdrant+Neo4j/FalkorDB | Document knowledge: paragraphs, entities, relations, semantic search |
 
 ## Intent Detection
 

@@ -3,7 +3,7 @@
 
 # Code Graph MCP — Code Structure Functions
 
-MCP server using **Neo4j** (code graph: functions, classes, calls, dependencies) + **Qdrant** (vector embeddings for semantic search).
+MCP server using ** Neo4j/FalkorDB** (code graph: functions, classes, calls, dependencies) + **Qdrant** (vector embeddings for semantic search).
 
 The functions are organized by usage category.
 
@@ -13,7 +13,7 @@ The functions are organized by usage category.
 
 ### `list_databases`
 
-Lists all available Neo4j databases.
+Lists all available Neo4j/FalkorDB databases.
 
 **No params**
 
@@ -63,7 +63,7 @@ Sets the default parser_type and database for the current session. **Must be cal
 | Param | Type | Required | Default | Description |
 | --- | --- | --- | --- | --- |
 | `parser_type` | str | No | None | Parser: cplus/cpp/c++/c/clang/delphi/pascal/java/kotlin/jvm/vbnet/vb6/vba/vbscript/android/android-kotlin |
-| `database_name` | str | No | None | Neo4j database name |
+| `database_name` | str | No | None | hyper_graph database name |
 
 **Use when**: At the beginning of each session, after selecting a project.
 
@@ -81,7 +81,7 @@ Searches for functions/classes/types by name or qualified name. Returns both nod
 | `limit` | int | No | 50 | Max results |
 | `db` | str | No | Activate default | Database name |
 | `content_mode` | str | No | "auto" | Output format: auto, summary, comment, code, name |
-| `include_raw_fields` | bool | No | False | Include raw Neo4j properties |
+| `include_raw_fields` | bool | No | False | Include raw Nep4k/Falkor properties |
 | `node_type` | str | No | "code" | Domain filter: code or doc |
 | `expand_search` | bool | No | False | Cross-domain traversal |
 
@@ -469,7 +469,7 @@ Finds screen-to-screen `NAVIGATE` workflows within a React/TS project.
 | `max_paths` | int | No | 100 | Max workflows (capped at 1000) |
 | `include_entry_function` | bool | No | False |  |
 | `include_api_calls` | bool | No | False |  |
-| `db` | str | No | "neo4j" |  |
+| `db` | str | No | "hyper_graph" |  |
 
 ---
 

@@ -158,7 +158,7 @@ graph TD
 | **Status** | 🟣 Tool — standalone, referenced by `hi-debug` |
 | **Calls** | `code_graph` MCP, `graph_rag` MCP |
 | **Called by** | `hi-debug` (Tools section) |
-| **Description** | Search & explore ingested repos via code graph (Neo4j) + document graph RAG (Qdrant/Neo4j). Semantic search, call graph tracing, dependency analysis, entity extraction. |
+| **Description** | Search & explore ingested repos via code graph (Qdrant/Neo4j/FalkorDB) + document graph RAG (Qdrant/Neo4j/FalkorDB). Semantic search, call graph tracing, dependency analysis, entity extraction. |
 
 ---
 
