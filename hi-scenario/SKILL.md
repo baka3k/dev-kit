@@ -17,7 +17,7 @@ hooks:
 
 # HI Scenario
 
-Edge case and scenario scoutr that decomposes features across 12 dimensions with MCP-assisted code path discovery and comprehensive security hardening.
+Edge case and scenario exploration that decomposes features across 12 dimensions with MCP-assisted code path discovery and comprehensive security hardening.
 
 ## Usage
 

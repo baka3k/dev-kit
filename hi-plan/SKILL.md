@@ -56,7 +56,7 @@ Add `--no-tasks` to skip task hydration.
 7. **Red Team** -> `/hi-plan red-team {path}`
 8. **Validate** -> `/hi-plan validate {path}`
 9. **Hydrate Tasks** -> TaskCreate per phase
-10. **Output** -> Absolute path + cook command
+10. **Output** -> Absolute path + craft command
 
 ## Output Requirements
 - Plans in CURRENT WORKING PROJECT DIRECTORY (not user home)
