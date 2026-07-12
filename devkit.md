@@ -21,6 +21,7 @@
 | --- | --- | --- |
 | `hi-repo-search` | Code + Doc exploration | Search & explore ingested repos via code graph (Qdrant/Neo4j/FalkorDb) + document graph RAG (Qdrant/Neo4j/FalkorDb). Semantic search, call graph tracing, dependency analysis, entity extraction. |
 | `hi-chrome-devtools` | Browser automation | Browser automation via Puppeteer CLI with persistent sessions. Screenshots, performance, network, scraping, form automation, auth, debugging. |
+| `hi-cortex` | Harness infrastructure | Install and operate Cortex Harness: config, source-code sync, documentation sync, database infrastructure, and MCP lifecycle for use by other skills. |
 
 ## 1. `hi-craft` — Feature Implementation
 
@@ -189,7 +190,9 @@ graph TD
     Detect -->|Plan / architecture| Plan[hi-plan]
     Detect -->|Explore repo / code search| RepoSearch[hi-repo-search]
     Detect -->|Browser automation| Chrome[hi-chrome-devtools]
+    Detect -->|Cortex setup / sync / MCP| Cortex[cortex]
 
+    Cortex -->|healthy MCPs| RepoSearch
     Craft -->|Step 1: Plan| Plan
     Craft -->|Step 3: Test fail ≥3| Fix
     Craft -->|Step 4: Finalize| Log[hi-log]

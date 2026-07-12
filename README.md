@@ -1,6 +1,6 @@
 # DevKit
 
-A token-efficient agent skills kit for software engineering workflows. 15 composable skills, designed for Claude Code / Cursor / Continue / Copilot...etc
+A token-efficient agent skills kit for software engineering workflows. 16 composable skills, designed for Claude Code / Cursor / Continue / Copilot...etc
 
 ## Advanced Capabilities
 Integrated with Cortex Harness, the Dev Kit delivers an end-to-end Software Development Life Cycle (SDLC) framework, providing a unified execution model for planning, implementation, debugging, repository evidence search, security review, scenario generation, browser automation, session logging, and other extensible engineering workflows.
@@ -163,6 +163,7 @@ Set `CLAUDE_CONFIG_DIR`, `CODEX_HOME`, or `XDG_CONFIG_HOME` to override the base
 | `hi-log/` | `hi-log` | Session log entries for recent changes, decisions, impacts, and reflections. |
 | `hi-project-organization/` | `hi-project-organization` | File placement, output naming, directory organization, and Markdown structure. |
 | `hi-chrome-devtools/` | `hi-chrome-devtools` | Browser automation through Puppeteer CLI scripts with persistent sessions, screenshots, performance, network, scraping, forms, auth, and debugging. |
+| `cortex/` | `cortex` | Cortex Harness setup, project config, code/doc sync, and MCP lifecycle for graph/vector retrieval. |
 
 ## Repository Search Integration
 
@@ -507,6 +508,7 @@ dev-kit/
 ├── CLAUDE.md
 ├── README.md
 ├── devkit.md
+├── hi-cortex/
 ├── hi-chrome-devtools/
 ├── hi-craft/
 ├── hi-debug/

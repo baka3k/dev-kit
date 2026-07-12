@@ -1,0 +1,11 @@
+interface:
+  display_name: "Cortex"
+  short_description: "Set up and operate Cortex Harness for project config, code/doc sync, database infrastructure, and MCP server lifecycle."
+  default_prompt: "Use $cortex to install or repair Cortex Harness, inspect dev status, add source-code and documentation projects to config, run code/doc sync, start or stop MCP servers, and verify mind_mcp/graph_mcp readiness for other skills."
+  capabilities:
+    - cortex_harness_setup
+    - project_config_management
+    - code_sync
+    - documentation_sync
+    - mcp_lifecycle
+    - graph_vector_retrieval_infrastructure
