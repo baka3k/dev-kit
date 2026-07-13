@@ -62,3 +62,5 @@ hyper-dev/knowledge-hub/data/sources.json
 **CLAUDE.md
 outputs/**
 skill-deck/**
+workspace/
+workspace/**
