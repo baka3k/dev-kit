@@ -1,0 +1,29 @@
+{
+  "module": "{{MODULE}}",
+  "constraints": {},
+  "data_context_gate": {},
+  "falkor_graph_gate": {},
+  "collection_resolution": {},
+  "retrieval_trace": [],
+  "query_matrix": [],
+  "frontier_nodes": [],
+  "entry_candidates": [],
+  "classes": [],
+  "use_case_candidates": [],
+  "artifact_conditions": {
+    "stateful": {"active": false, "evidence": []},
+    "ipc": {"active": false, "evidence": []},
+    "persistence": {"active": false, "evidence": []},
+    "concurrency": {"active": false, "evidence": []},
+    "branching": {"active": false, "evidence": []},
+    "distributed": {"active": false, "evidence": []}
+  },
+  "package_manifest": "package-manifest.json",
+  "evidence_ledger": [],
+  "coverage_grid": {},
+  "saturation": {
+    "passed": false,
+    "passes": []
+  },
+  "unresolved_gaps": []
+}

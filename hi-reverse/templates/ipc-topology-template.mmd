@@ -1,0 +1,5 @@
+flowchart LR
+    %% {{REPLACE_WITH_INTERFACE_EVIDENCE}}
+    Sender[Sender Process] -->|Request message| Channel[IPC Channel]
+    Channel --> Receiver[Receiver Process]
+    Receiver -.->|Response/callback| Sender

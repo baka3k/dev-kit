@@ -1,0 +1,5 @@
+flowchart LR
+    %% {{REPLACE_WITH_RUNTIME_EVIDENCE}}
+    ProcessA[Process A] -->|IPC/API| ProcessB[Process B]
+    ProcessB --> Device[Device/External Service]
+    ProcessA --> Store[(Shared/Persistent Store)]

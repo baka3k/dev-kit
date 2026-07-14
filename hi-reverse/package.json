@@ -1,0 +1,16 @@
+{
+  "name": "hi-reverse-tools",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "bin": {
+    "hi-reverse-init": "scripts/init.mjs",
+    "hi-reverse-plan": "scripts/artifact-plan.mjs",
+    "hi-reverse-metrics": "scripts/metrics.mjs",
+    "hi-reverse-validate-artifact": "scripts/validate-artifact.mjs",
+    "hi-reverse-validate-package": "scripts/validate-package.mjs"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}

@@ -1,0 +1,6 @@
+flowchart LR
+    %% {{REPLACE_WITH_DATA_DICTIONARY_AND_TRACE_EVIDENCE}}
+    Source[Data Source] --> Validate[Validate]
+    Validate --> Transform[Transform]
+    Transform --> Store[(Persistent/Shared Store)]
+    Transform --> Sink[External Consumer]

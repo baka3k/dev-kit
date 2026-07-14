@@ -1,0 +1,7 @@
+flowchart LR
+    %% {{REPLACE_WITH_CONCURRENCY_EVIDENCE}}
+    ThreadA[Thread/Event Loop A] --> Queue[Queue]
+    Queue --> ThreadB[Thread/Worker B]
+    ThreadA --> Shared[(Shared State)]
+    ThreadB --> Shared
+    Lock[Synchronization] --- Shared

@@ -1,0 +1,7 @@
+stateDiagram-v2
+    %% {{REPLACE_WITH_TRANSITION_EVIDENCE}}
+    [*] --> Initial
+    Initial --> Active: trigger [guard]
+    Active --> Error: failure
+    Error --> Active: recovery
+    Active --> [*]: completion

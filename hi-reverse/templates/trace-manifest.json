@@ -1,0 +1,11 @@
+{
+  "module": "{{MODULE}}",
+  "use_case": "{{USE_CASE}}",
+  "retrieval_trace": [],
+  "anchors": {},
+  "main_path": [],
+  "alternate_paths": [],
+  "unresolved_gaps": [
+    "{{RESOLVE_OR_REMOVE}}"
+  ]
+}

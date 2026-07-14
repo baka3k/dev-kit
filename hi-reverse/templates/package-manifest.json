@@ -1,0 +1,16 @@
+{
+  "schema_version": 1,
+  "catalog": "references/ARTIFACT-CATALOG.yaml",
+  "module": "{{MODULE}}",
+  "profile": "{{PROFILE}}",
+  "generated_at": "{{TIMESTAMP}}",
+  "conditions": [],
+  "use_cases": [],
+  "output_root": "{{OUTPUT_ROOT}}",
+  "artifacts": [],
+  "available_conditionals": {},
+  "gates": {
+    "artifact_plan": "PENDING",
+    "reverse_package": "PENDING"
+  }
+}

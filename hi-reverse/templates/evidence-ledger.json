@@ -1,0 +1,20 @@
+{
+  "module": "{{MODULE}}",
+  "claims": [
+    {
+      "id": "{{CLAIM_ID}}",
+      "claim": "{{CLAIM}}",
+      "status": "{{PROVEN_LIKELY_TENTATIVE_REJECTED}}",
+      "node_ids": [],
+      "symbols": [],
+      "edges": [],
+      "locations": [],
+      "retrieved_by": [],
+      "serena_support": [],
+      "affected_artifacts": [],
+      "uncertainties": []
+    }
+  ],
+  "retrieval_trace": [],
+  "unresolved_gaps": []
+}

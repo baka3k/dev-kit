@@ -1,0 +1,18 @@
+{
+  "module": "{{MODULE}}",
+  "entrypoints": [
+    {
+      "id": "{{ENTRY_ID}}",
+      "symbol": "{{QUALIFIED_SYMBOL}}",
+      "type": "{{ENTRY_TYPE}}",
+      "trigger": "{{TRIGGER}}",
+      "first_handler": "{{HANDLER}}",
+      "use_cases": [],
+      "evidence": [],
+      "status": "{{PROVEN_OR_LIKELY}}"
+    }
+  ],
+  "rejected_candidates": [],
+  "retrieval_trace": [],
+  "unresolved_gaps": []
+}

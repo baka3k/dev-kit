@@ -1,0 +1,658 @@
+{
+  "version": 1,
+  "support_statuses": {
+    "supported": "Technique, template, validator, registry entry, and fixture validation exist.",
+    "partial": "Retrieval or generation exists, but the complete support contract is missing.",
+    "planned": "Design only; do not generate as a completed artifact.",
+    "unsupported": "Unavailable; report the gap instead of fabricating output."
+  },
+  "conditions": {
+    "stateful": "Multiple business states or guarded transitions are evidenced.",
+    "ipc": "IPC, messages, callbacks, host requests, or process boundaries are evidenced.",
+    "persistence": "Persistent files, database data, shared memory, or durable records are evidenced.",
+    "concurrency": "Threads, locks, queues, interrupts, or asynchronous ownership are evidenced.",
+    "branching": "A use case has material decision, alternate, error, timeout, or recovery branches.",
+    "distributed": "Multiple processes, services, devices, or runtime nodes are evidenced."
+  },
+  "profiles": {
+    "usecase": {
+      "description": "Evidence-backed documentation for each selected use case.",
+      "extends": [
+
+      ],
+      "required": [
+        "discovery-manifest",
+        "usecase-document",
+        "trace-manifest",
+        "sequence-diagram",
+        "class-diagram"
+      ],
+      "conditional": {
+        "branching": [
+          "activity-diagram"
+        ]
+      }
+    },
+    "module": {
+      "description": "Complete behavioral and structural documentation for one C/C++ module.",
+      "extends": [
+        "usecase"
+      ],
+      "required": [
+        "module-overview",
+        "entrypoint-catalog",
+        "module-map",
+        "component-context",
+        "business-rules",
+        "error-recovery",
+        "evidence-ledger",
+        "open-questions",
+        "glossary",
+        "coverage"
+      ],
+      "conditional": {
+        "stateful": [
+          "state-machine"
+        ],
+        "ipc": [
+          "interface-catalog",
+          "ipc-topology"
+        ],
+        "persistence": [
+          "data-dictionary",
+          "data-flow"
+        ],
+        "concurrency": [
+          "concurrency-model"
+        ],
+        "distributed": [
+          "deployment-runtime"
+        ]
+      }
+    },
+    "migration": {
+      "description": "Module package plus C++ to Java migration contracts and parity evidence.",
+      "extends": [
+        "module"
+      ],
+      "required": [
+        "migration-parity",
+        "type-mapping",
+        "interface-mapping",
+        "migration-waves",
+        "migration-risks",
+        "test-scenarios"
+      ],
+      "conditional": {
+      }
+    }
+  },
+  "artifacts": {
+    "discovery-manifest": {
+      "status": "supported",
+      "scope": "module",
+      "output_pattern": "discovery_manifest.json",
+      "technique": "references/DISCOVERY.md",
+      "template": "templates/discovery-manifest.json",
+      "evidence": [
+        "graph_mcp.semantic_search",
+        "graph_mcp.explore_graph",
+        "serena"
+      ],
+      "validator": {
+        "type": "json",
+        "required_keys": [
+          "module",
+          "data_context_gate",
+          "falkor_graph_gate",
+          "collection_resolution",
+          "retrieval_trace",
+          "query_matrix",
+          "use_case_candidates",
+          "artifact_conditions",
+          "saturation",
+          "unresolved_gaps"
+        ]
+      }
+    },
+    "usecase-document": {
+      "status": "supported",
+      "scope": "usecase",
+      "output_pattern": "ucXXX_{use_case}.md",
+      "technique": "references/DOCUMENTATION.md",
+      "template": "templates/uc-template.md",
+      "evidence": [
+        "trace-manifest",
+        "evidence-ledger"
+      ],
+      "validator": {
+        "type": "markdown",
+        "required_headings": [
+          "## Meta",
+          "## Actors",
+          "## Main Flow",
+          "## Code References",
+          "## Sequence Diagram",
+          "## Class Diagram",
+          "## Retrieval Trace",
+          "## Unresolved Gaps"
+        ]
+      }
+    },
+    "trace-manifest": {
+      "status": "supported",
+      "scope": "usecase",
+      "output_pattern": "trace_{use_case}.json",
+      "technique": "references/TRACING.md",
+      "template": "templates/trace-manifest.json",
+      "evidence": [
+        "graph_mcp.semantic_search",
+        "graph_mcp.explore_graph",
+        "serena"
+      ],
+      "validator": {
+        "type": "json",
+        "required_keys": [
+          "module",
+          "use_case",
+          "retrieval_trace",
+          "main_path",
+          "alternate_paths",
+          "unresolved_gaps"
+        ]
+      }
+    },
+    "sequence-diagram": {
+      "status": "supported",
+      "scope": "usecase",
+      "output_pattern": "seq_{use_case}_{date}_v1.mmd",
+      "technique": "references/DIAGRAM.md",
+      "template": "templates/sequence-template.mmd",
+      "evidence": [
+        "trace-manifest"
+      ],
+      "validator": {
+        "type": "mermaid",
+        "root_pattern": "^sequenceDiagram$"
+      }
+    },
+    "class-diagram": {
+      "status": "supported",
+      "scope": "usecase",
+      "output_pattern": "class_{use_case}_{date}_v1.mmd",
+      "technique": "references/CLASS-DIAGRAM.md",
+      "template": "templates/class-template.mmd",
+      "evidence": [
+        "evidence-ledger",
+        "trace-manifest"
+      ],
+      "validator": {
+        "type": "mermaid",
+        "root_pattern": "^classDiagram$"
+      }
+    },
+    "activity-diagram": {
+      "status": "supported",
+      "scope": "usecase",
+      "output_pattern": "activity_{use_case}_{date}_v1.mmd",
+      "technique": "references/ARCHITECTURE-DIAGRAMS.md",
+      "template": "templates/activity-template.mmd",
+      "evidence": [
+        "trace-manifest"
+      ],
+      "validator": {
+        "type": "mermaid",
+        "root_pattern": "^flowchart\\s+(TD|TB|LR|RL)$"
+      }
+    },
+    "module-overview": {
+      "status": "supported",
+      "scope": "module",
+      "output_pattern": "module-overview.md",
+      "technique": "references/MODULE-OVERVIEW.md",
+      "template": "templates/module-overview.md",
+      "evidence": [
+        "discovery-manifest",
+        "module-map"
+      ],
+      "validator": {
+        "type": "markdown",
+        "required_headings": [
+          "## Purpose",
+          "## Boundaries",
+          "## Responsibilities",
+          "## Inputs And Outputs",
+          "## Runtime Context",
+          "## Evidence",
+          "## Unresolved Gaps"
+        ]
+      }
+    },
+    "entrypoint-catalog": {
+      "status": "supported",
+      "scope": "module",
+      "output_pattern": "entrypoints.json",
+      "technique": "references/ENTRYPOINT-CATALOG.md",
+      "template": "templates/entrypoints.json",
+      "evidence": [
+        "graph_mcp.explore_graph",
+        "serena.find_referencing_symbols"
+      ],
+      "validator": {
+        "type": "json",
+        "required_keys": [
+          "module",
+          "entrypoints",
+          "rejected_candidates",
+          "retrieval_trace",
+          "unresolved_gaps"
+        ]
+      }
+    },
+    "module-map": {
+      "status": "supported",
+      "scope": "module",
+      "output_pattern": "module-map.md",
+      "technique": "references/MODULE-MAP.md",
+      "template": "templates/module-map.md",
+      "evidence": [
+        "graph_mcp.explore_graph",
+        "serena"
+      ],
+      "validator": {
+        "type": "markdown",
+        "required_headings": [
+          "## Inbound Dependencies",
+          "## Outbound Dependencies",
+          "## Runtime Relationships",
+          "## Dependency Cycles",
+          "## Evidence",
+          "## Unresolved Boundaries"
+        ]
+      }
+    },
+    "component-context": {
+      "status": "supported",
+      "scope": "module",
+      "output_pattern": "component-context.mmd",
+      "technique": "references/ARCHITECTURE-DIAGRAMS.md",
+      "template": "templates/component-context-template.mmd",
+      "evidence": [
+        "module-map"
+      ],
+      "validator": {
+        "type": "mermaid",
+        "root_pattern": "^flowchart\\s+(TD|TB|LR|RL)$"
+      }
+    },
+    "state-machine": {
+      "status": "supported",
+      "scope": "module",
+      "output_pattern": "state-machine.mmd",
+      "technique": "references/STATE-MACHINE.md",
+      "template": "templates/state-machine.mmd",
+      "evidence": [
+        "graph_mcp.explore_graph",
+        "serena.search_for_pattern"
+      ],
+      "validator": {
+        "type": "mermaid",
+        "root_pattern": "^stateDiagram-v2$"
+      }
+    },
+    "interface-catalog": {
+      "status": "supported",
+      "scope": "module",
+      "output_pattern": "interfaces.md",
+      "technique": "references/INTERFACE-CATALOG.md",
+      "template": "templates/interfaces.md",
+      "evidence": [
+        "graph_mcp.explore_graph",
+        "serena"
+      ],
+      "validator": {
+        "type": "markdown",
+        "required_headings": [
+          "## Interface Inventory",
+          "## Message And Payload Contracts",
+          "## Timing And Failure Semantics",
+          "## Evidence",
+          "## Unresolved Contracts"
+        ]
+      }
+    },
+    "ipc-topology": {
+      "status": "supported",
+      "scope": "module",
+      "output_pattern": "ipc-topology.mmd",
+      "technique": "references/ARCHITECTURE-DIAGRAMS.md",
+      "template": "templates/ipc-topology-template.mmd",
+      "evidence": [
+        "interface-catalog",
+        "module-map"
+      ],
+      "validator": {
+        "type": "mermaid",
+        "root_pattern": "^flowchart\\s+(TD|TB|LR|RL)$"
+      }
+    },
+    "data-dictionary": {
+      "status": "supported",
+      "scope": "module",
+      "output_pattern": "data-dictionary.md",
+      "technique": "references/DATA-DICTIONARY.md",
+      "template": "templates/data-dictionary.md",
+      "evidence": [
+        "graph_mcp.semantic_search",
+        "serena.find_symbol"
+      ],
+      "validator": {
+        "type": "markdown",
+        "required_headings": [
+          "## Types",
+          "## Fields",
+          "## Enumerations And Flags",
+          "## Ownership And Lifetime",
+          "## Persistence And Serialization",
+          "## Evidence",
+          "## Unresolved Data Semantics"
+        ]
+      }
+    },
+    "data-flow": {
+      "status": "supported",
+      "scope": "module",
+      "output_pattern": "data-flow.mmd",
+      "technique": "references/ARCHITECTURE-DIAGRAMS.md",
+      "template": "templates/data-flow-template.mmd",
+      "evidence": [
+        "data-dictionary",
+        "trace-manifest"
+      ],
+      "validator": {
+        "type": "mermaid",
+        "root_pattern": "^flowchart\\s+(TD|TB|LR|RL)$"
+      }
+    },
+    "business-rules": {
+      "status": "supported",
+      "scope": "module",
+      "output_pattern": "business-rules.md",
+      "technique": "references/BUSINESS-RULES.md",
+      "template": "templates/business-rules.md",
+      "evidence": [
+        "evidence-ledger",
+        "trace-manifest"
+      ],
+      "validator": {
+        "type": "markdown",
+        "required_headings": [
+          "## Rule Catalog",
+          "## Decision Tables",
+          "## Preconditions And Invariants",
+          "## Evidence",
+          "## Unresolved Rules"
+        ]
+      }
+    },
+    "error-recovery": {
+      "status": "supported",
+      "scope": "module",
+      "output_pattern": "error-recovery.md",
+      "technique": "references/ERROR-RECOVERY.md",
+      "template": "templates/error-recovery.md",
+      "evidence": [
+        "trace-manifest",
+        "evidence-ledger"
+      ],
+      "validator": {
+        "type": "markdown",
+        "required_headings": [
+          "## Failure Matrix",
+          "## Retry And Timeout Policy",
+          "## Rollback And Recovery",
+          "## User And External Outcomes",
+          "## Evidence",
+          "## Unresolved Failure Behavior"
+        ]
+      }
+    },
+    "concurrency-model": {
+      "status": "supported",
+      "scope": "module",
+      "output_pattern": "concurrency.mmd",
+      "technique": "references/CONCURRENCY.md",
+      "template": "templates/concurrency.mmd",
+      "evidence": [
+        "graph_mcp.explore_graph",
+        "serena.search_for_pattern"
+      ],
+      "validator": {
+        "type": "mermaid",
+        "root_pattern": "^flowchart\\s+(TD|TB|LR|RL)$"
+      }
+    },
+    "deployment-runtime": {
+      "status": "supported",
+      "scope": "module",
+      "output_pattern": "deployment-runtime.mmd",
+      "technique": "references/ARCHITECTURE-DIAGRAMS.md",
+      "template": "templates/deployment-runtime-template.mmd",
+      "evidence": [
+        "module-map",
+        "concurrency-model"
+      ],
+      "validator": {
+        "type": "mermaid",
+        "root_pattern": "^flowchart\\s+(TD|TB|LR|RL)$"
+      }
+    },
+    "evidence-ledger": {
+      "status": "supported",
+      "scope": "module",
+      "output_pattern": "evidence-ledger.json",
+      "technique": "references/EVIDENCE-LEDGER.md",
+      "template": "templates/evidence-ledger.json",
+      "evidence": [
+        "graph_mcp",
+        "serena"
+      ],
+      "validator": {
+        "type": "json",
+        "required_keys": [
+          "module",
+          "claims",
+          "retrieval_trace",
+          "unresolved_gaps"
+        ]
+      }
+    },
+    "open-questions": {
+      "status": "supported",
+      "scope": "module",
+      "output_pattern": "open-questions.md",
+      "technique": "references/OPEN-QUESTIONS.md",
+      "template": "templates/open-questions.md",
+      "evidence": [
+        "evidence-ledger",
+        "coverage"
+      ],
+      "validator": {
+        "type": "markdown",
+        "required_headings": [
+          "## Blocking Questions",
+          "## Evidence Gaps",
+          "## Assumptions Requiring Confirmation",
+          "## Resolution Log"
+        ]
+      }
+    },
+    "glossary": {
+      "status": "supported",
+      "scope": "module",
+      "output_pattern": "glossary.md",
+      "technique": "references/GLOSSARY.md",
+      "template": "templates/glossary.md",
+      "evidence": [
+        "graph_mcp",
+        "serena"
+      ],
+      "validator": {
+        "type": "markdown",
+        "required_headings": [
+          "## Terms",
+          "## Rejected Homonyms",
+          "## Unresolved Translations"
+        ]
+      }
+    },
+    "coverage": {
+      "status": "supported",
+      "scope": "module",
+      "output_pattern": "trace_metrics.md",
+      "technique": "references/METRICS.md",
+      "template": "templates/trace_metrics.md",
+      "evidence": [
+        "package-manifest",
+        "evidence-ledger"
+      ],
+      "validator": {
+        "type": "markdown",
+        "required_headings": [
+          "## Definitions",
+          "## Snapshots"
+        ],
+        "required_patterns": [
+          "^### Snapshot"
+        ]
+      }
+    },
+    "migration-parity": {
+      "status": "supported",
+      "scope": "module",
+      "output_pattern": "migration-parity.md",
+      "technique": "references/MIGRATION-ARTIFACTS.md",
+      "template": "templates/migration-parity.md",
+      "evidence": [
+        "usecase-document",
+        "business-rules",
+        "error-recovery"
+      ],
+      "validator": {
+        "type": "markdown",
+        "required_headings": [
+          "## Behavioral Parity Matrix",
+          "## State And Side-Effect Parity",
+          "## Error And Recovery Parity",
+          "## Acceptance Evidence",
+          "## Unresolved Parity Risks"
+        ]
+      }
+    },
+    "type-mapping": {
+      "status": "supported",
+      "scope": "module",
+      "output_pattern": "type-mapping.md",
+      "technique": "references/MIGRATION-ARTIFACTS.md",
+      "template": "templates/type-mapping.md",
+      "evidence": [
+        "data-dictionary",
+        "class-diagram"
+      ],
+      "validator": {
+        "type": "markdown",
+        "required_headings": [
+          "## Type Mapping",
+          "## Ownership And Lifetime Mapping",
+          "## Encoding And Layout Risks",
+          "## Unresolved Mappings"
+        ]
+      }
+    },
+    "interface-mapping": {
+      "status": "supported",
+      "scope": "module",
+      "output_pattern": "interface-mapping.md",
+      "technique": "references/MIGRATION-ARTIFACTS.md",
+      "template": "templates/interface-mapping.md",
+      "evidence": [
+        "interface-catalog",
+        "module-map"
+      ],
+      "validator": {
+        "type": "markdown",
+        "required_headings": [
+          "## Interface Mapping",
+          "## Payload Mapping",
+          "## Timing And Failure Mapping",
+          "## Unresolved Mappings"
+        ]
+      }
+    },
+    "migration-waves": {
+      "status": "supported",
+      "scope": "module",
+      "output_pattern": "migration-waves.md",
+      "technique": "references/MIGRATION-ARTIFACTS.md",
+      "template": "templates/migration-waves.md",
+      "evidence": [
+        "module-map",
+        "component-context"
+      ],
+      "validator": {
+        "type": "markdown",
+        "required_headings": [
+          "## Dependency Order",
+          "## Migration Waves",
+          "## Cycle-Breaking Strategy",
+          "## Entry And Exit Criteria",
+          "## Unresolved Dependencies"
+        ]
+      }
+    },
+    "migration-risks": {
+      "status": "supported",
+      "scope": "module",
+      "output_pattern": "migration-risks.md",
+      "technique": "references/MIGRATION-ARTIFACTS.md",
+      "template": "templates/migration-risks.md",
+      "evidence": [
+        "evidence-ledger",
+        "migration-parity"
+      ],
+      "validator": {
+        "type": "markdown",
+        "required_headings": [
+          "## Risk Register",
+          "## Compatibility Risks",
+          "## Operational Risks",
+          "## Mitigations",
+          "## Residual Risks"
+        ]
+      }
+    },
+    "test-scenarios": {
+      "status": "supported",
+      "scope": "module",
+      "output_pattern": "test-scenarios.md",
+      "technique": "references/MIGRATION-ARTIFACTS.md",
+      "template": "templates/test-scenarios.md",
+      "evidence": [
+        "usecase-document",
+        "migration-parity",
+        "error-recovery"
+      ],
+      "validator": {
+        "type": "markdown",
+        "required_headings": [
+          "## Scenario Matrix",
+          "## Main And Alternate Paths",
+          "## Error And Recovery Paths",
+          "## State And Concurrency Scenarios",
+          "## Parity Acceptance Criteria",
+          "## Coverage Gaps"
+        ]
+      }
+    }
+  }
+}

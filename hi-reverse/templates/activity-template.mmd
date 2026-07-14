@@ -1,0 +1,6 @@
+flowchart TD
+    %% {{REPLACE_WITH_TRACE_EVIDENCE}}
+    Trigger --> Guard{Guard}
+    Guard -->|MAIN| Outcome
+    Guard -->|ERROR| Recovery
+    Recovery --> Outcome

@@ -1,0 +1,16 @@
+sequenceDiagram
+    %% {{REPLACE_WITH_TRACE_EVIDENCE}}
+    participant Actor
+    participant Controller
+    participant Service
+    participant Adapter
+
+    Actor->>Controller: Trigger
+    Controller->>Service: Execute
+    alt MAIN
+        Service->>Adapter: Apply side effect
+        Adapter-->>Service: Result
+        Service-->>Actor: Outcome
+    else ERROR
+        Service-->>Actor: Error/recovery outcome
+    end
