@@ -1,6 +1,6 @@
 ---
 name: hi-reverse
-description: "FalkorDB and Qdrant Graph-RAG-first reverse engineering of C and C++ modules into validated use-case, module, and C++-to-Java migration artifact packages. Generates evidence-backed traces, sequence/class/state/activity/architecture diagrams, entry-point/interface/data/business-rule/error/concurrency catalogs, parity mappings, risks, tests, reviews, and coverage; exhaust mind_mcp and graph_mcp before Serena, and use native source tools only as a final fallback."
+description: "Reverse Engineering C and C++ modules into validated use-case, module, and C++-to-Java migration artifact packages. Generates evidence-backed traces, sequence/class/state/activity/architecture diagrams, entry-point/interface/data/business-rule/error/concurrency catalogs, parity mappings, risks, tests, reviews, and coverage; exhaust mind_mcp and graph_mcp before Serena, and use native source tools only as a final fallback."
 ---
 
 # C++ Reverse Engineering
@@ -136,16 +136,16 @@ Never claim completion while a required gate fails. Structural validation does n
 
 All commands run via `npx --yes --offline --package=. <command>` from the skill directory (zero dependencies, offline). Use `--summary` for compact output unless diagnosing.
 
-| Command | Function |
-|---|---|
-| `hi-reverse-init <output-dir>` | Create output workspace and copy templates |
-| `hi-reverse-plan --check-catalog` | Validate catalog integrity |
-| `hi-reverse-plan --profile <p> --module <m> --output <f> --summary` | Generate compact manifest |
-| `hi-reverse-plan --next <manifest>` | Return next pending artifact + technique + evidence gaps |
-| `hi-reverse-plan --list-capabilities` | List artifact ID, status, scope, output, technique |
-| `hi-reverse-validate-artifact <id> <path> --summary` | Validate one artifact |
-| `hi-reverse-validate-package <manifest> --update` | Set `REVERSE_PACKAGE_GATE`; also enforces UC bundle link checks (`--verbose` for full rows) |
-| `hi-reverse-metrics [usecase-dir] [metrics-file] [package-manifest]` | Append UC and profile/package coverage |
+| Command                                                              | Function                                                                                    |
+| -------------------------------------------------------------------- | ------------------------------------------------------------------------------------------- |
+| `hi-reverse-init <output-dir>`                                       | Create output workspace and copy templates                                                  |
+| `hi-reverse-plan --check-catalog`                                    | Validate catalog integrity                                                                  |
+| `hi-reverse-plan --profile <p> --module <m> --output <f> --summary`  | Generate compact manifest                                                                   |
+| `hi-reverse-plan --next <manifest>`                                  | Return next pending artifact + technique + evidence gaps                                    |
+| `hi-reverse-plan --list-capabilities`                                | List artifact ID, status, scope, output, technique                                          |
+| `hi-reverse-validate-artifact <id> <path> --summary`                 | Validate one artifact                                                                       |
+| `hi-reverse-validate-package <manifest> --update`                    | Set `REVERSE_PACKAGE_GATE`; also enforces UC bundle link checks (`--verbose` for full rows) |
+| `hi-reverse-metrics [usecase-dir] [metrics-file] [package-manifest]` | Append UC and profile/package coverage                                                      |
 
 ## Orchestration
 
