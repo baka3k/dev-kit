@@ -11,20 +11,22 @@ Reverse-engineer behavior from evidence, not symbol-name guesses. FalkorDB plus 
 
 1. Select `usecase`, `module`, or `migration`.
 2. Validate the catalog: `npx --yes --offline --package=. hi-reverse-plan --check-catalog`.
-3. Generate the plan: `npx --yes --offline --package=. hi-reverse-plan --profile <p> --module <m> [--use-case <slug>] [--condition <c>] --output <manifest> --summary`. Require `ARTIFACT_PLAN_GATE: PASS`. Do not read `ARTIFACT-CATALOG.yaml` directly — the script is the capability authority.
-4. Activate the C++ parser, FalkorDB context, and one Qdrant collection.
-5. Require `DATA_CONTEXT_GATE: PASS`.
-6. Run Graph-RAG to saturation. Semantic search seeds anchors only; graph traversal must expand those anchors into caller/callee and trigger/handler/outcome paths before Serena.
-7. Use Serena only for retained anchors and named gaps.
-8. Rerun the plan only when discovery adds a new use-case slug or evidenced condition.
-9. Generate artifacts one at a time via the loop below.
-10. Require `REVERSE_PACKAGE_GATE: PASS` before delivery.
+3. For `usecase`, read `PROFILE-USECASE.md`; for `module` or `migration`, use the generated manifest as the profile guide.
+4. Generate the plan: `npx --yes --offline --package=. hi-reverse-plan --profile <p> --module <m> [--use-case <slug>] [--condition <c>] --output <manifest> --summary`. Require `ARTIFACT_PLAN_GATE: PASS`. Do not read `ARTIFACT-CATALOG.yaml` directly — the script is the capability authority.
+5. Activate the C++ parser, FalkorDB context, and one Qdrant collection.
+6. Require `DATA_CONTEXT_GATE: PASS`.
+7. Run Graph-RAG to saturation. Semantic search seeds anchors only; graph traversal must expand those anchors into caller/callee and trigger/handler/outcome paths before Serena.
+8. Use Serena only for retained anchors and named gaps.
+9. Rerun the plan only when discovery adds a new use-case slug or evidenced condition.
+10. Generate artifacts one at a time via the loop below.
+11. Require `REVERSE_PACKAGE_GATE: PASS` before delivery.
 
 ## Retrieval Order
 
 `mind_mcp → graph_mcp/Qdrant → graph_mcp/FalkorDB → Serena → native`
 
 - Read [GRAPH-RAG-PROTOCOL.md](references/GRAPH-RAG-PROTOCOL.md) once when retrieval starts.
+- For `usecase`, read [PROFILE-USECASE.md](references/PROFILE-USECASE.md); for `module` or `migration`, use the generated manifest as the profile guide.
 - Read only the technique file returned by `--next` for the current artifact.
 - Read [MCP-TOOLS.md](references/MCP-TOOLS.md) only when live metadata is ambiguous, a wrapper rejects parameters, or provider routing must be diagnosed.
 - Do not read `ARTIFACT-CATALOG.yaml` unless the planner reports a catalog error.
