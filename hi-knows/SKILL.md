@@ -1,5 +1,5 @@
 ---
-name: knows
+name: hi-knows
 description: Unified knowledge retrieval skill. Build traceable answers from git, MCP, and memory files.
 version: 2.0.0
 last_updated: 2026-05-28
@@ -15,9 +15,9 @@ Why-changed / impact-radius / architecture context — NOT for syntax fixes, pur
 
 ## Evidence Priority
 
-| Question Type | Priority Order |
-|---------------|----------------|
-| Structure/Runtime | graph_mcp → Git → mind_mcp → memory |
+| Question Type        | Priority Order                      |
+| -------------------- | ----------------------------------- |
+| Structure/Runtime    | graph_mcp → Git → mind_mcp → memory |
 | Historical/Rationale | mind_mcp → memory → Git → graph_mcp |
 
 ## Workflow
@@ -25,6 +25,7 @@ Why-changed / impact-radius / architecture context — NOT for syntax fixes, pur
 **Phase 1 - Preflight:** Classify intent (`why-changed`, `impact-analysis`, `architecture-context`, `history-trace`)
 
 **Phase 2 - Git:**
+
 ```bash
 rg -n "keyword" .
 git log --oneline --decorate -- <path>
@@ -33,6 +34,7 @@ git show <commit>
 ```
 
 **Phase 3 - MCP:**
+
 - `mind_mcp`: `hybrid_search`, `query_graph_rag_relation`, `sequential_search`
 - `graph_mcp`: `semantic_search`, `query_subgraph`, `find_paths`, `analyze_workflow_impact`
 
@@ -62,6 +64,7 @@ git show <commit>
 
 ```markdown
 ⚠️ Degraded Mode: {reason}
+
 - Unavailable: {failed channels}
 - Missing: {limited evidence}
 - Confidence: {downgraded reason}

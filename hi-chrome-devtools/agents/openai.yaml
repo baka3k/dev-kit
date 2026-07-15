@@ -1,4 +1,4 @@
 interface:
   display_name: "chrome-devtools"
   short_description: "Automate browsers with Puppeteer CLI scripts and persistent sessions. Use for screenshots, performance analysis, network monitoring, web scraping, form automation, JavaScript debugging."
-  default_prompt: "Use $chrome-devtools to automate browser tasks with Puppeteer and persistent sessions. Supports screenshots, page inspection, performance profiling, network monitoring, web scraping, form automation, JavaScript debugging, and browser interaction."
+  default_prompt: "Use $hi-chrome-devtools to automate browser tasks with Puppeteer and persistent sessions. Supports screenshots, page inspection, performance profiling, network monitoring, web scraping, form automation, JavaScript debugging, and browser interaction."

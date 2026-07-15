@@ -1,4 +1,4 @@
 interface:
   display_name: "Fix"
   short_description: "Fix bugs with root cause analysis, mode-aware workflows, and verification gates."
-  default_prompt: "Use $fix to resolve issues with full workflow: explorer -> diagnose -> fix -> verify -> finalize. Supports modes: --standard, --deep, --parallel, --review."
+  default_prompt: "Use $hi-fix to resolve issues with full workflow: explorer -> diagnose -> fix -> verify -> finalize. Supports modes: --standard, --deep, --parallel, --review."

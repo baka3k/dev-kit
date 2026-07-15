@@ -1,5 +1,5 @@
 ---
-name: cortex
+name: hi-cortex
 description: "Set up and operate Cortex Harness for project code/doc ingestion, config updates, sync workflows, and MCP server lifecycle."
 argument-hint: "[setup|status|add-code|sync-code|add-doc|sync-doc|start-mcp|stop-mcp|doctor] [project path or repo URL]"
 metadata:
@@ -21,12 +21,12 @@ Use this skill when a task needs Cortex Harness from `https://github.com/baka3k/
 
 ## Common Tasks
 
-| Task | Use |
-| --- | --- |
+| Task                                    | Use                                                    |
+| --------------------------------------- | ------------------------------------------------------ |
 | Install or repair the local environment | [Environment Setup](./references/environment-setup.md) |
-| Add source code to config and sync it | [Project Ingestion](./references/project-ingestion.md) |
+| Add source code to config and sync it   | [Project Ingestion](./references/project-ingestion.md) |
 | Add documentation to config and sync it | [Project Ingestion](./references/project-ingestion.md) |
-| Start, stop, or validate MCP servers | [MCP Lifecycle](./references/mcp-lifecycle.md) |
+| Start, stop, or validate MCP servers    | [MCP Lifecycle](./references/mcp-lifecycle.md)         |
 
 ## Default Workflow
 

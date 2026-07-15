@@ -1,4 +1,4 @@
 interface:
   display_name: "Craft"
   short_description: "Implement features end-to-end with research, planning, testing, and review gates."
-  default_prompt: "Use $craft to implement features with full workflow: research -> plan -> implement -> test -> review -> finalize. Supports modes: --fast, --auto, --parallel, --no-test."
+  default_prompt: "Use $hi-craft to implement features with full workflow: research -> plan -> implement -> test -> review -> finalize. Supports modes: --fast, --auto, --parallel, --no-test."
