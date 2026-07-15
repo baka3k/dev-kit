@@ -1,5 +1,5 @@
 interface:
-  display_name: "explorer"
+  display_name: "Hi explorer"
   short_description: "Fast parallel codebase + external research using subagents and MCP tools (web search, web reading, GitHub repo lookup, visual analysis)."
   default_prompt: "Use $hi-explorer to discover files, docs, repos, and visual context in parallel: analyze target scope, divide work, register tasks, spawn subagents (internal Glob/Grep for local code, MCP tools for web/repo/image), collect deduplicated results."
   capabilities:

@@ -1,4 +1,4 @@
 interface:
-  display_name: "Project Organization"
+  display_name: "Hi Project Organization"
   short_description: "Organize project files, directories, output paths, names, and Markdown structure."
   default_prompt: "Use $hi-project-organization to organize project files, directories, output paths, names, and Markdown structure."

@@ -1,5 +1,5 @@
 interface:
-  display_name: "Cortex"
+  display_name: "Hi Cortex"
   short_description: "Set up and operate Cortex Harness for project config, code/doc sync, database infrastructure, and MCP server lifecycle."
   default_prompt: "Use $hi-cortex to install or repair Cortex Harness, inspect dev status, add source-code and documentation projects to config, run code/doc sync, start or stop MCP servers, and verify mind_mcp/graph_mcp readiness for other skills."
   capabilities:

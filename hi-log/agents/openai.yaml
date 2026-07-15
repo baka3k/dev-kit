@@ -1,4 +1,4 @@
 interface:
-  display_name: "Log"
+  display_name: "Hi Log"
   short_description: "Write log entries analyzing recent changes and session reflections."
   default_prompt: "Use $hi-log to write log entries exploring memories and recent code changes, organized to ./docs/logs/."

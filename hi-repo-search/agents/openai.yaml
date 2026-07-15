@@ -1,4 +1,4 @@
 interface:
-  display_name: "Repo Search"
+  display_name: "Hi Repo Search"
   short_description: "Gather traceable repository evidence from project knowledge, semantic code search, symbols, call paths, dependencies, and documents."
   default_prompt: "Use $hi-repo-search to answer repository questions with verified evidence and explicit search coverage. Use the narrowest mode: --code, --doc, --deep for code-document reconciliation, or --impact for dependency and blast-radius analysis."

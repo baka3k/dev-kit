@@ -1,4 +1,4 @@
 interface:
-  display_name: "Sequential Thinking"
+  display_name: "Hi Sequential Thinking"
   short_description: "Step-by-step analysis for complex problems with revision and branching capability."
   default_prompt: "Use $hi-sequential-thinking for multi-step reasoning, hypothesis verification, adaptive planning, problem decomposition, and course correction."

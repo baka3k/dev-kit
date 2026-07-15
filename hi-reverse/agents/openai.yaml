@@ -1,5 +1,5 @@
 interface:
-  display_name: "Reverse Engineering C++"
+  display_name: "Hi Reverse Engineering C++"
   short_description: "Validated C++ reverse and migration artifact packages"
   default_prompt: "Use $hi-reverse to select a use-case, module, or migration profile; retrieve evidence through FalkorDB and Qdrant; and generate a validated artifact package with package-manifest gates."
 
