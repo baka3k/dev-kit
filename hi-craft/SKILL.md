@@ -38,19 +38,23 @@ User override: "just code it" or "skip planning" - then respect.
 ## Steps
 
 ### Step 1: Plan (skip if plan.md provided)
-- Dùng `sequential-thinking` để phân tích task ngắn gọn
-- Dùng `docs-seeker` nếu cần tra cứu tài liệu
-- Không spawn planner riêng. Gọi `hi-plan --fast` inline nếu cần.
+
+* Use `sequential-thinking` to analyze the task briefly.
+* Use `docs-seeker` if documentation lookup is required.
+* Do not spawn a separate planner. Call `hi-plan --fast` inline if needed.
 
 ### Step 2: Implement
-Execute tasks trực tiếp. TaskUpdate in_progress trên mỗi task.
-Parallel mode: launch fullstack-developer per phase.
+
+Execute tasks directly. Set TaskUpdate to `in_progress` on each task.
+Parallel mode: launch `fullstack-developer` per phase.
 
 ### Step 3: Test (skip no-test)
-Run test command. Xem output. Nếu fail:
-  - Lần 1-2: tự phân tích và fix
-  - Lần 3+: spawn `hi-fix` để debug chuyên sâu
-Không spawn tester riêng.
+
+Run the test command. Check the output. If it fails:
+
+* 1st-2nd time: analyze and fix it yourself.
+* 3rd+ time: spawn `hi-fix` for in-depth debugging.
+Do not spawn a separate tester.
 
 ### Step 4: Finalize
 1. TaskUpdate all tasks complete
