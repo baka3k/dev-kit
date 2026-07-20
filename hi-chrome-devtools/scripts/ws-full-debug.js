@@ -102,6 +102,6 @@ async function debugWsFull() {
 }
 
 debugWsFull().catch(e => {
-  console.error(JSON.stringify({ success: false, error: e.message, stahi- e.stack }));
+  console.error(JSON.stringify({ success: false, error: e.message, stack: e.stack }));
   process.exit(1);
 });

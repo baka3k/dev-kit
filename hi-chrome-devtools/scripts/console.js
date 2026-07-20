@@ -42,7 +42,7 @@ async function monitorConsole() {
       messages.push({
         type: 'pageerror',
         text: error.message,
-        stahi- error.stack,
+        stack: error.stack,
         timestamp: Date.now()
       });
     });

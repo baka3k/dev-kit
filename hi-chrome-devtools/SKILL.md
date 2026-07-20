@@ -12,14 +12,23 @@ metadata:
 
 ## Skill Location
 
-Skills can exist in **project-scope** (`./claude/skills/`) or **user-scope** (`~/.claude/skills/`). Priority: project > user.
+Skills can exist in **project-scope** (`./.agents/skills/`) or **user-scope** (`~/.agents/skills/`). Legacy Claude Code locations are also supported. Priority: project > user.
 
 ```bash
 SKILL_DIR=""
-if [ -d ".claude/skills/chrome-devtools/scripts" ]; then
+if [ -d ".agents/skills/hi-chrome-devtools/scripts" ]; then
+  SKILL_DIR=".agents/skills/hi-chrome-devtools/scripts"
+elif [ -d ".claude/skills/chrome-devtools/scripts" ]; then
   SKILL_DIR=".claude/skills/chrome-devtools/scripts"
+elif [ -d "hi-chrome-devtools/scripts" ]; then
+  SKILL_DIR="hi-chrome-devtools/scripts"
+elif [ -d "$HOME/.agents/skills/hi-chrome-devtools/scripts" ]; then
+  SKILL_DIR="$HOME/.agents/skills/hi-chrome-devtools/scripts"
 elif [ -d "$HOME/.claude/skills/chrome-devtools/scripts" ]; then
   SKILL_DIR="$HOME/.claude/skills/chrome-devtools/scripts"
+else
+  echo "hi-chrome-devtools scripts directory not found" >&2
+  exit 1
 fi
 ```
 

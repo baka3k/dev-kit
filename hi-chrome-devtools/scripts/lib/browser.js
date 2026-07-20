@@ -368,7 +368,7 @@ export function outputError(error) {
   console.error(JSON.stringify({
     success: false,
     error: error.message,
-    stahi- error.stack
+    stack: error.stack
   }, null, 2));
   process.exit(1);
 }
