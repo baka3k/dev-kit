@@ -10,8 +10,8 @@
 | --- | --- | --- |
 | `hi-explorer` | craft, fix, debug | Codebase scanning & file discovery |
 | `hi-log` | craft, plan | Session logging |
-| `sequential-thinking` | plan | Step-by-step analysis |
-| `docs-seeker` | plan, debug | Documentation lookup |
+| `hi-sequential-thinking` | plan | Step-by-step analysis |
+| `hi-docs-seeker` | plan, debug | Documentation lookup |
 | `hi-debug` | fix | Advanced debugging |
 | `hi-problem-solving` | fix, debug | Stuck-unsticking framework |
 
@@ -40,7 +40,7 @@
 
 ```mermaid
 graph LR
-    A[1. Plan<br/>sequential-thinking<br/>+ docs-seeker] --> B[2. Implement<br/>direct execution]
+    A[1. Plan<br/>sequential-thinking<br/>+ hi-docs-seeker] --> B[2. Implement<br/>direct execution]
     B --> C[3. Test<br/>run command]
     C -->|pass| D[4. Finalize<br/>commit + /hi-log]
     C -->|fail ≤2| C
@@ -203,7 +203,7 @@ graph TD
     Fix -->|Step 4: Verify| Log
 
     Plan -->|research-phase| ST[sequential-thinking]
-    Plan -->|research-phase| Docs[docs-seeker]
+    Plan -->|research-phase| Docs[hi-docs-seeker]
     Plan -->|archive-workflow.md| Log
 
     Debug -->|Tools section| explorer

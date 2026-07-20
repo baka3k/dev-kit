@@ -1,0 +1,4 @@
+interface:
+  display_name: "Documentation Seeker"
+  short_description: "Find current technical documentation with evidence"
+  default_prompt: "Use $hi-docs-seeker to find current official documentation for this technical question and return a concise, source-linked answer."
