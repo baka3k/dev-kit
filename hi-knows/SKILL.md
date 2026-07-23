@@ -27,11 +27,13 @@ Why-changed / impact-radius / architecture context — NOT for syntax fixes, pur
 **Phase 2 - Git:**
 
 ```bash
-rg -n "keyword" .
-git log --oneline --decorate -- <path>
-git blame -L <start>,<end> <file>
-git show <commit>
+# Scope first, then pull detail
+git log --oneline --decorate -20 -- <path>
+git show <commit> --stat --format="%h %s"
+git blame -L <start>,<end> --date=short <file>
 ```
+
+Normalize before synthesis — git metadata, unchanged context, and ANSI codes add tokens without aiding reasoning. Pipe verbose git output through `node scripts/git-normalize.js` (default cleanup; add `--changed` for large diffs). See [Git Output Normalization](./references/git-output-normalization.md).
 
 **Phase 3 - MCP:**
 
@@ -44,13 +46,13 @@ git show <commit>
 
 ## Output Format
 
-`## Kết luận ngắn` → `## Độ tin cậy` (confidence + sources) → `## Bằng chứng` (Git/MCP/Memory) → `## Điểm chưa chắc chắn` → `## Neo4j/FalkorDb Query Suggestion (optional)`
+`## Kết luận ngắn` → `## Độ tin cậy` (confidence + sources) → `## Bằng chứng` (Git/MCP/Memory) → `## Điểm chưa chắc chắn` → `## FalkorDB Query Suggestion (optional)`
 
 ## Guardrails
 
 - Never claim from single weak source
 - Every high-impact claim needs citation
-- Do not execute direct Neo4j/FalkorDB queries
+- Do not execute direct FalkorDB/Neo4j queries (suggest only)
 - Redact secrets before citing
 
 ## Limits
@@ -59,6 +61,14 @@ git show <commit>
 - File size: 300KB max
 - Files/query: 10 max
 - Cache TTL: 10min
+
+## References
+
+- Read [Git Output Normalization](./references/git-output-normalization.md) before pulling git detail — commands and token caps.
+- Read [Source Priority & Conflict](./references/source-priority-and-conflict.md) when sources disagree or to set confidence.
+- Read [Retrieval Playbook](./references/retrieval-playbook.md) when a source fails or input must be validated.
+- Read [Memory Source Policy](./references/memory-source-policy.md) before reading memory files.
+- Read [FalkorDB Query Suggestion Template](./references/falkordb-query-suggestion-template.md) only when offering a suggested query.
 
 ## Degraded Mode
 

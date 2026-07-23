@@ -2,7 +2,7 @@
 
 ## Allowlist
 - `memory*.md`, `agent*.md`, `cla(x)ude*.md`, `cursor*.md`
-- Bloh `*.exe`, `*.dll`, `*.so`, `*.dylib`
+- Block `*.exe`, `*.dll`, `*.so`, `*.dylib`
 
 ## Locations (workspace first)
 ```

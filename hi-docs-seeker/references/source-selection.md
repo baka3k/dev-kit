@@ -11,11 +11,14 @@ Use the highest available source in this order:
 
 | Target | Preferred capability |
 | --- | --- |
+| Official library, framework, or API documentation | **Context7 connector first** — `resolve-library-id`, then `query-docs` for the scoped topic. Fall back to official-site search if the library is not indexed or the answer is out of scope. |
 | Known official page | Open and inspect the page directly |
 | Current or broad topic | Search the web, restricted to official domains when practical |
 | Official repository evidence | Search the repository, then open the exact file, release, or issue |
 | Standard or protocol | Use the standards body, specification publisher, or original paper |
 | Project-specific behavior | Search local project documents and code before external sources |
+
+Context7 is the default for official library/framework/API docs because it indexes versioned, authoritative sources directly and scopes queries to one topic. Prefer it over broad web search when the target is a named library, framework, SDK, or public API. When it returns no match, switch to official-site search — do not retry the same connector on a different phrasing.
 
 ## Checks
 

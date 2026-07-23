@@ -20,7 +20,11 @@ Find current technical documentation and return an evidence-backed answer. Own r
 ## Workflow
 
 1. Classify the mode and identify the product, topic, version, runtime, and platform. Ask only when a missing detail would materially change the answer.
-2. Select the best available research capability: a configured documentation connector, official-site search, web search, or official repository lookup.
+2. Select the best available research capability, in priority order:
+   - **Context7** (`mcp__context7__resolve-library-id` → `mcp__context7__query-docs`) for official documentation of a named library, framework, or API. See [Context7 Lookup](./references/context7-lookup.md).
+   - **Official-site search** for settings, guides, or pages not indexed by a connector.
+   - **Web search** for current or broad topics, restricted to official domains when practical.
+   - **Official repository lookup** for code, releases, issues, or changelog evidence.
 3. Search primary sources first. Open the exact pages that support the answer; treat search snippets as leads only.
 4. Verify version-sensitive, conflicting, or high-impact claims against another primary source when available.
 5. Synthesize the result, attach links beside supported claims, and state any conflict, inference, or gap.
@@ -46,6 +50,7 @@ Stop when the evidence is sufficient. Do not broaden into a full documentation s
 
 ## References
 
+- Read [Context7 Lookup](./references/context7-lookup.md) before querying official library/framework/API documentation via the connector.
 - Read [Research Modes](./references/research-modes.md) when selecting a search strategy.
 - Read [Source Selection](./references/source-selection.md) when choosing or reconciling sources.
 - Read [Failure Handling](./references/failure-handling.md) only when retrieval or verification fails.

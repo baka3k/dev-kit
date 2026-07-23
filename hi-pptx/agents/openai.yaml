@@ -1,0 +1,4 @@
+interface:
+  display_name: "Hi PowerPoint Deck Creator"
+  short_description: "Create calm, credible client-ready PowerPoint decks"
+  default_prompt: "Use $hi-pptx to turn my source material into a client-ready PowerPoint presentation."
