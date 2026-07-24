@@ -15,7 +15,7 @@ hooks:
       apply_to: [audit_report, findings_log]
     - name: cleanup-handler
       paths: [security-audit-data/]
-      keep: [*.json, *.md]
+      keep: ["*.json", "*.md"]
 ---
 
 # HI Security
@@ -52,23 +52,39 @@ STRIDE + OWASP security audit with MCP-assisted code analysis, dependency scanni
 
 ```yaml
 progress_reporting:
-  phase_start: ["Phase {N} started: {phase_name}", "  Mode: {mode}, Focus: {focus_area}"]
-  phase_complete: ["Phase {N} complete: {phase_name}", "  Findings so far: Critical={c}, High={h}, Medium={m}"]
-  task_progress: ["Scanning: {file_path} ({current}/{total})", "Analyzing STRIDE: {category}", "Fixing: #{finding_number} of {total} ({severity})"]
-  final_summary: ["Audit complete", "Files scanned: {count}", "Findings: {critical}C, {high}H, {medium}M, {low}L, {info}I", "Fixes applied: {fixed_count}"]
+  phase_start:
+    ["Phase {N} started: {phase_name}", "  Mode: {mode}, Focus: {focus_area}"]
+  phase_complete:
+    [
+      "Phase {N} complete: {phase_name}",
+      "  Findings so far: Critical={c}, High={h}, Medium={m}",
+    ]
+  task_progress:
+    [
+      "Scanning: {file_path} ({current}/{total})",
+      "Analyzing STRIDE: {category}",
+      "Fixing: #{finding_number} of {total} ({severity})",
+    ]
+  final_summary:
+    [
+      "Audit complete",
+      "Files scanned: {count}",
+      "Findings: {critical}C, {high}H, {medium}M, {low}L, {info}I",
+      "Fixes applied: {fixed_count}",
+    ]
 ```
 
 ---
 
 ## Severity Definitions
 
-| Severity | Description | Fix Priority |
-|----------|-------------|-------------|
+| Severity     | Description                                             | Fix Priority              |
+| ------------ | ------------------------------------------------------- | ------------------------- |
 | **Critical** | Exploitable now — data breach, RCE, or auth bypass risk | Immediate — block release |
-| **High** | Exploitable with moderate effort, significant impact | This sprint |
-| **Medium** | Limited exploitability or impact | Next sprint |
-| **Low** | Theoretical risk, defense-in-depth improvement | Backlog |
-| **Info** | Best practice suggestion, no direct risk | Optional |
+| **High**     | Exploitable with moderate effort, significant impact    | This sprint               |
+| **Medium**   | Limited exploitability or impact                        | Next sprint               |
+| **Low**      | Theoretical risk, defense-in-depth improvement          | Backlog                   |
+| **Info**     | Best practice suggestion, no direct risk                | Optional                  |
 
 ---
 

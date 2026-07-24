@@ -12,7 +12,7 @@ hooks:
   post:
     - name: cleanup-handler
       paths: [scenario-data/]
-      keep: [*.json, *.md]
+      keep: ["*.json", "*.md"]
 ---
 
 # HI Scenario
@@ -41,20 +41,20 @@ Edge case and scenario exploration that decomposes features across 12 dimensions
 
 Not all 12 apply to every feature. Filter relevant dimensions first, then generate scenarios only for those.
 
-| # | Dimension | What to Look For |
-|---|-----------|------------------|
-| 1 | **User Types** | admin, guest, banned, new user, bot |
-| 2 | **Input Extremes** | empty, null, max length, unicode, injection |
-| 3 | **Timing** | concurrent, race, timeout, retry storms |
-| 4 | **Scale** | 0, 1, 1M items, pagination wrap |
-| 5 | **State Transitions** | first use, abort, resume, partial |
-| 6 | **Environment** | mobile, no JS, screen reader, VPN |
-| 7 | **Error Cascades** | DB down, OOM, partial write |
-| 8 | **Authorization** | expired token, wrong role, CSRF |
-| 9 | **Data Integrity** | duplicates, orphans, encoding mismatch |
-| 10 | **Integration** | webhook replay, version mismatch, outage |
-| 11 | **Compliance** | GDPR, audit gap, PII exposure |
-| 12 | **Business Logic** | edge pricing, coupon stacking, refunds |
+| #   | Dimension             | What to Look For                            |
+| --- | --------------------- | ------------------------------------------- |
+| 1   | **User Types**        | admin, guest, banned, new user, bot         |
+| 2   | **Input Extremes**    | empty, null, max length, unicode, injection |
+| 3   | **Timing**            | concurrent, race, timeout, retry storms     |
+| 4   | **Scale**             | 0, 1, 1M items, pagination wrap             |
+| 5   | **State Transitions** | first use, abort, resume, partial           |
+| 6   | **Environment**       | mobile, no JS, screen reader, VPN           |
+| 7   | **Error Cascades**    | DB down, OOM, partial write                 |
+| 8   | **Authorization**     | expired token, wrong role, CSRF             |
+| 9   | **Data Integrity**    | duplicates, orphans, encoding mismatch      |
+| 10  | **Integration**       | webhook replay, version mismatch, outage    |
+| 11  | **Compliance**        | GDPR, audit gap, PII exposure               |
+| 12  | **Business Logic**    | edge pricing, coupon stacking, refunds      |
 
 Full checklist per dimension: `references/dimension-checklist.md`
 
@@ -62,12 +62,12 @@ Full checklist per dimension: `references/dimension-checklist.md`
 
 ## Severity Criteria
 
-| Level | Meaning |
-|-------|---------|
+| Level        | Meaning                                                    |
+| ------------ | ---------------------------------------------------------- |
 | **Critical** | Data loss, security breach, auth bypass, silent corruption |
-| **High** | Feature broken for a subset of users, data inconsistency |
-| **Medium** | Degraded UX, recoverable error not surfaced to user |
-| **Low** | Minor visual glitch, non-blocking warning |
+| **High**     | Feature broken for a subset of users, data inconsistency   |
+| **Medium**   | Degraded UX, recoverable error not surfaced to user        |
+| **Low**      | Minor visual glitch, non-blocking warning                  |
 
 ---
 
