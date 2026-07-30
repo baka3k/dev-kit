@@ -41,7 +41,7 @@ All patterns use the relationship types graph_mcp emits (`CALLS`, `USES`,
 | Aspect | FalkorDB (primary) | Neo4j (secondary) |
 | --- | --- | --- |
 | Host | Redis module | Bolt server |
-| graph_mcp tool | `db` param set to FalkorDB graph name | `db` param set to Neo4j DB name |
+| graph_mcp tool | `project_id` param selects FalkorDB shard | `project_id` param selects Neo4j shard |
 | Limits | Redis-backed; prefer small `LIMIT` | Can tolerate deeper traversal |
 
 Keep traversal depth modest (≤5 hops) and always append `LIMIT` to bound the

@@ -19,7 +19,7 @@ Lists all available Neo4j/FalkorDB databases.
 
 **Returns**: `Dict` containing a list of database names.
 
-**Use when**: Always call this first to discover which projects are available.
+> **Note**: Do not call this directly. The MCP server owns the FalkorDB graph selection. Use `list_mcp_functions` then `list_parsers` instead.
 
 ---
 
@@ -56,16 +56,15 @@ Lists Qdrant vector collections.
 
 ---
 
-### `activate_project`
+### `list_parsers`
 
-Sets the default parser_type and database for the current session. **Must be called before querying the code graph.**
+Lists supported parser profiles and their language/framework aliases. Call this after `list_mcp_functions` to discover which `parser_type` values are valid for the active server.
 
-| Param | Type | Required | Default | Description |
-| --- | --- | --- | --- | --- |
-| `parser_type` | str | No | None | Parser: cplus/cpp/c++/c/clang/delphi/pascal/java/kotlin/jvm/vbnet/vb6/vba/vbscript/android/android-kotlin |
-| `database_name` | str | No | None | hyper_graph database name |
+**No params**
 
-**Use when**: At the beginning of each session, after selecting a project.
+**Returns**: `Dict` with available parsers (cplus, java, kotlin, android, delphi, vba, vbnet, vb6, etc.) and their aliases.
+
+**Use when**: Before passing `parser_type` to `explore_graph` or other calls to confirm the correct alias for your codebase.
 
 ---
 
@@ -79,13 +78,13 @@ Searches for functions/classes/types by name or qualified name. Returns both nod
 | --- | --- | --- | --- | --- |
 | `query` | str | **Yes** |  | Search terms separated by `|`. Case-insensitive substring match |
 | `limit` | int | No | 50 | Max results |
-| `db` | str | No | Activate default | Database name |
+| `project_id` | str | No | None | Project identifier — selects the graph shard via the project registry. Omit for env-default full search. |
 | `content_mode` | str | No | "auto" | Output format: auto, summary, comment, code, name |
 | `include_raw_fields` | bool | No | False | Include raw Nep4k/Falkor properties |
 | `node_type` | str | No | "code" | Domain filter: code or doc |
 | `expand_search` | bool | No | False | Cross-domain traversal |
 
-**Returns**: `{results: [...], ids: [...], db: "..."}`
+**Returns**: `{results: [...], ids: [...], db: "..."}` (the `db` field in output is informational only)
 
 **Use when**: You know the exact or partial name of the function/class you are looking for.
 
@@ -99,7 +98,7 @@ Finds code snippets by matching text inside function bodies.
 | --- | --- | --- | --- | --- |
 | `query` | str | **Yes** |  | Code text (case-sensitive) |
 | `limit` | int | No | 50 | Max results |
-| `db` | str | No | Activate default |  |
+| `project_id` | str | No | None | Project identifier (omit for env-default full search) |
 | `content_mode` | str | No | "auto" | auto, summary, comment, code, name |
 | `include_raw_fields` | bool | No | False |  |
 | `node_type` | str | No | "code" | code or doc |
@@ -121,7 +120,13 @@ Finds code snippets by matching text inside function bodies.
 | `mode` | str | No | "hybrid" | code, comment, hybrid |
 | `top_k` | int | No | 10 | Number of results |
 | `collection` | str | No | None | Qdrant collection name |
+| `project_id` | str | No | None | Project identifier (omit for env-default full search) |
 | `qdrant_url` | str | No | None |  |
+| `expand_graph` | bool | No | False | Expand results with call-graph neighbours from FalkorDB. Keep `false`; use `explore_graph` for graph expansion. |
+| `graph_depth` | int | No | None | Traversal depth when `expand_graph` is true |
+| `graph_direction` | str | No | None | `in`, `out`, or `both` when `expand_graph` is true |
+| `graph_rel_types` | str | No | None | Comma-separated relationship types when `expand_graph` is true |
+| `graph_limit` | int | No | None | Max graph-expanded nodes when `expand_graph` is true |
 
 **Use when**: Describing the functionality in natural language rather than using an exact name. For example: "allocate memory safely", "how does authentication work", "error handling for database connections".
 
@@ -136,9 +141,10 @@ Finds code snippets by matching text inside function bodies.
 | `query` | str | **Yes** |  | Natural language (keyword, sentence, or paragraph) |
 | `mode` | str | No | "hybrid" | semantic, hybrid, graph_expanded |
 | `top_k` | int | No | 10 | Max matched nodes |
-| `db` | str | No | None | Database name |
+| `project_id` | str | No | None | Project identifier (omit for env-default full search) |
 | `collection` | str | No | None | Qdrant collection |
 | `debug` | bool | No | False | Include per-signal score breakdown |
+| `parser_type` | str | No | None | Parser profile: cplus, java, kotlin, android, etc. Replaces session-level project activation. |
 
 **Returns**: `{matched_nodes, entry_points, related_paths, explanation, confidence, query_analysis, mode}`
 
@@ -154,7 +160,7 @@ Lists all symbols within files that match a specific path pattern.
 | --- | --- | --- | --- | --- |
 | `modules` | List[str] | **Yes** |  | File path patterns |
 | `node_types` | List[str] | No | All symbols | Filter: ["Function"], ["Class", "Type"], etc. |
-| `db` | str | No | Activate default |  |
+| `project_id` | str | No | None | Project identifier (omit for env-default full search) |
 | `content_mode` | str | No | "auto" |  |
 
 **Use when**: You want an inventory of all symbols inside a specific file or module.
@@ -168,7 +174,7 @@ Lists all functions/methods inside classes that match a name pattern.
 | Param | Type | Required | Default | Description |
 | --- | --- | --- | --- | --- |
 | `class_names` | List[str] | **Yes** |  | Class name patterns |
-| `db` | str | No | Activate default |  |
+| `project_id` | str | No | None | Project identifier (omit for env-default full search) |
 
 ---
 
@@ -180,7 +186,7 @@ Finds entry point functions: functions within the target modules that are called
 | --- | --- | --- | --- | --- |
 | `modules` | List[str] | **Yes** |  | Module/file path patterns |
 | `limit` | int | No | 200 | Max results |
-| `db` | str | No | Activate default |  |
+| `project_id` | str | No | None | Project identifier (omit for env-default full search) |
 
 **Use when**: Identifying the public API or external interface of a module.
 
@@ -195,7 +201,7 @@ Fetches detailed metadata for a specific node using its ID.
 | Param | Type | Required | Default | Description |
 | --- | --- | --- | --- | --- |
 | `node_id` | str | **Yes** |  | Node ID from search results |
-| `db` | str | No | Activate default |  |
+| `project_id` | str | No | None | Project identifier (omit for env-default full search) |
 | `content_mode` | str | No | "auto" | auto, summary, comment, code, name |
 | `include_raw_fields` | bool | No | False |  |
 | `node_type` | str | No | "code" | code or doc |
@@ -211,7 +217,7 @@ Batch-fetches metadata for multiple nodes (significantly more efficient than cal
 | Param | Type | Required | Default | Description |
 | --- | --- | --- | --- | --- |
 | `node_ids` | List[str] | **Yes** |  | List of node IDs |
-| `db` | str | No | Activate default |  |
+| `project_id` | str | No | None | Project identifier (omit for env-default full search) |
 | `content_mode` | str | No | "auto" |  |
 | `include_raw_fields` | bool | No | False |  |
 | `node_type` | str | No | "code" |  |
@@ -228,7 +234,7 @@ Adds an annotation (notes, tags, or severity level) to a node for code review or
 | `note` | str | No | None | Text note |
 | `tags` | str | No | None | Comma-separated tags |
 | `severity` | str | No | None | high, medium, low |
-| `db` | str | No | Activate default |  |
+| `project_id` | str | No | None | Project identifier (omit for env-default full search) |
 
 ---
 
@@ -244,7 +250,7 @@ Retrieves the call graph context around a function: its callers (who calls it) a
 | `max_depth` | int | No | 2 | Graph traversal depth |
 | `relationship_types` | List[str] | No | ["CALLS"] | Filter relationship types |
 | `direction` | str | No | "both" | out (callees), in (callers), both |
-| `db` | str | No | Activate default |  |
+| `project_id` | str | No | None | Project identifier (omit for env-default full search) |
 | `content_mode` | str | No | "auto" |  |
 | `include_raw_fields` | bool | No | False |  |
 | `node_type` | str | No | "code" |  |
@@ -266,7 +272,7 @@ Finds all execution call paths between two specific functions.
 | `end_function_id` | str | **Yes** |  | Target function ID |
 | `max_depth` | int | No | 5 | Max path length |
 | `relationship_types` | List[str] | No | ["CALLS"] |  |
-| `db` | str | No | Activate default |  |
+| `project_id` | str | No | None | Project identifier (omit for env-default full search) |
 | `content_mode` | str | No | "auto" |  |
 | `include_raw_fields` | bool | No | False |  |
 | `node_type` | str | No | "code" |  |
@@ -291,7 +297,7 @@ Finds call paths between modules or files using file path patterns. Supports bid
 | `include_possible` | bool | No | False | Include POSSIBLE_CALLS edges |
 | `include_fp` | bool | No | False | Include function pointer calls |
 | `limit` | int | No | 10 | Max paths |
-| `db` | str | No | Activate default |  |
+| `project_id` | str | No | None | Project identifier (omit for env-default full search) |
 
 **Use when**: Mapping and understanding cross-module dependencies.
 
@@ -308,7 +314,7 @@ Performs advanced flow tracing using custom relationship types.
 | `rel_types` | List[str] | No | ["CALLS"] | Custom relationship types |
 | `max_depth` | int | No | None |  |
 | `direction` | str | No | None |  |
-| `db` | str | No | Activate default |  |
+| `project_id` | str | No | None | Project identifier (omit for env-default full search) |
 
 ---
 
@@ -324,7 +330,7 @@ Advanced module-to-module flow tracing utilizing custom relationships.
 | `max_depth` | int | No | None |  |
 | `direction` | str | No | None |  |
 | `limit` | int | No | None |  |
-| `db` | str | No | Activate default |  |
+| `project_id` | str | No | None | Project identifier (omit for env-default full search) |
 
 ---
 
@@ -335,7 +341,7 @@ Lists `POSSIBLE_CALLS` relationships, such as function pointers, virtual calls, 
 | Param | Type | Required | Default | Description |
 | --- | --- | --- | --- | --- |
 | `limit` | int | No | 100 | Max results |
-| `db` | str | No | Activate default |  |
+| `project_id` | str | No | None | Project identifier (omit for env-default full search) |
 
 ---
 
@@ -377,7 +383,7 @@ Plans a module-level dependency order based on `CALLS` edges.
 | Param | Type | Required | Default | Description |
 | --- | --- | --- | --- | --- |
 | `modules` | List[str] | **Yes** |  | Module tokens matched against file_path |
-| `db` | str | No | Activate default |  |
+| `project_id` | str | No | None | Project identifier (omit for env-default full search) |
 | `edge_semantics` | str | No | None |  |
 | `on_cycle` | str | No | None |  |
 
@@ -392,7 +398,7 @@ Plans a file-level dependency order for individual modules based on `CALLS` edge
 | Param | Type | Required | Default | Description |
 | --- | --- | --- | --- | --- |
 | `modules` | List[str] | **Yes** |  |  |
-| `db` | str | No | Activate default |  |
+| `project_id` | str | No | None | Project identifier (omit for env-default full search) |
 | `edge_semantics` | str | No | None |  |
 | `on_cycle` | str | No | None |  |
 | `include_cross_module` | bool | No | False |  |
@@ -407,7 +413,7 @@ Plans a function-level dependency order within specified modules.
 | Param | Type | Required | Default | Description |
 | --- | --- | --- | --- | --- |
 | `modules` | List[str] | **Yes** |  |  |
-| `db` | str | No | Activate default |  |
+| `project_id` | str | No | None | Project identifier (omit for env-default full search) |
 | `edge_semantics` | str | No | None |  |
 | `on_cycle` | str | No | None |  |
 | `include_cross_module` | bool | No | False |  |
@@ -428,7 +434,7 @@ Lists available predefined workflow definitions.
 | `language` | str | No | None | Language filter |
 | `domain` | str | No | None | Domain filter |
 | `limit` | int | No | None |  |
-| `db` | str | No | Activate default |  |
+| `project_id` | str | No | None | Project identifier (omit for env-default full search) |
 
 ---
 
@@ -440,7 +446,7 @@ Searches for workflows matching specific keywords.
 | --- | --- | --- | --- | --- |
 | `query` | str | **Yes** |  | Keyword search query |
 | `limit` | int | No | None |  |
-| `db` | str | No | Activate default |  |
+| `project_id` | str | No | None | Project identifier (omit for env-default full search) |
 
 ---
 
@@ -451,7 +457,7 @@ Retrieves the ordered sequential function steps belonging to a workflow.
 | Param | Type | Required | Default | Description |
 | --- | --- | --- | --- | --- |
 | `workflow_id` | str | **Yes** |  | Workflow ID |
-| `db` | str | No | Activate default |  |
+| `project_id` | str | No | None | Project identifier (omit for env-default full search) |
 
 ---
 
@@ -469,7 +475,7 @@ Finds screen-to-screen `NAVIGATE` workflows within a React/TS project.
 | `max_paths` | int | No | 100 | Max workflows (capped at 1000) |
 | `include_entry_function` | bool | No | False |  |
 | `include_api_calls` | bool | No | False |  |
-| `db` | str | No | "hyper_graph" |  |
+| `project_id` | str | No | None | Project identifier (omit for env-default full search) |
 
 ---
 
@@ -485,7 +491,7 @@ Finds frontend functions or screens that call a specific backend API endpoint.
 | `http_method` | str | No | None | GET, POST, PUT, DELETE, ALL |
 | `be_project_id` | str | No | None | Backend project filter |
 | `fe_project_id` | str | No | None | Frontend project filter |
-| `db` | str | No | Activate default |  |
+| `project_id` | str | No | None | Project identifier (omit for env-default full search) |
 
 ---
 
@@ -500,7 +506,7 @@ Traces a fullstack call chain across layers: from frontend components down to ba
 | `fe_project_id` | str | No | None |  |
 | `be_project_id` | str | No | None |  |
 | `max_depth` | int | No | 5 | Max frontend CALLS hops |
-| `db` | str | No | Activate default |  |
+| `project_id` | str | No | None | Project identifier (omit for env-default full search) |
 
 ---
 
@@ -513,7 +519,7 @@ Analyzes the potential impact of changing a function or screen, providing a risk
 | Param | Type | Required | Default | Description |
 | --- | --- | --- | --- | --- |
 | `function_id` | str | **Yes** |  | Function/screen symbol_id |
-| `db` | str | No | Activate default |  |
+| `project_id` | str | No | None | Project identifier (omit for env-default full search) |
 | `direction` | str | No | None | downstream or upstream |
 | `max_depth` | int | No | 4 | Capped at 4 |
 
@@ -528,7 +534,7 @@ Finds workflows that include a specific function (either directly via `HAS_STEP`
 | Param | Type | Required | Default | Description |
 | --- | --- | --- | --- | --- |
 | `function_id` | str | **Yes** |  | Function symbol_id or file_path |
-| `db` | str | No | Activate default |  |
+| `project_id` | str | No | None | Project identifier (omit for env-default full search) |
 | `include_indirect` | bool | No | True | Include CALLS-chain derived workflows |
 | `max_depth` | int | No | 4 | Capped at 4 |
 
@@ -544,7 +550,7 @@ Queries IPC/message records filtered by sender and receiver patterns (Android In
 | --- | --- | --- | --- | --- |
 | `sender` | str | No | None | Sender component pattern |
 | `receiver` | str | No | None | Receiver component pattern |
-| `db` | str | No | Activate default |  |
+| `project_id` | str | No | None | Project identifier (omit for env-default full search) |
 
 ---
 
@@ -564,15 +570,16 @@ Reconstructs possible execution flows from a selection of candidate graph paths.
 ## Typical Discovery Flow
 
 ```
-1. list_databases()                         → Select database
-2. list_mcp_functions()                     → Discover capabilities
-3. activate_project(parser_type, db)        → Set environment session context
-4. listup_symbols_matching_file_path([...]) → Inventory components and symbols
-5. search_functions("keyword|keyword")       → Find symbols by name
-6. explore_graph("natural language query")  → Find symbols semantically
-7. get_symbol(node_id)                      → Inspect deep implementation details
-8. query_subgraph(function_id)              → Understand the call graph neighborhood
-9. find_paths(start_id, end_id)             → Trace exact execution paths
+1. list_mcp_functions()                              → Discover capabilities
+2. list_parsers()                                    → Confirm parser_type alias for your language
+3. list_qdrant_collections()                         → Identify code collections
+4. semantic_search(query, collection, top_k)         → Validate collection; seed query families
+5. explore_graph(query, parser_type, collection)     → Semantic + graph expanded discovery
+6. listup_symbols_matching_file_path([...])          → Inventory components and symbols
+7. search_functions("keyword|keyword")               → Find symbols by name
+8. get_symbol(node_id)                               → Inspect deep implementation details
+9. query_subgraph(function_id)                       → Understand the call graph neighbourhood
+10. find_paths(start_id, end_id)                     → Trace exact execution paths
 
 ```
 

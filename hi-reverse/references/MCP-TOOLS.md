@@ -10,9 +10,9 @@ This routing contract maximizes FalkorDB and Qdrant use while avoiding stale pro
 | 2 | `mind_mcp.list_source_ids` | Scope documents when allowed | Source IDs |
 | 3 | `mind_mcp.query_graph_rag_langextract` | Retrieve allowed concepts and relations | Terms, actors, constraints |
 | 4 | `graph_mcp.list_mcp_functions` | Discover live capabilities | Tool metadata |
-| 5 | `graph_mcp.activate_project` | Activate `parser_type:"cplus"` | Configured FalkorDB context |
+| 5 | `graph_mcp.list_parsers` | Confirm `parser_type` alias for C/C++ | Parser profile (e.g. `cplus`) |
 | 6 | `graph_mcp.list_qdrant_collections` | Inventory code vectors | Code collection candidates |
-| 7 | Bind `ACTIVE_DATA_CONTEXT` | Lock active FalkorDB plus one Qdrant candidate | Permit validation probe |
+| 7 | Bind `ACTIVE_DATA_CONTEXT` | Lock active parser plus one Qdrant candidate | Permit validation probe |
 | 8 | `graph_mcp.semantic_search` | Validate the bound collection, then seed query families | Qdrant symbols/files/scores |
 | 9 | `graph_mcp.explore_graph` | Expand every query family using the bound collection | FalkorDB nodes, relationships, paths, WHY |
 | 10 | Vertical graph traversal tools | Trace retained anchors and module pairs through graph paths | Callers, callees, trigger -> handler -> outcome paths |
@@ -23,15 +23,9 @@ When documents are prohibited, omit steps 2-3. Never replace steps 7-8 with broa
 
 ## Provider-Safe Calls
 
-### `graph_mcp.activate_project`
+### Parser type selection
 
-Use:
-
-```json
-{"parser_type": "cplus"}
-```
-
-Do not include a database or graph argument. The MCP service controls FalkorDB selection.
+Call `graph_mcp.list_parsers({})` to confirm the correct `parser_type` alias for C/C++ (typically `cplus`). Pass `parser_type` explicitly on each `explore_graph` call — there is no longer a session-level activation step.
 
 ### Active data context
 
@@ -41,7 +35,6 @@ Before analysis queries, bind this session state:
 ACTIVE_DATA_CONTEXT
   parser=cplus
   graph_provider=falkordb
-  graph_context=active
   qdrant_collection=<selected C/C++ collection>
   qdrant_context=active
 ```
@@ -73,11 +66,12 @@ Use for every applicable query family:
   "mode": "graph_expanded",
   "top_k": 20,
   "collection": "<validated code collection>",
+  "parser_type": "cplus",
   "debug": true
 }
 ```
 
-Use `mode:"hybrid"` when live metadata supports it and it returns richer evidence. Retain query analysis, matched nodes, WHY reasons, relationships, entry candidates, paths, and confidence.
+Always pass `parser_type` with the value confirmed by `list_parsers`. Use `mode:"hybrid"` when live metadata supports it and it returns richer evidence. Retain query analysis, matched nodes, WHY reasons, relationships, entry candidates, paths, and confidence.
 
 ### `graph_mcp.reconstruct_flow`
 

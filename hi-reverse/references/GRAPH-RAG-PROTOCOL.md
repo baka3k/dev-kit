@@ -25,7 +25,7 @@ Execute in order:
 | 2 | `mind_mcp.list_source_ids({limit:"200"})` when documents are allowed | Allowed document source IDs | Scope knowledge retrieval |
 | 3 | `mind_mcp.query_graph_rag_langextract(...)` when documents are allowed | Passages, entities, relations, source IDs | Seed actors, concepts, and synonyms |
 | 4 | `graph_mcp.list_mcp_functions({})` | Live capability metadata | Select provider-safe calls |
-| 5 | `graph_mcp.activate_project({parser_type:"cplus"})` | Active parser and configured provider | Establish code context |
+| 5 | `graph_mcp.list_parsers({})` | Available parser profiles and aliases | Confirm `parser_type` value for C/C++ (e.g. `cplus`) |
 | 6 | `graph_mcp.list_qdrant_collections({})` | Code collections | Build collection candidates |
 | 7 | Bind `ACTIVE_DATA_CONTEXT` | Active FalkorDB context plus one Qdrant candidate | Permit collection validation |
 
@@ -33,7 +33,7 @@ Never call `graph_mcp.list_databases`. The MCP server owns the FalkorDB graph se
 
 If documents are prohibited, skip steps 2-3 and record only `skipped by user`. If metadata and the callable wrapper differ, obey the wrapper. Retry once only for `invalid_parameters`.
 
-Before any analysis query, confirm FalkorDB activation succeeded, select one C/C++ Qdrant candidate from project/repository/language metadata, and bind both as `ACTIVE_DATA_CONTEXT`. A minimal collection-validation probe is the only query allowed before the context gate passes.
+Before any analysis query, confirm the parser type from `list_parsers`, select one C/C++ Qdrant candidate from project/repository/language metadata, and bind both as `ACTIVE_DATA_CONTEXT`. A minimal collection-validation probe is the only query allowed before the context gate passes.
 
 Validate the bound candidate with a small `semantic_search` using `collection:ACTIVE_QDRANT_COLLECTION`, `expand_graph:false`, the module name, and one known file/class/entry concept. Select it only after at least two hits contain module-local file paths or qualified names. If rejected, bind the next candidate and repeat only the validation probe. Never run the query matrix across multiple or unscoped collections.
 
@@ -122,10 +122,10 @@ Do not expand trivial getters/setters unless they mutate state, enforce a rule, 
 The default provider-safe graph calls are:
 
 - `list_mcp_functions`
-- `activate_project` without graph/database arguments
+- `list_parsers`
 - `list_qdrant_collections`
 - `semantic_search` with `expand_graph:false`
-- `explore_graph`
+- `explore_graph` with explicit `parser_type` (e.g. `parser_type:"cplus"`)
 - `query_subgraph` for retained node IDs when live metadata lists the tool
 - `find_paths` or `trace_flow` for retained start/end node IDs when live metadata lists the tool
 - `find_path_between_module` or `trace_flow_between_module` for retained module pairs when live metadata lists the tool
