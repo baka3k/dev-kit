@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Run conservative structural and text-fit heuristics on a PPTX."""
+"""Run conservative structural, text-fit, and copy-voice heuristics on a PPTX."""
 
 from __future__ import annotations
 
@@ -7,6 +7,7 @@ import argparse
 import json
 import math
 import re
+import unicodedata
 from collections import Counter
 from pathlib import Path
 
@@ -15,6 +16,64 @@ from pptx import Presentation
 
 EMU_PER_INCH = 914400
 EMU_PER_PT = 12700
+
+# Banned AI buzzwords and slogans, stored in normalized form (lowercase,
+# diacritics stripped). See references/writing-and-storyline.md §1.
+BANNED_PHRASES = [
+    # Vietnamese
+    "khai pha",
+    "toi uu hoa",
+    "toan dien",
+    "dot pha",
+    "nang tam",
+    "thuc day",
+    "he sinh thai",
+    "chuyen doi so",
+    "but pha",
+    "chien luoc then chot",
+    # English
+    "unlock the future",
+    "unlocking the future",
+    "unleash",
+    "revolutioniz",
+    "revolutionis",
+    "game-changing",
+    "game changing",
+    "seamless",
+    "world-class",
+    "world class",
+    "cutting-edge",
+    "cutting edge",
+    "state-of-the-art",
+    "state of the art",
+    "best-in-class",
+    "best in class",
+    "holistic",
+    "empower",
+    "transformative",
+    "paradigm shift",
+    "supercharge",
+    "next-generation",
+    "next generation",
+    "leverage",
+    "one-stop solution",
+    "one stop solution",
+]
+
+TITLE_MAX_CHARS = 35
+TITLE_MIN_PT = 24
+TITLE_MAX_PT = 35
+BODY_BLOCK_MAX_WORDS = 40
+
+
+def normalize_for_match(text: str) -> str:
+    """Lowercase and strip diacritics so phrases match with or without tone marks."""
+    decomposed = unicodedata.normalize("NFKD", text.lower())
+    without_marks = "".join(
+        ch for ch in decomposed if not unicodedata.combining(ch)
+    )
+    # NFKD does not decompose Vietnamese đ/Đ.
+    return without_marks.replace("\u0111", "d")
 
 
 def iter_shapes(shapes):
@@ -115,7 +174,8 @@ def lint(path: Path) -> dict:
             if not text:
                 continue
             text_shapes.append((shape_index, shape))
-            word_count += len(re.findall(r"\b[\w'-]+\b", text))
+            shape_words = len(re.findall(r"\b[\w'-]+\b", text))
+            word_count += shape_words
             sizes = font_sizes(shape)
             fonts = explicit_fonts(shape)
             all_fonts.update(fonts)
@@ -128,6 +188,55 @@ def lint(path: Path) -> dict:
                         f"Shape {shape_index} contains text below 9 pt.",
                     )
                 )
+
+            if shape_words > BODY_BLOCK_MAX_WORDS:
+                findings.append(
+                    issue(
+                        "warning",
+                        slide_index,
+                        "wordy-block",
+                        (
+                            f"Shape {shape_index} holds {shape_words} words; "
+                            f"limit body blocks to {BODY_BLOCK_MAX_WORDS}."
+                        ),
+                    )
+                )
+
+            matched = sorted(
+                {
+                    phrase
+                    for phrase in BANNED_PHRASES
+                    if phrase in normalize_for_match(text)
+                }
+            )
+            if matched:
+                findings.append(
+                    issue(
+                        "warning",
+                        slide_index,
+                        "banned-phrase",
+                        (
+                            f"Shape {shape_index} contains banned AI "
+                            f"buzzword(s): {', '.join(matched)}."
+                        ),
+                    )
+                )
+
+            if sizes and TITLE_MIN_PT <= max(sizes) < TITLE_MAX_PT:
+                flat_title = " ".join(text.split())
+                if len(flat_title) > TITLE_MAX_CHARS:
+                    findings.append(
+                        issue(
+                            "warning",
+                            slide_index,
+                            "long-title",
+                            (
+                                f"Shape {shape_index} title is "
+                                f"{len(flat_title)} characters; limit is "
+                                f"{TITLE_MAX_CHARS}."
+                            ),
+                        )
+                    )
 
             available_pt = max(
                 1.0,

@@ -1,181 +1,287 @@
-# Client Presentation Design System
+# High-Contrast Light Minimalist Design System
 
 ## Contents
 
-1. Sample-derived principles
-2. Shared foundation
-3. Style profiles
-4. Layout library
-5. Data, diagrams, and imagery
-6. Density and accessibility
+1. Core philosophy: stark white and bold contrast
+2. The 60-30-10 light theme rule (strict)
+3. Palettes: pick one premium light theme per presentation
+4. Extreme visual hierarchy and the hero element
+5. Swiss grid: whitespace is the design
+6. Strict layout architecture (Layouts 1–4)
+7. Support layouts for dense content
+8. Typography and spacing rules
+9. Unit conversion: HTML px to PowerPoint
+10. Data, diagrams, and imagery
+11. Contrast and accessibility on light canvases
+12. Client-brand override
 
-## Sample-derived principles
+## Core philosophy: stark white and bold contrast
 
-The reference deck was analyzed as a 30-slide, 16:9 presentation with a clear progression:
+Every slide must look and sound like it was crafted by a high-end human
+design agency — Apple keynote or Pentagram editorial, not a template.
+Because the canvas is light, contrast must come from **font weight, sizing,
+and extremely deliberate use of color**. Three pillars:
 
-1. Establish the strategic context.
-2. Review foundation and readiness.
-3. Show measurable outcomes.
-4. Connect capabilities to offers and business value.
-5. Translate the strategy into account-level execution.
-6. Close with a clear handoff.
+1. **60-30-10 light discipline** — pristine white canvas, near-black
+   structural ink, a tiny high-voltage accent budget.
+2. **One hero element per slide** — one unmistakable focal point; everything
+   else is deliberately quieter.
+3. **Swiss grid where the whitespace IS the design** — do not fill empty
+   corners; two or three content blocks at most; hairlines or soft shadows
+   instead of heavy fills.
 
-Reusable strengths:
+When a design decision is unclear, ask: does it sharpen the contrast around a
+single focal point, or does it fill silence with noise? If noise, remove it.
 
-- Use section dividers to reset the audience between major chapters.
-- State the reading logic early.
-- Use takeaway-led titles, metric summaries, process flows, layered architecture, roadmaps, and account-plan patterns.
-- Maintain the reference deck's clean base of white, deep navy, slate, blue, teal, orange, green, and indigo, with a thin deep-navy navigation rule.
-- Use consistent header/footer zones and repeated card geometry.
-- Link technical capabilities to delivery or business implications.
+## The 60-30-10 light theme rule (strict)
 
-Do not copy mechanically:
+- **60% dominant canvas**: Pure White (`#FFFFFF`) or Crisp Pearl (`#F8FAFC`).
+- **30% structural contrast**: Deep Obsidian (`#0F172A`) or Pitch Black
+  (`#000000`) for text, headlines, and structural blocks.
+- **10% high-voltage accent**: Electric Indigo (`#4338CA`), Vivid Crimson
+  (`#E11D48`), or Burnt Orange (`#EA580C`).
 
-- Do not reproduce logos, customer names, claims, screenshots, or confidential details.
-- Do not reproduce exact slide compositions.
-- Avoid 8–10 pt body text, over-packed dashboards, and “everything on one page” architecture diagrams.
-- Avoid large decorative typography that competes with the message.
-- Avoid too many simultaneous accent colors.
-- Correct awkward line breaks, inconsistent capitalization, and accidental artifacts rather than treating them as “human.”
+Accent discipline:
 
-## Shared foundation
+- **Never use accent colors on more than 10% of a slide.**
+- Accent is reserved for the hero number, one highlighted keyword, badge
+  pills, the featured tile border, and thin 3–4 px highlight rules.
+- Never set body copy in accent color. Never fill a large panel with pure
+  accent except the single contrast block in Layout 2.
+- One accent hue per deck. A deck that needs two accents has an unclear story.
 
-### Canvas and grid
+## Palettes: pick one premium light theme per presentation
 
-- Use 16:9, 13.333 × 7.5 in unless a template dictates otherwise.
-- Keep primary content within 0.60–0.75 in side margins.
-- Reserve about 0.55–0.90 in for the title zone.
-- Reserve 0.25–0.35 in for a quiet footer only when needed.
-- Align major elements to a simple 12-column or 4-column grid.
-- Use 0.18–0.30 in gaps between peer cards.
-- Let at least one area of the slide remain visually quiet.
+Pick exactly one palette for the whole deck. Do not mix them. A single
+inverted slide (deep obsidian canvas, e.g. a closing statement) is permitted
+as intentional structural contrast and uses the same palette tokens.
 
-### Typography
-
-Prefer fonts already used by the client template. Without a template:
-
-- Latin: Aptos; fallback Arial.
-- Japanese: Meiryo UI; fallback Arial only when Japanese glyph coverage is verified.
-- Use no more than two font families.
-- Section title: 30–40 pt.
-- Slide takeaway title: 26–32 pt.
-- Key number: 30–44 pt.
-- Body: 15–18 pt.
-- Labels: 10–12 pt.
-- Footnotes/citations: 9–10 pt.
-- Use bold for hierarchy, not entire paragraphs.
-
-### Core palette
-
-Use this reference-derived, high-contrast editorial palette as the default when no client brand is supplied:
+### Palette A: "Crisp Swiss" (Apple / tech style)
 
 | Role | Color |
 |---|---|
-| Deep navy | `#0B1F5B` |
-| Title navy | `#16294A` |
-| Body ink | `#1E293B` |
-| Secondary slate | `#64748B` |
-| Bright white | `#FFFFFF` |
-| Cloud surface | `#F8FAFC` |
-| Quiet border | `#D7DEE9` |
-| Strong border | `#CBD5E1` |
-| Technology blue | `#034EA2` |
-| Cross-cutting teal | `#0E8C8C` |
-| Business orange | `#F97316` |
-| People green | `#50B848` |
-| Organization indigo | `#6366F1` |
+| Background | `#FFFFFF` Pure White |
+| Card / secondary area | `#F1F5F9` Very Light Slate |
+| Primary text | `#020617` Deepest Slate / near black |
+| Secondary text | `#64748B` Cool Gray |
+| Hero accent | `#4F46E5` Vivid Indigo, or `#059669` Emerald Green |
+| Hairline border | `#E2E8F0` |
+| Badge tint (8% accent) | `#F1F0FD` indigo · `#EBF7F3` emerald |
 
-Use bright white for 80–95% of a typical slide and cloud only to separate cards or table rows. Use deep navy for major bars, decisions, and the thin section-navigation rule; use title navy for headings, body ink for primary text, and secondary slate for supporting copy. Map orange to business or commercial outcomes, green to people or adoption, blue to technology, indigo to organization or governance, and teal to cross-cutting platform or workflow concepts. Keep the main accent below about 15% of the slide area and avoid more than three simultaneous accents unless they encode stable categories. Use colored outlines only when they carry meaning; otherwise use the quiet or strong border. Do not use a saturated accent as a full-height panel or a large uninterrupted field unless the client brand explicitly requires it.
+Use for: product and technology narratives, executive reviews, data stories,
+anything that should feel like an Apple keynote.
 
-### Shape geometry
+### Palette B: "Warm Editorial" (high-end consulting / magazine)
 
-- Use a subtle corner radius of about 2–5% of the shorter side, typically 0.06–0.16 in for cards and panels.
-- Prefer nearly square corners for decision panels, architecture layers, timelines, tables, and large callouts.
-- Reserve capsule or pill geometry for compact tags, statuses, and controls whose meaning benefits from that convention.
-- Keep peer components on the same slide geometrically consistent.
-- Avoid large rounded rectangles that read as mobile-app UI or generic presentation templates.
+| Role | Color |
+|---|---|
+| Background | `#FDFBF7` Warm Alabaster / off-white |
+| Card / secondary area | `#F3F0E6` Muted Sand |
+| Primary text | `#1C1917` Deep Stone / espresso |
+| Secondary text | `#78716C` Warm Neutral Gray |
+| Hero accent | `#EA580C` Burnt Orange, or `#DC2626` Classic Crimson |
+| Hairline border | `#E7E2D8` |
+| Badge tint (8% accent) | `#FDF2EC` orange · `#FCEEEE` crimson |
 
-## Style profiles
+Use for: consulting proposals, strategy and editorial pitches, conservative
+or risk-averse customers (including traditional Japanese enterprise).
 
-### Executive Minimal
+## Extreme visual hierarchy and the hero element
 
-Use for executive summaries, proposals, and decisions.
+- Every slide has **exactly one** unmistakable hero element: a massive key
+  metric, a highlighted high-contrast quote, or a stark accent/obsidian
+  contrast block.
+- Because the background is white, hero type must be HUGE and ultra-bold:
+  120–160 px (90–120 pt) at weight 800, in near-black or the accent color.
+  The hero is at least ~6× the support type.
+- If two things on a slide compete for attention, one of them moves to
+  another slide, the appendix, or the speaker notes.
+- Support content recedes: secondary gray, smaller sizes, hairline borders.
 
-- Use one message and one supporting visual.
-- Keep 45–65% of the slide as open space.
-- Prefer a statement title, one key number, a short implication, or a simple before/after.
-- Use deep navy/body ink on bright white, with a small blue, teal, orange, green, or indigo accent according to meaning.
-- Prefer editorial whitespace, thin rules, and outlined numbers over large color slabs.
-- Avoid grids with more than three cards.
+Hero catalog:
 
-### Consulting Clean
+| Layout | Hero element |
+|---|---|
+| Layout 1 — Hero Metric | One giant number in accent color on vast white |
+| Layout 2 — Stark Editorial Split | The solid accent or obsidian block |
+| Layout 3 — Tiled Comparison | The single featured tile with accent border |
+| Layout 4 — Bold Statement | One oversized sentence with accent left rule |
 
-Use for assessments, workshops, recommendations, and roadmaps.
+## Swiss grid: whitespace is the design
 
-- Lead with an answer-first title.
-- Use comparison columns, issue trees, 2×2 matrices, timelines, and recommendation stacks.
-- Use subtle borders and fills instead of heavy shadows.
-- Use slightly rounded, near-square cards rather than pill-like containers.
-- Highlight only the item the audience should discuss.
-- Put the implication next to the evidence, not on a later slide.
+- 12-column grid on a 1280 × 720 canvas (13.333 × 7.5 in in PowerPoint).
+- Outer padding: 60 px top/bottom, 80 px left/right (0.625 in / 0.833 in).
+- **Maximum 2–3 content blocks per slide.** Do not fill empty corners.
+- Define areas with ultra-thin borders (1 px `#E2E8F0`) or one soft, wide
+  shadow (`0 8px 24px rgba(0, 0, 0, 0.04)`) — never both on the same card,
+  never a heavier shadow.
+- Badge pills: tinted accent background (8% accent over white), accent text,
+  no border, uppercase, tracked, small.
+- Card radius 16 px (≈ 0.16 in). Keep peer cards geometrically identical.
+- Leave at least one visibly quiet zone on every slide — on a light canvas,
+  silence reads as confidence.
 
-### Technology Narrative
+## Strict layout architecture (Layouts 1–4)
 
-Use for architecture, AI, cloud, and enterprise solutions.
+These four layouts carry the narrative of every deck. Choose per content, not
+for novelty, and never force content into a layout it does not fit.
 
-- Start with a plain-language operating concept before showing components.
-- Reveal architecture by layers or stages: user need → workflow → platform → controls → outcomes.
-- Limit an overview diagram to 5–7 major nodes.
-- Use arrows only for meaningful direction or dependency.
-- Pair each technical layer with its business or delivery value.
-- Split overview and detail; do not force full component inventories into the main story.
+### Layout 1 — Hero Metric / High Impact
 
-### Japanese Customer Friendly
+- **Use case**: key performance indicators, market sizes, headline stats.
+- Number size: 120–160 px (90–120 pt), weight 800, tight tracking.
+- Accent color applies exclusively to the stat number or key symbol.
+- The rest of the slide is vast, empty white space plus one tight,
+  human-written explanatory paragraph (≤ 25 words) in secondary gray.
+- One number per slide. Optional badge-pill eyebrow above the number.
 
-Use for customer communication requiring calmness, context, and transparency.
+### Layout 2 — Stark Editorial Split
 
-- Start with purpose, background, and scope before recommendations.
-- Use modest, factual language: “proposed,” “expected,” “subject to validation.”
-- Show assumptions, dependencies, risks, owners, and next steps explicitly.
-- Prefer balanced layouts, predictable reading order, and quiet colors.
-- Avoid unsupported superlatives and aggressive calls to action.
-- Allow slightly more context than Executive Minimal, but keep clear hierarchy and readable type.
+- **Use case**: big statements, key takeaways, chapter dividers.
+- Exactly 50/50 split.
+- Left side: pure white with a massive black headline (44–56 px / 33–42 pt,
+  weight 800).
+- Right side: a solid block of the accent color or deep obsidian containing
+  one key quote or statement — or a full-height high-resolution image.
+- Text on the solid block must keep ≥ 4.5:1 contrast (see §11): white on
+  indigo/obsidian, deep stone on burnt orange.
+- Images bleed to the slide edge; no borders, no rounded corners on bleeds.
+  Use only authentic, relevant, licensed imagery.
 
-## Layout library
+### Layout 3 — Minimalist Tiled Comparison / Core Pillars
 
-Choose the layout that matches the content count:
+- **Use case**: frameworks, three core strategies, feature breakdowns.
+- **Maximum 3 tiles.** Never push 4 or 5 cluttered tiles.
+- Tiles sit on the white canvas with a very light background
+  (`#F1F5F9` / `#F3F0E6`) and no border by default.
+- Highlight exactly one tile as the Featured Hero Tile with a crisp accent
+  border, 2 px. All other tiles stay borderless and quiet.
+- Tile title ≤ 6 words; tile body ≤ 20 words.
 
-1. **Quiet cover** — title, context line, date/status, one authentic visual, thin rule, or small muted color field; avoid a full-height saturated panel.
-2. **Executive answer** — takeaway, one key implication, 2–3 supporting facts.
-3. **Two-column argument** — evidence on one side, implication/recommendation on the other.
-4. **Three-part comparison** — exactly three alternatives, principles, or workstreams.
-5. **Process flow** — 3–5 stages with one highlighted friction or decision.
-6. **Layered architecture** — 3–5 layers with clear inputs, controls, and outcomes.
-7. **Roadmap** — time on one axis; outcomes and gates more prominent than activity lists.
-8. **Decision table** — criteria, options, recommendation, and caveat.
-9. **Risk and assumption register** — item, impact, owner, treatment/validation.
-10. **Closing action slide** — 2–4 concrete actions, owners, and the immediate ask.
+### Layout 4 — Bold Statement / Minimal Quote
 
-Do not use a three-column layout for two items or a quote layout for emphasis.
+- **Use case**: vision statements, customer testimonials, powerful quotes.
+- Typography: 48–64 px (36–48 pt), weight 700–800, near-black, generous line
+  height.
+- Clean left-border highlight, 4 px (3 pt) in accent color.
+- Never use this layout without an actual attributed quote or a genuinely
+  owned statement.
+
+## Support layouts for dense content
+
+Roadmaps, layered architectures, matrices, decision tables, and risk registers
+do not fit the four hero layouts. Rules:
+
+- Put the overview slide in a hero layout (the single takeaway or number);
+  keep the dense detail in support slides or an appendix.
+- Support slides still obey the palette, hairline borders, and the
+  one-highlight rule: only the item the audience must discuss gets the accent.
+- Tables and process steps: hairline structure, near-black content, accent
+  for the one active row, stage, or decision.
+- Body text never below 14 pt in `.pptx`. If it does not fit, split the slide
+  instead of shrinking the type.
+- Prefer one diagram with a clear reading path over a dense "everything map".
+
+## Typography and spacing rules
+
+- **Title font**: clean geometric sans-serif — `Plus Jakarta Sans`, `Inter`,
+  `Helvetica Neue`, or `SF Pro Display`. Weight 700 or 800.
+- **Body font**: highly readable sans-serif — `Inter` or `Plus Jakarta Sans`.
+  Weight 400.
+- **Title character limit**: maximum 35 characters per title. Punchy and
+  human.
+- **Body text limit**: 30–40 words per text block. Concise, human-written
+  phrases only.
+- Badge pills / eyebrows: 14 px (10.5 pt), uppercase, letter-spacing ≈ 1 px,
+  weight 600.
+- Footnotes, sources, citations: 12 px (9 pt) minimum — never smaller.
+- Font reality: `SF Pro Display` ships only on Apple platforms and must not
+  be embedded or redistributed; treat it as a macOS presentation nicety and
+  fall back to `Helvetica Neue` or `Inter` elsewhere. When web fonts cannot
+  be guaranteed in `.pptx`, fall back to Arial (Latin + Vietnamese diacritics
+  covered) or Aptos, and to Meiryo UI / Yu Gothic UI for Japanese runs. Verify
+  the rendered font in the render step — silent substitution is a defect.
+
+## Unit conversion: HTML px to PowerPoint
+
+The HTML canvas is 1280 × 720 px at 96 dpi, which is exactly the 16:9
+PowerPoint canvas: 13.333 × 7.5 in (960 × 540 pt). Therefore:
+
+- 1 px = 0.75 pt = 1/96 in.
+- Slide padding 60 px × 80 px = 0.625 in × 0.833 in.
+- Card radius 16 px ≈ 0.16 in.
+- 4 px accent rule = 3 pt. 1 px hairline = 0.75 pt. 2 px featured border =
+  1.5 pt.
+
+| HTML px | PowerPoint pt | Use |
+|---|---|---|
+| 120–160 px | 90–120 pt | Hero metric number |
+| 48–64 px | 36–48 pt | Bold statement / quote |
+| 44–56 px | 33–42 pt | Slide title / split headline |
+| 18–20 px | 13.5–15 pt | Description and body (keep ≥ 14 pt in `.pptx`) |
+| 14 px | 10.5 pt | Badge pill / eyebrow |
+| 12 px | 9 pt | Footnote / source |
+
+When the same design is built in HTML and in `.pptx`, the HTML values are the
+source of truth; the `.pptx` uses this table.
 
 ## Data, diagrams, and imagery
 
 - Use native PowerPoint charts when editability matters.
-- Start quantitative axes at zero for counts and amounts unless a truncated axis is explicitly justified.
-- Label units, time period, source, and whether data is actual, target, or illustrative.
-- Use direct labels instead of legends when practical.
-- Use one accent color for the key series and muted tones for context.
-- Use tables for precise comparison; use charts for patterns.
-- Use simple line icons from one family. Keep icons subordinate to text.
-- Use photographs only when they add context or credibility. Avoid generic “innovation” stock imagery.
-- Use no gradients, glow, or 3D effects unless required by the client brand.
+- Start quantitative axes at zero for counts and amounts unless a truncated
+  axis is explicitly justified and labeled.
+- Label units, time period, source, and whether data is actual, target, or
+  illustrative.
+- Direct labels beat legends. One accent color for the key series; muted
+  gray tones for context series.
+- Tables for precise comparison, charts for patterns.
+- Icons only when they improve scanning: one icon family, one stroke style,
+  subordinate to text.
+- Photographs only when authentic, relevant, licensed, and compositionally
+  useful. No generic "innovation" stock imagery.
+- No gradients, glows, or 3D effects. The only permitted depth is the single
+  soft card shadow from §5.
 
-## Density and accessibility
+## Contrast and accessibility on light canvases
 
-- Keep most slides below about 80 words.
-- Keep body text at 15 pt or larger for live presentation.
-- Use contrast of at least 4.5:1 for normal text where practical.
-- Do not rely on red/green alone.
-- Keep card titles to one line when possible.
-- Break a dense slide into overview/detail rather than shrinking text.
-- Place details that are useful only after the meeting in an appendix.
+Verified contrast ratios, Palette A "Crisp Swiss":
+
+| Pair | Ratio | Use |
+|---|---|---|
+| `#020617` primary on `#FFFFFF` | ≈ 20:1 | All reading text |
+| `#64748B` secondary on `#FFFFFF` | ≈ 4.8:1 | Support copy |
+| `#4F46E5` indigo on `#FFFFFF` | ≈ 6.3:1 | Hero type, badges, links |
+| `#059669` emerald on `#FFFFFF` | ≈ 3.8:1 | Hero-size type and graphics only |
+| White on `#4F46E5` / `#0F172A` | ≈ 6.3:1 / ≈ 17.9:1 | Text on Layout 2 blocks |
+| `#020617` ink on `#059669` | ≈ 5.4:1 | Text on emerald blocks (not white) |
+
+Verified contrast ratios, Palette B "Warm Editorial":
+
+| Pair | Ratio | Use |
+|---|---|---|
+| `#1C1917` primary on `#FDFBF7` | ≈ 16.9:1 | All reading text |
+| `#78716C` secondary on `#FDFBF7` | ≈ 4.6:1 | Support copy |
+| `#DC2626` crimson on `#FDFBF7` | ≈ 4.7:1 | Hero type and badges |
+| `#EA580C` orange on `#FDFBF7` | ≈ 3.4:1 | Hero-size type and graphics only |
+| `#1C1917` stone on `#EA580C` | ≈ 4.9:1 | Text on orange blocks (not white) |
+
+Rules:
+
+- Keep at least 4.5:1 for all reading text; accents below 4.5:1 are for
+  hero-size type and graphics only.
+- Light decks wash out on bright projectors. Secondary gray is the floor —
+  never go lighter than `#64748B` / `#78716C` for text that must be read.
+- Do not encode meaning by color alone; pair accent with position, weight, or
+  a label.
+- Hairlines (`#E2E8F0`) are for structure, never for text.
+
+## Client-brand override
+
+When the client supplies a brand template or explicit brand colors:
+
+1. Preserve masters, layouts, theme relationships, and brand assets.
+2. Re-map the 60-30-10 roles onto the brand palette: light brand canvas at
+   60%, the darkest brand neutral at 30%, the strongest brand hue at 10%.
+3. Keep every rule that is not brand-specific: one hero per slide, ≤ 3 tiles,
+   title ≤ 35 characters, body blocks ≤ 40 words, anti-AI voice, hairline
+   geometry, and the full QA gate.

@@ -1,166 +1,208 @@
 ---
 name: hi-pptx
-description: Create, edit, and visually validate calm, credible, client-ready PowerPoint presentations (.pptx) from notes, technical material, reports, proposals, or existing decks. Use for executive summaries, consulting proposals, workshops, assessments, technology and architecture narratives, roadmaps, account plans, and Japanese-customer-facing presentations where storyline, evidence discipline, natural human editorial judgment, and presentation readiness matter.
+description: Create, edit, and visually validate client-ready PowerPoint presentations (.pptx) using a sanitized navy-white-orange-teal design system, with evidence-led storylines, natural executive copy, editable architecture/process/timeline/option layouts, and professional native charts derived from supplied CSV, JSON, spreadsheet, or tabular data. Use for executive proposals, consulting decks, technical architecture, current-state assessments, phased roadmaps, investment options, KPI reviews, and Japanese-customer-facing presentations where visual consistency, quantitative accuracy, privacy, and presentation readiness matter.
 ---
 
-# Craft Client PPTX
+# Client-ready presentation engine
 
-Create presentations that are clear in a meeting, credible under client scrutiny, and visually composed without looking machine-generated.
+Create calm, credible executive PowerPoint decks from a sanitized, text-only
+design specification. Use editable PowerPoint elements, including native charts,
+rather than flattened screenshots. Do not retain or depend on confidential
+reference presentations.
 
-## Non-negotiable outcome
+## Required resources
 
-- Preserve source meaning and distinguish facts, assumptions, and illustrative content.
-- Give every slide one purpose and one audience takeaway.
-- Prefer clarity, logic, and speaking flow over decoration.
-- Keep the visual system consistent while varying layouts intentionally.
-- Never invent metrics, cases, quotations, customer claims, or sources.
-- Never declare completion before rendering and visually inspecting every slide.
+Read only the resources needed for the request:
+
+- Always read `references/reference-template.md` for the sanitized design tokens,
+  layout archetypes, and placement rules.
+- Read `references/writing-and-storyline.md` for audience, storyline, titles,
+  evidence language, and the anti-buzzword voice gate.
+- Read `references/data-visualization.md` whenever numeric data, KPIs, charts,
+  comparisons, trends, distributions, or forecasts are involved.
+- Read `references/quality-review.md` before final QA.
+
+No original reference deck or rendered preview is bundled. Do not search for,
+reconstruct, or reuse confidential source content. Use only the sanitized rules
+documented in this skill and assets explicitly supplied for the current request.
+
+## Non-negotiable outcomes
+
+Story and evidence:
+
+- Define the audience, decision, and central takeaway before selecting layouts.
+- Give every slide one narrative job and a conclusion-led title.
+- Preserve source meaning and distinguish provided facts, calculations,
+  assumptions, illustrative examples, and unknowns.
+- Never invent metrics, quotations, case studies, customer claims, or sources.
+- Put external sources and calculation definitions in speaker notes.
+
+Visual system:
+
+- Use the navy-white base with orange emphasis and restrained teal, green,
+  purple, blue, or gold support colors.
+- Select from five sanitized layout archetypes before inventing a new
+  composition: architecture, current-state assessment, workflow, phased roadmap,
+  and options.
+- Apply consistent typography, spacing, headers, footers, alignment, and panel
+  geometry from `references/reference-template.md`.
+- Use authentic brand assets only when the user supplies or authorizes them.
+- Keep charts, tables, diagrams, and timelines editable.
+
+Data integrity:
+
+- Compute first, design second. Validate units, denominators, time grain, missing
+  values, sorting, totals, and rounding before charting.
+- Choose a chart from the analytical question, not decoration preference.
+- Highlight one decision-relevant series or point; keep the rest subordinate.
+- Never declare completion before rendering and inspecting every slide.
 
 ## Intake
 
 Confirm or infer only when low-risk:
 
 1. Audience and decision makers.
-2. Meeting objective and expected outcome.
+2. Meeting objective and expected decision or action.
 3. Speaking time and likely slide count.
 4. Language, tone, and localization needs.
-5. Source-of-truth materials and confidentiality constraints.
-6. Brand, template, or existing-deck requirements.
+5. Source-of-truth files, data definitions, and confidentiality constraints.
+6. Whether supplied brand assets should be applied or the deck should remain
+   unbranded.
 
-Ask for missing information when it could materially change the storyline or claims. Otherwise, proceed with a clearly labeled assumption register.
-
-## Evidence discipline
-
-Build a working evidence map before drafting:
-
-- **Provided fact**: traceable to user material.
-- **Derived statement**: a faithful synthesis of provided facts.
-- **Assumption**: necessary for planning; label and request confirmation.
-- **Illustrative**: fictional example or placeholder; label visibly.
-- **Unknown**: do not fill. Turn it into a question, dependency, or `TBD`.
-
-Do not turn an assumption into an asserted fact. Keep source references in speaker notes or a final source slide when the user supplies them.
+Ask only when missing information could materially change claims, data
+interpretation, branding, or storyline. Otherwise proceed with an explicit
+assumption register.
 
 ## Workflow
 
-### 1. Inspect inputs
+### 1. Establish the communication job
 
-- Inventory all source files and identify the authoritative version.
-- For an existing `.pptx`, inspect slide count, size, masters, layouts, fonts, colors, and content density.
-- Run `scripts/analyze_pptx.py` when a deck or template is supplied.
-- Preserve confidentiality; extract reusable principles rather than copying identifying content.
+Write one sentence in the form: by the end, the audience should take an action or
+reach an understanding because of the central takeaway. Build an evidence map:
 
-### 2. Build the storyline before design
+- Provided fact: directly traceable to user material.
+- Derived statement: faithful synthesis or reproducible calculation.
+- Assumption: necessary but unverified; label it.
+- Illustrative: fictional example or placeholder; label it visibly.
+- Unknown: leave as a question, dependency, or `TBD`.
 
-Write a slide plan containing:
+### 2. Inspect inputs and select the visual system
 
-| Field          | Required content                                                |
-| -------------- | --------------------------------------------------------------- |
-| Slide purpose  | Why the slide exists                                            |
-| Takeaway title | The conclusion or question the audience should retain           |
-| Evidence       | Facts, visuals, or explicit assumptions supporting the takeaway |
-| Layout intent  | The simplest visual structure for the content                   |
-| Transition     | Why the next slide follows                                      |
+- Inventory all inputs and identify the authoritative version.
+- Run `scripts/analyze_pptx.py` on a user-supplied deck to capture slide size,
+  layouts, fonts, colors, density, and object counts.
+- If the user supplies a template, follow that template and preserve its
+  master -> layout -> slide hierarchy.
+- Otherwise use the sanitized system in `references/reference-template.md` as an
+  explicit custom visual direction and build the deck from scratch.
 
-Use the decision-backward method in [writing-and-storyline.md](references/writing-and-storyline.md). Remove slides that do not advance the conversation.
+### 3. Plan the narrative and layout map
 
-### 3. Select a controlled style
+For every output slide define:
 
-Choose one primary style and, at most, one secondary style:
+| Field | Required content |
+| --- | --- |
+| Narrative job | Why the slide exists |
+| Takeaway title | The conclusion the audience should retain |
+| Evidence | Facts, calculations, visuals, or explicit assumptions |
+| Layout archetype | Architecture, assessment, workflow, roadmap, or options |
+| Content zones | Exact bounded areas for text, charts, tables, or diagrams |
+| Transition | Why the next slide follows |
 
-- **Executive Minimal** for decisions, summaries, and proposals.
-- **Consulting Clean** for assessments, workshops, comparisons, and recommendations.
-- **Technology Narrative** for architecture, cloud, AI, and enterprise solutions.
-- **Japanese Customer Friendly** for calm, contextual, risk-transparent customer communication.
+Every output slide must map to an archetype or document a reason for a custom
+layout. Shorten copy, change archetypes, or split the content instead of shrinking
+text or adding unplanned overlays.
 
-Read [design-system.md](references/design-system.md) for tokens, layout patterns, typography, and style-specific rules.
+### 4. Profile data and select the chart
 
-### 4. Create or edit the deck
+When tabular data is supplied:
 
-For a new deck:
+1. Extract a clean CSV or JSON table without altering source values.
+2. Run `scripts/profile_chart_data.py <input> --output <profile.json>`.
+3. Review inferred types, missing values, duplicate categories, numeric ranges,
+   totals, and suggested chart families.
+4. Confirm the intended analytical question and units. A script suggestion is
+   evidence for selection, not an automatic design decision.
+5. Read `references/data-visualization.md` and build an editable native chart in
+   an approved chart zone.
+6. Reconcile every plotted value and displayed label with the clean table.
 
-- Use the available presentation-generation toolchain.
-- Prefer editable native PowerPoint text, shapes, tables, and charts.
-- Use PptxGenJS with an HTML-to-PowerPoint workflow when available for precise layout.
-- Use `python-pptx` for deterministic, simple layouts when it is the more reliable option.
-- Use 16:9 unless the user or template requires another ratio.
+If the data cannot support the requested conclusion, say so and use a table,
+question, or data-gap slide instead of forcing a chart.
 
-For an existing deck:
+### 5. Implement the deck
 
-- Preserve slide masters, layouts, theme relationships, notes, and brand assets.
-- Use targeted OOXML edits when a library cannot preserve required features.
-- Modify only slides and elements in scope.
-- Re-run validation after structural edits.
+- Use JavaScript ES modules and `@oai/artifact-tool` for PowerPoint authoring.
+- Use a 16:9 canvas and central design tokens for colors, typography, margins,
+  title bands, key-message rails, panels, and footers.
+- Build reusable helper functions for the five sanitized archetypes rather than
+  copying confidential slides.
+- Keep title and body copy inside the bounded zones documented in
+  `references/reference-template.md`.
+- Use native `slide.charts.add(...)` charts. Do not use Python-PPTX, PptxGenJS,
+  or raster chart screenshots for authoring.
+- Preserve or add `[Sources]` blocks in speaker notes for non-trivial claims,
+  data, and externally sourced assets.
 
-Do not flatten editable diagrams into screenshots unless fidelity requires it and the user accepts the tradeoff.
+### 6. Apply chart quality gates
 
-### 5. Preflight
+- Use navy `#1F3864` for the primary series, orange `#F37021` for the single
+  decision-relevant highlight, and teal `#127E84` or green `#1E9E54` for a
+  secondary series.
+- Prefer direct labels. Use a legend only when direct labeling would clutter.
+- Start bar-chart value axes at zero. State any necessary non-zero baseline.
+- Avoid 3D, decorative gradients, dual axes, rainbow palettes, tiny labels, and
+  pie/doughnut charts with many slices.
+- Add units to axes or labels and include source, period, scope, and denominator
+  in notes or a compact footer.
+- Use a takeaway title that states the computed result, not a generic topic.
 
-Run:
+### 7. Preflight and visual QA
 
-```bash
-python scripts/lint_pptx.py output.pptx --output qa/lint.json
-python scripts/render_pptx.py output.pptx --output-dir qa/rendered --cols 4
-```
+Run the bundled checks from the skill directory:
 
-Treat automated checks as triage, not proof of quality.
+    python scripts/lint_pptx.py output.pptx --output qa/lint.json
+    python scripts/render_pptx.py output.pptx --output-dir qa/rendered --cols 4
 
-### 6. Review every rendered slide
+Then:
 
-Review both:
+1. Review the generated contact sheet for narrative rhythm, repeated silhouettes,
+   and density.
+2. Inspect every slide individually at full size.
+3. Fix clipping, overflow, awkward wrapping, unintended overlaps, inconsistent
+   footers, broken connectors, unresolved placeholders, and chart/data mismatches.
+4. Re-render the complete deck after fixes and repeat until clean.
 
-- The contact sheet for narrative rhythm, repetition, density, and visual pacing.
-- Each full-size slide for overflow, clipping, alignment, spacing, contrast, readability, chart clarity, and awkward line breaks.
+Automated checks are triage, not proof of quality. Do not waive a visual defect
+without inspecting it and recording a valid reason.
 
-Use [quality-review.md](references/quality-review.md). Fix issues, re-render the entire deck, and repeat until clean.
+## Deliverables
 
-### 7. Deliver
-
-Provide:
+Return:
 
 - The final `.pptx`.
-- A short summary of storyline and style choices.
+- A short summary of storyline, layout archetypes, and chart choices.
 - Any unresolved assumptions, missing evidence, or editable placeholders.
-- The render/contact sheet when useful for review.
-
-## Natural, human editorial standard
-
-- Write specific takeaway titles; avoid generic slogans and inflated claims.
-- Vary layout according to content, not for novelty.
-- Allow controlled asymmetry, different column ratios, and occasional quiet slides.
-- Use one strong visual hierarchy instead of many decorative accents.
-- Keep clean white or near-white surfaces dominant; avoid large saturated accent panels and uninterrupted color slabs.
-- Use dark, projection-safe text and clearly visible support lines; do not rely on pale gray or low-contrast accents for structure.
-- When no client brand is supplied, use the reference-derived role palette in `design-system.md` instead of generic Office theme colors.
-- Use only a slight corner radius on cards and panels; reserve pill shapes for intentional tags or status badges.
-- Keep repeated components aligned but avoid cloning every slide.
-- Use concrete nouns and verbs. Remove filler, repetition, and marketing gloss.
-- Prefer one diagram with a clear reading path over a dense “everything map.”
-- Use icons only when they improve scanning; keep one icon family and stroke style.
-- Use photographs only when they are authentic, relevant, licensed, and compositionally useful.
-- Keep caveats, risks, dependencies, and next steps visible when they matter.
-
-## Content limits
-
-- Aim for one message per slide.
-- Prefer 15–18 pt body text; use smaller text only for labels or citations.
-- Keep most slides below roughly 80 words.
-- Break dense architecture, roadmap, and matrix content into overview/detail sequences.
-- Avoid more than 3–5 peer items on one slide unless the audience must compare them.
-- Never use a quote layout without an actual attributed quote.
+- The generated contact sheet only when it helps the user review the deck.
 
 ## Bundled resources
 
-- `references/design-system.md`: four styles, typography, color, layout, and sample-derived principles.
-- `references/writing-and-storyline.md`: narrative planning, title writing, evidence language, and localization.
-- `references/quality-review.md`: automated and visual completion gates.
-- `scripts/analyze_pptx.py`: inspect a deck without reproducing its confidential text.
-- `scripts/lint_pptx.py`: flag probable overflow, out-of-bounds objects, tiny text, density, and text-on-text collisions.
-- `scripts/render_pptx.py`: render all slides and build a contact sheet.
-- `scripts/create_smoke_test.py`: generate a fictional deck used to test this skill.
+- `references/reference-template.md`: sanitized design tokens, layout archetypes,
+  placement rules, and bounded chart zones.
+- `references/data-visualization.md`: question-to-chart routing, native chart
+  recipes, statistical integrity, and QA.
+- `references/writing-and-storyline.md`: executive narrative and natural copy.
+- `references/quality-review.md`: voice, visual, privacy, and completion gates.
+- `scripts/profile_chart_data.py`: profile CSV/JSON and suggest chart families.
+- `scripts/analyze_pptx.py`: inspect structure without reproducing slide text.
+- `scripts/lint_pptx.py`: flag layout, density, type, and writing issues.
+- `scripts/render_pptx.py`: render every slide and build a contact sheet.
 
 ## Example invocations
 
-- “Use `$craft-client-pptx` to turn these workshop notes into a 12-minute Consulting Clean proposal for a Japanese manufacturing client.”
-- “Use `$craft-client-pptx` to simplify this architecture deck into a customer-facing Technology Narrative. Do not change any facts.”
-- “Use `$craft-client-pptx` to edit this executive review deck, tighten the storyline, and return a fully rendered, visually checked `.pptx`.”
+- “Use `$hi-pptx` to turn this assessment into a six-slide client proposal. Keep
+  the facts unchanged and do not retain confidential inputs.”
+- “Use `$hi-pptx` to chart this CSV, explain the strongest trend, and create an
+  executive KPI review with editable native PowerPoint charts.”
+- “Use `$hi-pptx` to build a technical architecture and phased roadmap using the
+  sanitized corporate visual system.”
