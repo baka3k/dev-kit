@@ -39,7 +39,7 @@ User override: "just code it" or "skip planning" - then respect.
 
 ### Step 1: Plan (skip if plan.md provided)
 
-* Use `sequential-thinking` to analyze the task briefly.
+* Use `hi-sequential-thinking` to analyze the task briefly.
 * Use `hi-docs-seeker` if documentation lookup is required.
 * Do not spawn a separate planner. Call `hi-plan --fast` inline if needed.
 
