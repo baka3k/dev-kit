@@ -1,19 +1,20 @@
 # Root Agent: Context Search Directive
 
 **Objective:** Gather project context before executing tasks.
-**Fast-Fail Rule:** If a tool is missing or disconnected -> SKIP IMMEDIATELY to the next level (Do NOT retry).
+**Fast-Fail Rule:** 
+- If a tool is missing or disconnected: SKIP IMMEDIATELY (Do NOT retry).
+- If parameters are invalid: Retry a maximum of 2 times to ensure accuracy.
 
 ## Strict Priority Flow
 *Proceed to the next step ONLY if the current step yields no results or the tool is unavailable.*
 
 1. **`mind_mcp`**: Retrieve project docs, concepts, and foundational knowledge.
-2. **`graph_mcp` (`semantic_search`)**: Find codebase relationships and logic (rely on semantics, not exact string matching).
+2. **`graph_mcp` (`semantic_search`,`explore_graph`)**: Find codebase relationships and logic (rely on semantics, not exact string matching).
 Example:
 ```
  "semantic_search": {
         "query": "function that handles user authentication",
         "parser_type": "",
-        "db": "neo4j",
         "top_k": "10",
         "collection": "",
     },

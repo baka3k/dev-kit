@@ -1,7 +1,9 @@
 # Root Agent: Context Search Directive
 
 **Objective:** Gather project context before executing tasks.
-**Fast-Fail Rule:** If a tool is missing or disconnected -> SKIP IMMEDIATELY to the next level (Do NOT retry).
+**Fast-Fail Rule:** 
+- If a tool is missing or disconnected: SKIP IMMEDIATELY (Do NOT retry).
+- If parameters are invalid: Retry a maximum of 2 times to ensure accuracy.
 
 ## Strict Priority Flow
 *Proceed to the next step ONLY if the current step yields no results or the tool is unavailable.*
