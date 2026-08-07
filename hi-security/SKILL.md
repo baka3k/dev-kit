@@ -162,6 +162,11 @@ mcp_functions:
     params: {query: "auth authenticate authorize guard middleware", limit: 50}
     output: {nodes: auth-related functions}
     expected: "Authentication and authorization code"
+    
+  - graph_mcp.explore_graph [required]
+    params: {start_nodes: auth-related functions, depth: 5}
+    output: {paths: auth flow traces}
+    expected: "Call paths for auth flows"
 
   - mind_mcp.hybrid_search [optional]
     params: {query: "security policy compliance", collection: "{collection}", limit: 10}

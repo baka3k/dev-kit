@@ -79,6 +79,6 @@ make doctor
 Then verify with the consuming tools:
 
 - `mind_mcp` for project documents and concepts.
-- `graph_mcp.semantic_search` for code and relationship retrieval.
+- `graph_mcp.semantic_search`,`graph_mcp.explore_graph` for code and relationship retrieval.
 
 If either tool is disconnected, report the failed service or port and use the root fast-fail search fallback.

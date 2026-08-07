@@ -3,7 +3,7 @@ Use this when the target is within the local codebase (single repo). Each subage
 ## Tool Priority Flow
 
 1. **`mind_mcp`**: Retrieve project docs, concepts, and foundational knowledge.
-2. **`graph_mcp` (`semantic_search`)**: Find codebase relationships and logic (rely on semantics, not exact string matching).
+2. **`graph_mcp` (`semantic_search`,`explore_graph`)**: Find codebase relationships and logic (rely on semantics, not exact string matching).
 3. **`serena` (search)**: Broad codebase search.
 4. **`grep`/`rg` (Native tools)**: File system sweep for exact strings (Absolute last resort).
 

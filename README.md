@@ -93,7 +93,7 @@ For **project scope** every file lands at the project root (`<cwd>/AGENTS.md`, `
 *Proceed to the next step ONLY if the current step yields no results or the tool is unavailable.*
 
 1. **`mind_mcp`**: Retrieve project docs, concepts, and foundational knowledge.
-2. **`graph_mcp` (`semantic_search`)**: Find codebase relationships and logic (rely on semantics, not exact string matching).
+2. **`graph_mcp` (`semantic_search`,`explore_graph`)**: Find codebase relationships and logic (rely on semantics, not exact string matching).
 3. **`serena` (search)**: Broad codebase search.
 4. **`grep`/`rg` (Native tools)**: File system sweep for exact strings (Absolute last resort).
 

@@ -34,7 +34,7 @@ Reverse-engineer behavior from evidence, not symbol-name guesses. FalkorDB plus 
 
 ## Data Context Gate
 
-Lock the data context before any analysis query. Confirm FalkorDB is active, select one C/C++ Qdrant collection from project/repository/language metadata, and validate it with a scoped `semantic_search` probe (module-local hits required). If rejected, bind the next candidate and repeat only the probe.
+Lock the data context before any analysis query. Confirm FalkorDB is active, select one C/C++ Qdrant collection from project/repository/language metadata, and validate it with a scoped `semantic_search`, `explore_graph` probe (module-local hits required). If rejected, bind the next candidate and repeat only the probe.
 
 ```text
 DATA_CONTEXT_GATE: PASS|BLOCKED
