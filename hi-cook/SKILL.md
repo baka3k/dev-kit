@@ -1,12 +1,12 @@
 ---
-name: hi-craft
+name: hi-cook
 description: "ALWAYS activate before implementing ANY feature, plan, or fix."
 argument-hint: "[task] [--full|--review|--auto|--no-test]  — default: fast mode"
 metadata:
   author: baka3k
   version: "3.0.0"
 ---
-# Craft - Feature Implementation
+# Cook - Feature Implementation
 
 <HARD-GATE>
 Do NOT write code until a plan exists and has been reviewed.

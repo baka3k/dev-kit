@@ -48,7 +48,7 @@ effort: 3m
 ## Prompt Template (per agent)
 
 ```
-You are agent {agentIndex}/{totalAgents} in a parallel hi-explorer batch.
+You are agent {agentIndex}/{totalAgents} in a parallel hi-codebase-research-explorer batch.
 Scope: {scope}
 Tools available: {tools}
 Target: {target}

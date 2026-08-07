@@ -17,7 +17,7 @@
 
 ## Core philosophy: stark white and bold contrast
 
-Every slide must look and sound like it was crafted by a high-end human
+Every slide must look and sound like it was cooked by a high-end human
 design agency — Apple keynote or Pentagram editorial, not a template.
 Because the canvas is light, contrast must come from **font weight, sizing,
 and extremely deliberate use of color**. Three pillars:

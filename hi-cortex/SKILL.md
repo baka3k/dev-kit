@@ -17,7 +17,7 @@ Use this skill when a task needs Cortex Harness from `https://github.com/baka3k/
 2. Prefer the installed `dev` command. If it is not on `PATH`, use the repository-local fallback at `C:\ai\cortex-harness\.venv\Scripts\dev.exe` when present.
 3. Do not invent config paths, database names, or project folders. Run `dev status` or inspect the Cortex Harness config before changing it.
 4. For interactive commands, explain what they will ask for and stay with the user until config, sync, and MCP status are verified.
-5. Keep Cortex Harness as the retrieval and MCP infrastructure layer. Pair it with `hi-repo-search`, `hi-plan`, `hi-craft`, `hi-fix`, `hi-debug`, `hi-scenario`, or `hi-security` for the actual engineering workflow.
+5. Keep Cortex Harness as the retrieval and MCP infrastructure layer. Pair it with `hi-repository-search`, `hi-plan`, `hi-cook`, `hi-fix`, `hi-debug`, `hi-scenario`, or `hi-security` for the actual engineering workflow.
 
 ## Common Tasks
 

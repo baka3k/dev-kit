@@ -20,9 +20,9 @@ $ npx skill-dev
 ┌   devkit   Dev Kit Installer
 │
 ◆  Select skills
-│  ◼ hi-craft
+│  ◼ hi-cook
 │  ◼ hi-debug
-│  ◼ hi-explorer
+│  ◼ hi-codebase-research-explorer
 │  ◼ hi-fix
 │  ◼ knows
 │  ◼ hi-log
@@ -133,7 +133,7 @@ Set `CLAUDE_CONFIG_DIR`, `CODEX_HOME`, or `XDG_CONFIG_HOME` to override the base
 
 | Directory | Skill name | Purpose |
 | --- | --- | --- |
-| `hi-craft/` | `hi-craft` | Feature implementation workflow: plan, implement, test, and finalize. |
+| `hi-cook/` | `hi-cook` | Feature implementation workflow: plan, implement, test, and finalize. |
 | `hi-fix/` | `hi-fix` | Bug, test, CI, type, lint, UI, and runtime issue resolution. |
 | `hi-plan/` | `hi-plan` | Implementation plans, architecture plans, phased roadmaps, and plan validation. |
 | `hi-debug/` | `hi-debug` | Root-cause debugging for failures, logs, CI, databases, performance, and system behavior. |
@@ -142,8 +142,8 @@ Set `CLAUDE_CONFIG_DIR`, `CODEX_HOME`, or `XDG_CONFIG_HOME` to override the base
 
 | Directory | Skill name | Purpose |
 | --- | --- | --- |
-| `hi-repo-search/` | `hi-repo-search` | Traceable repository evidence from project docs, semantic code search, symbols, call paths, dependency analysis, and documents. |
-| `hi-explore/` | `hi-explorer` | Fast parallel codebase and external research for file discovery, web/docs lookup, GitHub analysis, and UI/image understanding. |
+| `hi-repository-search/` | `hi-repository-search` | Traceable repository evidence from project docs, semantic code search, symbols, call paths, dependency analysis, and documents. |
+| `hi-explore/` | `hi-codebase-research-explorer` | Fast parallel codebase and external research for file discovery, web/docs lookup, GitHub analysis, and UI/image understanding. |
 | `hi-knows/` | `knows` | Unified knowledge retrieval from Git, MCP, and memory files. |
 
 ### Analysis And Review
@@ -167,7 +167,7 @@ Set `CLAUDE_CONFIG_DIR`, `CODEX_HOME`, or `XDG_CONFIG_HOME` to override the base
 
 ## Repository Search Integration
 
-`hi-repo-search` is the shared evidence layer for questions that require verified repository context. Use it before planning or changing code when the answer depends on codebase structure, architecture, cross-file behavior, impact analysis, or project documentation.
+`hi-repository-search` is the shared evidence layer for questions that require verified repository context. Use it before planning or changing code when the answer depends on codebase structure, architecture, cross-file behavior, impact analysis, or project documentation.
 
 The expected context search chain is:
 
@@ -178,7 +178,7 @@ The expected context search chain is:
 
 If one level is missing or disconnected, skip immediately to the next level. If the full chain yields no evidence, stop and ask for more details instead of guessing.
 
-`hi-repo-search` is intentionally evidence-only. It gathers and verifies context; orchestration remains with `hi-craft`, `hi-fix`, `hi-plan`, `hi-debug`, `hi-scenario`, `hi-security`, or the calling agent.
+`hi-repository-search` is intentionally evidence-only. It gathers and verifies context; orchestration remains with `hi-cook`, `hi-fix`, `hi-plan`, `hi-debug`, `hi-scenario`, `hi-security`, or the calling agent.
 
 Recommended modes:
 
@@ -267,11 +267,11 @@ The result is one canonical skill copy that multiple agents can consume.
 ## Typical Workflows
 
 ```text
-Implement feature:    hi-craft -> hi-plan --fast -> implement -> test -> hi-log
-Fix bug:              hi-fix -> hi-explorer -> diagnose -> fix -> verify
-Plan architecture:    hi-plan --full -> hi-repo-search --deep -> phases -> validate
+Implement feature:    hi-cook -> hi-plan --fast -> implement -> test -> hi-log
+Fix bug:              hi-fix -> hi-codebase-research-explorer -> diagnose -> fix -> verify
+Plan architecture:    hi-plan --full -> hi-repository-search --deep -> phases -> validate
 Investigate failure:  hi-debug -> logs/traces -> root cause -> fix recommendation
-Impact analysis:      hi-repo-search --impact -> hi-predict -> scoped plan
+Impact analysis:      hi-repository-search --impact -> hi-predict -> scoped plan
 Security audit:       hi-security -> findings -> optional auto-fix -> re-verify
 Scenario coverage:    hi-scenario -> edge cases -> tests or review checklist
 Browser task:         hi-chrome-devtools -> inspect/click/screenshot/network
@@ -283,10 +283,10 @@ Browser task:         hi-chrome-devtools -> inspect/click/screenshot/network
 
 | Skill | Called by | Purpose |
 | --- | --- | --- |
-| `hi-repo-search` | `hi-craft`, `hi-fix`, `hi-plan`, `hi-debug`, `hi-scenario`, `hi-security` | Evidence bundle from docs, semantic code search, symbols, call paths, and impact analysis. |
-| `hi-explorer` | `hi-fix`, `hi-debug`, ad-hoc exploration | Parallel file discovery and external research. |
+| `hi-repository-search` | `hi-cook`, `hi-fix`, `hi-plan`, `hi-debug`, `hi-scenario`, `hi-security` | Evidence bundle from docs, semantic code search, symbols, call paths, and impact analysis. |
+| `hi-codebase-research-explorer` | `hi-fix`, `hi-debug`, ad-hoc exploration | Parallel file discovery and external research. |
 | `knows` | Any evidence-heavy answer | Traceable knowledge retrieval from Git, MCP, and memory. |
-| `hi-log` | `hi-craft`, `hi-plan`, finalization flows | Session logs for changes, decisions, impacts, and reflections. |
+| `hi-log` | `hi-cook`, `hi-plan`, finalization flows | Session logs for changes, decisions, impacts, and reflections. |
 | `hi-project-organization` | Any file-producing workflow | Output paths, names, directory structure, and Markdown organization. |
 | `hi-sequential-thinking` | `hi-plan`, complex debugging, design reasoning | Step-by-step reasoning with revision and hypothesis tracking. |
 | `hi-problem-solving` | `hi-fix`, `hi-debug` | Stuck-point techniques after failed hypotheses or complexity spirals. |
@@ -297,13 +297,13 @@ Most DevKit skills stay single-agent by default. Subagents are used only when th
 
 | Skill | Spawns agents? | Trigger / condition |
 | --- | --- | --- |
-| `hi-explorer` | Yes, by design | Splits local, external, or hybrid exploration into `1-5` non-overlapping agents. Skips task registration when `<=2` agents or task tools are unavailable. Each agent has a 3-minute timeout. |
-| `hi-craft` | Conditional | Parallel mode launches `fullstack-developer` per phase. Test failures are handled directly for attempts 1-2; attempt 3+ spawns `hi-fix`. Planner and tester agents are explicitly not spawned. |
-| `hi-fix` | Conditional | Standard/deep modes can activate `hi-explorer` or `2-3` parallel agents. `--parallel` creates a separate task tree and spawns `fullstack-developer` per independent issue. |
+| `hi-codebase-research-explorer` | Yes, by design | Splits local, external, or hybrid exploration into `1-5` non-overlapping agents. Skips task registration when `<=2` agents or task tools are unavailable. Each agent has a 3-minute timeout. |
+| `hi-cook` | Conditional | Parallel mode launches `fullstack-developer` per phase. Test failures are handled directly for attempts 1-2; attempt 3+ spawns `hi-fix`. Planner and tester agents are explicitly not spawned. |
+| `hi-fix` | Conditional | Standard/deep modes can activate `hi-codebase-research-explorer` or `2-3` parallel agents. `--parallel` creates a separate task tree and spawns `fullstack-developer` per independent issue. |
 | `hi-plan` | Conditional | `--full` spawns 1 researcher. `--hard` and `--parallel` use 2 researchers. `--two` uses 2+ researchers for competing approaches. Fast/default mode does not spawn a researcher. |
 | `hi-debug` | Conditional | Multi-component investigations, parallel log/data collection, or CI/CD failures with 3+ possible causes may spawn parallel collection agents. |
 | `hi-log` | Yes | Spawns a `log-writer` subagent after filtering material changes. If there is no material change, logging aborts. |
-| `hi-repo-search` | Conditional | Does not spawn by default. Uses at most two investigators, code and documents, only when delegation is permitted and the work has independent tracks, spans 3+ subsystems, or needs independent conflict verification. |
+| `hi-repository-search` | Conditional | Does not spawn by default. Uses at most two investigators, code and documents, only when delegation is permitted and the work has independent tracks, spans 3+ subsystems, or needs independent conflict verification. |
 
 ```mermaid
 graph TD
@@ -315,12 +315,12 @@ graph TD
     E --> F["Collect outputs<br/>dedupe / reconcile conflicts"]
     F --> G["Main agent owns synthesis<br/>integration and verification"]
 
-    E --> H["hi-explorer<br/>1-5 scoped agents"]
+    E --> H["hi-codebase-research-explorer<br/>1-5 scoped agents"]
     E --> I["hi-plan<br/>researchers by mode"]
-    E --> J["hi-fix / hi-craft<br/>fullstack-developer or hi-fix escalation"]
+    E --> J["hi-fix / hi-cook<br/>fullstack-developer or hi-fix escalation"]
     E --> K["hi-debug<br/>parallel evidence collection"]
     E --> L["hi-log<br/>log-writer"]
-    E --> M["hi-repo-search<br/>max 2 investigators"]
+    E --> M["hi-repository-search<br/>max 2 investigators"]
 
     classDef decision fill:#ffe0b2,stroke:#e65100,color:#000
     classDef primary fill:#c8e6c9,stroke:#1b5e20,color:#000
@@ -332,7 +332,7 @@ graph TD
     class F synthesis
 ```
 
-### `hi-craft` - Feature Implementation
+### `hi-cook` - Feature Implementation
 
 | Mode | Context | Plan | Review | Test |
 | --- | --- | --- | --- | --- |
@@ -345,7 +345,7 @@ graph TD
 
 ```mermaid
 graph LR
-    A["User request"] --> B["hi-craft"]
+    A["User request"] --> B["hi-cook"]
     B --> C["Plan exists?<br/>hi-plan --fast if missing"]
     C --> D{"Parallel mode?"}
     D -->|no| E["Implement directly"]
@@ -369,7 +369,7 @@ graph LR
 | Mode | Scope | Repository evidence | Delegation |
 | --- | --- | --- | --- |
 | default | 1 file, type/lint, or clear issue | Direct inspection | 1 agent is enough |
-| `--standard` | 2-5 files | Full explorer and diagnosis | `hi-explorer` or `2-3` parallel agents when useful |
+| `--standard` | 2-5 files | Full explorer and diagnosis | `hi-codebase-research-explorer` or `2-3` parallel agents when useful |
 | `--deep` | 5+ files or architectural impact | Parallel explorer, diagnosis, and research | Parallel agents for exploration/research |
 | `--parallel` | 2+ independent issues | Separate task tree per issue | Spawn `fullstack-developer` per issue |
 | `--review` | Any scope | Mode-dependent | Human review at gates |
@@ -379,7 +379,7 @@ graph LR
     A["Capture symptom<br/>error / log / failing check"] --> B["Explore affected area"]
     B --> P{"Standard / deep / parallel?"}
     P -->|no| C["Diagnose<br/>symptom -> cause -> root cause"]
-    P -->|yes| X["hi-explorer or parallel agents<br/>locate evidence"]
+    P -->|yes| X["hi-codebase-research-explorer or parallel agents<br/>locate evidence"]
     X --> C
     C --> D["Fix root cause<br/>minimal change"]
     D --> E["Verify"]
@@ -407,7 +407,7 @@ graph LR
 
 ```mermaid
 graph LR
-    A["Scan active plans"] --> B["Gather evidence<br/>hi-repo-search"]
+    A["Scan active plans"] --> B["Gather evidence<br/>hi-repository-search"]
     B --> R{"Research mode?"}
     R -->|fast| C["Define assumptions<br/>dependencies / gaps"]
     R -->|full / hard / parallel / two| S["Spawn researcher agents<br/>by selected mode"]
@@ -435,19 +435,19 @@ graph LR
 graph TD
     User(["User request"]) --> Detect{"Intent"}
 
-    Detect -->|feature / implementation| Craft["hi-craft"]
+    Detect -->|feature / implementation| Cook["hi-cook"]
     Detect -->|bug / failure| Fix["hi-fix"]
     Detect -->|plan / architecture| Plan["hi-plan"]
-    Detect -->|repo question / impact| RepoSearch["hi-repo-search"]
+    Detect -->|repo question / impact| RepoSearch["hi-repository-search"]
     Detect -->|debug investigation| Debug["hi-debug"]
     Detect -->|security audit| Security["hi-security"]
     Detect -->|edge cases / tests| Scenario["hi-scenario"]
     Detect -->|browser task| Chrome["hi-chrome-devtools"]
 
-    Craft -->|missing or stale evidence| RepoSearch
-    Craft -->|plan needed| Plan
-    Craft -->|verification fails repeatedly| Fix
-    Craft -->|final record| Log["hi-log"]
+    Cook -->|missing or stale evidence| RepoSearch
+    Cook -->|plan needed| Plan
+    Cook -->|verification fails repeatedly| Fix
+    Cook -->|final record| Log["hi-log"]
 
     Fix -->|2-5 files| RepoSearch
     Fix -->|large / impact scope| RepoSearch
@@ -460,7 +460,7 @@ graph TD
     Plan -->|outputs / naming| Org["hi-project-organization"]
     Plan -->|archive / final record| Log
 
-    Debug -->|find files / external research| Explorer["hi-explorer"]
+    Debug -->|find files / external research| Codebase-Research-Explorer["hi-codebase-research-explorer"]
     Debug -->|repo evidence| RepoSearch
     Debug -->|stuck| ProblemSolving
 
@@ -474,9 +474,9 @@ graph TD
     classDef utility fill:#fff9c4,stroke:#f57f17,color:#000
     classDef external fill:#f5f5f5,stroke:#333,color:#000
 
-    class Craft,Fix,Plan primary
+    class Cook,Fix,Plan primary
     class RepoSearch,Knows evidence
-    class Debug,Security,Scenario,Sequential,ProblemSolving,Explorer analysis
+    class Debug,Security,Scenario,Sequential,ProblemSolving,Codebase-Research-Explorer analysis
     class Log,Org,Chrome utility
     class User,Detect external
 ```
@@ -485,20 +485,20 @@ graph TD
 
 | Skill | HARD-GATE | Violation behavior |
 | --- | --- | --- |
-| `hi-craft` | Do not edit until a reviewed plan exists, unless the user explicitly skips planning. | Stop, create or reuse a plan, then continue. |
+| `hi-cook` | Do not edit until a reviewed plan exists, unless the user explicitly skips planning. | Stop, create or reuse a plan, then continue. |
 | `hi-fix` | Do not fix before locating the failure and identifying root cause. | Return to explore/diagnose; after 3 failed fix attempts, question architecture with the user. |
 | `hi-plan` | Scan active plans first and record relevant `blockedBy` / `blocks` relationships. | Update the related plans before producing the new plan. |
-| `hi-repo-search` | Provide traceable evidence only; do not invent context or own implementation decisions. | Report search coverage and ask for details if evidence is missing. |
+| `hi-repository-search` | Provide traceable evidence only; do not invent context or own implementation decisions. | Report search coverage and ask for details if evidence is missing. |
 | `hi-security` | Security findings need source evidence and severity-ranked remediation. | Do not auto-fix outside the requested audit/fix scope. |
 | `hi-project-organization` | Do not override established project layout without evidence. | Use existing conventions or return an advisory recommendation. |
 
 ## General Rules
 
 1. Hard-gates first, fast path after that.
-2. Use `hi-repo-search` when codebase structure, docs, relationships, or impact matter.
+2. Use `hi-repository-search` when codebase structure, docs, relationships, or impact matter.
 3. Prefer direct execution for small local tasks; escalate to deeper modes when risk, uncertainty, or file count grows.
 4. Verify proportionally: quick checks for narrow edits, broader tests for shared behavior or user-facing flows.
-5. Keep `hi-repo-search` as evidence gathering; orchestration and final decisions stay with the calling skill or agent.
+5. Keep `hi-repository-search` as evidence gathering; orchestration and final decisions stay with the calling skill or agent.
 
 ## Folder Structure
 
@@ -510,7 +510,7 @@ dev-kit/
 ├── devkit.md
 ├── hi-cortex/
 ├── hi-chrome-devtools/
-├── hi-craft/
+├── hi-cook/
 ├── hi-debug/
 ├── hi-explore/
 ├── hi-fix/
@@ -520,7 +520,7 @@ dev-kit/
 ├── hi-predict/
 ├── hi-problem-solving/
 ├── hi-project-organization/
-├── hi-repo-search/
+├── hi-repository-search/
 ├── hi-scenario/
 ├── hi-security/
 └── hi-sequential-thinking/
@@ -531,7 +531,7 @@ dev-kit/
 - Evidence comes before assumptions. Prefer traceable context from `mind_mcp`, `graph_mcp`, `serena`, then native search.
 - Keep changes scoped. Skills should solve the target problem without unrelated refactors or cleanup.
 - Use the lightest useful mode first. Escalate to deep, review, parallel, or impact modes when risk or uncertainty justifies it.
-- `hi-repo-search` gathers evidence; implementation and final decisions stay with the orchestrating skill or agent.
+- `hi-repository-search` gathers evidence; implementation and final decisions stay with the orchestrating skill or agent.
 - Human-facing skill output may be localized by the calling agent. Technical artifacts, identifiers, paths, and commands stay precise.
 
 ## Adding A Skill

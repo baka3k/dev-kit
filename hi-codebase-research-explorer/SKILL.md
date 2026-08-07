@@ -1,5 +1,5 @@
 ---
-name: hi-explorer
+name: hi-codebase-research-explorer
 description: "Fast parallel codebase explore using multiple subagents with MCP-based external research. Use for file discovery (local), web/docs lookup, GitHub repo analysis, image/UI understanding."
 argument-hint: "[search-target]"
 metadata:

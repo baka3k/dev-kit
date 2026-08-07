@@ -21,7 +21,7 @@ Focus on key events, changes, impacts, and decisions. Run /hi-project-organizati
 
 ### 1. Discover
 Pull context from claude-mem (recent observations) and git diff/log.
-Use hi-explorer if scope is ambiguous. Honor `--since` / `--scope` filters.
+Use hi-codebase-research-explorer if scope is ambiguous. Honor `--since` / `--scope` filters.
 
 ### 2. Filter
 Keep entries that change behavior, fix risk, or capture a decision.

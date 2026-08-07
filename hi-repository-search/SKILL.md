@@ -1,5 +1,5 @@
 ---
-name: hi-repo-search
+name: hi-repository-search
 description: "Gather traceable evidence from repository code and project documents. Use for codebase exploration, architecture, feature tracing, dependency or impact analysis, and questions that require verified source context."
 metadata:
   author: baka3k

@@ -50,9 +50,9 @@ Expected service checks usually include:
 
 After MCP servers are healthy:
 
-1. Use `hi-repo-search --doc` for document evidence.
-2. Use `hi-repo-search --code` for code evidence.
-3. Use `hi-repo-search --deep` when docs and code must be reconciled.
-4. Use `hi-repo-search --impact` before risky changes.
+1. Use `hi-repository-search --doc` for document evidence.
+2. Use `hi-repository-search --code` for code evidence.
+3. Use `hi-repository-search --deep` when docs and code must be reconciled.
+4. Use `hi-repository-search --impact` before risky changes.
 
 If a consuming skill reports connection errors, return here, run `make doctor`, and restart MCP servers once. If the same failure repeats, report the failing endpoint instead of retrying blindly.
