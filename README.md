@@ -20,7 +20,7 @@ $ npx skill-dev
 ┌   devkit   Dev Kit Installer
 │
 ◆  Select skills
-│  ◼ hi-cook
+│  ◼ hi-craft
 │  ◼ hi-debug
 │  ◼ hi-codebase-research-explorer
 │  ◼ hi-fix
@@ -133,7 +133,7 @@ Set `CLAUDE_CONFIG_DIR`, `CODEX_HOME`, or `XDG_CONFIG_HOME` to override the base
 
 | Directory | Skill name | Purpose |
 | --- | --- | --- |
-| `hi-cook/` | `hi-cook` | Feature implementation workflow: plan, implement, test, and finalize. |
+| `hi-craft/` | `hi-craft` | Feature implementation workflow: plan, implement, test, and finalize. |
 | `hi-fix/` | `hi-fix` | Bug, test, CI, type, lint, UI, and runtime issue resolution. |
 | `hi-plan/` | `hi-plan` | Implementation plans, architecture plans, phased roadmaps, and plan validation. |
 | `hi-debug/` | `hi-debug` | Root-cause debugging for failures, logs, CI, databases, performance, and system behavior. |
@@ -178,7 +178,7 @@ The expected context search chain is:
 
 If one level is missing or disconnected, skip immediately to the next level. If the full chain yields no evidence, stop and ask for more details instead of guessing.
 
-`hi-repository-search` is intentionally evidence-only. It gathers and verifies context; orchestration remains with `hi-cook`, `hi-fix`, `hi-plan`, `hi-debug`, `hi-scenario`, `hi-security`, or the calling agent.
+`hi-repository-search` is intentionally evidence-only. It gathers and verifies context; orchestration remains with `hi-craft`, `hi-fix`, `hi-plan`, `hi-debug`, `hi-scenario`, `hi-security`, or the calling agent.
 
 Recommended modes:
 
@@ -267,7 +267,7 @@ The result is one canonical skill copy that multiple agents can consume.
 ## Typical Workflows
 
 ```text
-Implement feature:    hi-cook -> hi-plan --fast -> implement -> test -> hi-log
+Implement feature:    hi-craft -> hi-plan --fast -> implement -> test -> hi-log
 Fix bug:              hi-fix -> hi-codebase-research-explorer -> diagnose -> fix -> verify
 Plan architecture:    hi-plan --full -> hi-repository-search --deep -> phases -> validate
 Investigate failure:  hi-debug -> logs/traces -> root cause -> fix recommendation
@@ -283,10 +283,10 @@ Browser task:         hi-chrome-devtools -> inspect/click/screenshot/network
 
 | Skill | Called by | Purpose |
 | --- | --- | --- |
-| `hi-repository-search` | `hi-cook`, `hi-fix`, `hi-plan`, `hi-debug`, `hi-scenario`, `hi-security` | Evidence bundle from docs, semantic code search, symbols, call paths, and impact analysis. |
+| `hi-repository-search` | `hi-craft`, `hi-fix`, `hi-plan`, `hi-debug`, `hi-scenario`, `hi-security` | Evidence bundle from docs, semantic code search, symbols, call paths, and impact analysis. |
 | `hi-codebase-research-explorer` | `hi-fix`, `hi-debug`, ad-hoc exploration | Parallel file discovery and external research. |
 | `knows` | Any evidence-heavy answer | Traceable knowledge retrieval from Git, MCP, and memory. |
-| `hi-log` | `hi-cook`, `hi-plan`, finalization flows | Session logs for changes, decisions, impacts, and reflections. |
+| `hi-log` | `hi-craft`, `hi-plan`, finalization flows | Session logs for changes, decisions, impacts, and reflections. |
 | `hi-project-organization` | Any file-producing workflow | Output paths, names, directory structure, and Markdown organization. |
 | `hi-sequential-thinking` | `hi-plan`, complex debugging, design reasoning | Step-by-step reasoning with revision and hypothesis tracking. |
 | `hi-problem-solving` | `hi-fix`, `hi-debug` | Stuck-point techniques after failed hypotheses or complexity spirals. |
@@ -298,7 +298,7 @@ Most DevKit skills stay single-agent by default. Subagents are used only when th
 | Skill | Spawns agents? | Trigger / condition |
 | --- | --- | --- |
 | `hi-codebase-research-explorer` | Yes, by design | Splits local, external, or hybrid exploration into `1-5` non-overlapping agents. Skips task registration when `<=2` agents or task tools are unavailable. Each agent has a 3-minute timeout. |
-| `hi-cook` | Conditional | Parallel mode launches `fullstack-developer` per phase. Test failures are handled directly for attempts 1-2; attempt 3+ spawns `hi-fix`. Planner and tester agents are explicitly not spawned. |
+| `hi-craft` | Conditional | Parallel mode launches `fullstack-developer` per phase. Test failures are handled directly for attempts 1-2; attempt 3+ spawns `hi-fix`. Planner and tester agents are explicitly not spawned. |
 | `hi-fix` | Conditional | Standard/deep modes can activate `hi-codebase-research-explorer` or `2-3` parallel agents. `--parallel` creates a separate task tree and spawns `fullstack-developer` per independent issue. |
 | `hi-plan` | Conditional | `--full` spawns 1 researcher. `--hard` and `--parallel` use 2 researchers. `--two` uses 2+ researchers for competing approaches. Fast/default mode does not spawn a researcher. |
 | `hi-debug` | Conditional | Multi-component investigations, parallel log/data collection, or CI/CD failures with 3+ possible causes may spawn parallel collection agents. |
@@ -317,7 +317,7 @@ graph TD
 
     E --> H["hi-codebase-research-explorer<br/>1-5 scoped agents"]
     E --> I["hi-plan<br/>researchers by mode"]
-    E --> J["hi-fix / hi-cook<br/>fullstack-developer or hi-fix escalation"]
+    E --> J["hi-fix / hi-craft<br/>fullstack-developer or hi-fix escalation"]
     E --> K["hi-debug<br/>parallel evidence collection"]
     E --> L["hi-log<br/>log-writer"]
     E --> M["hi-repository-search<br/>max 2 investigators"]
@@ -332,7 +332,7 @@ graph TD
     class F synthesis
 ```
 
-### `hi-cook` - Feature Implementation
+### `hi-craft` - Feature Implementation
 
 | Mode | Context | Plan | Review | Test |
 | --- | --- | --- | --- | --- |
@@ -345,7 +345,7 @@ graph TD
 
 ```mermaid
 graph LR
-    A["User request"] --> B["hi-cook"]
+    A["User request"] --> B["hi-craft"]
     B --> C["Plan exists?<br/>hi-plan --fast if missing"]
     C --> D{"Parallel mode?"}
     D -->|no| E["Implement directly"]
@@ -435,7 +435,7 @@ graph LR
 graph TD
     User(["User request"]) --> Detect{"Intent"}
 
-    Detect -->|feature / implementation| Cook["hi-cook"]
+    Detect -->|feature / implementation| Craft["hi-craft"]
     Detect -->|bug / failure| Fix["hi-fix"]
     Detect -->|plan / architecture| Plan["hi-plan"]
     Detect -->|repo question / impact| RepoSearch["hi-repository-search"]
@@ -444,10 +444,10 @@ graph TD
     Detect -->|edge cases / tests| Scenario["hi-scenario"]
     Detect -->|browser task| Chrome["hi-chrome-devtools"]
 
-    Cook -->|missing or stale evidence| RepoSearch
-    Cook -->|plan needed| Plan
-    Cook -->|verification fails repeatedly| Fix
-    Cook -->|final record| Log["hi-log"]
+    Craft -->|missing or stale evidence| RepoSearch
+    Craft -->|plan needed| Plan
+    Craft -->|verification fails repeatedly| Fix
+    Craft -->|final record| Log["hi-log"]
 
     Fix -->|2-5 files| RepoSearch
     Fix -->|large / impact scope| RepoSearch
@@ -474,7 +474,7 @@ graph TD
     classDef utility fill:#fff9c4,stroke:#f57f17,color:#000
     classDef external fill:#f5f5f5,stroke:#333,color:#000
 
-    class Cook,Fix,Plan primary
+    class Craft,Fix,Plan primary
     class RepoSearch,Knows evidence
     class Debug,Security,Scenario,Sequential,ProblemSolving,Codebase-Research-Explorer analysis
     class Log,Org,Chrome utility
@@ -485,7 +485,7 @@ graph TD
 
 | Skill | HARD-GATE | Violation behavior |
 | --- | --- | --- |
-| `hi-cook` | Do not edit until a reviewed plan exists, unless the user explicitly skips planning. | Stop, create or reuse a plan, then continue. |
+| `hi-craft` | Do not edit until a reviewed plan exists, unless the user explicitly skips planning. | Stop, create or reuse a plan, then continue. |
 | `hi-fix` | Do not fix before locating the failure and identifying root cause. | Return to explore/diagnose; after 3 failed fix attempts, question architecture with the user. |
 | `hi-plan` | Scan active plans first and record relevant `blockedBy` / `blocks` relationships. | Update the related plans before producing the new plan. |
 | `hi-repository-search` | Provide traceable evidence only; do not invent context or own implementation decisions. | Report search coverage and ask for details if evidence is missing. |
@@ -510,7 +510,7 @@ dev-kit/
 ├── devkit.md
 ├── hi-cortex/
 ├── hi-chrome-devtools/
-├── hi-cook/
+├── hi-craft/
 ├── hi-debug/
 ├── hi-explore/
 ├── hi-fix/

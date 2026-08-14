@@ -52,4 +52,4 @@ TaskCreate(subject: "Analyze root cause", addBlockedBy: ["{ci-id}", "{server-id}
 
 ## Integration & Errors
 
-Debug tasks are separate from cook/planning phase tasks. After investigation, write the diagnostic report per reporting-standards.md (tasks are session-scoped; report persists). If `TaskCreate` fails: log warning, continue with sequential debugging — tasks add visibility, not core functionality.
+Debug tasks are separate from craft/planning phase tasks. After investigation, write the diagnostic report per reporting-standards.md (tasks are session-scoped; report persists). If `TaskCreate` fails: log warning, continue with sequential debugging — tasks add visibility, not core functionality.
