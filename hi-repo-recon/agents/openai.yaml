@@ -1,0 +1,4 @@
+interface:
+  display_name: "Repository Recon"
+  short_description: "Map repository modules and entry points"
+  default_prompt: "Use $hi-repo-recon to map this repository and its entry points."

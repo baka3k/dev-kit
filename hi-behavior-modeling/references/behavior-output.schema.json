@@ -1,0 +1,32 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://migration-kit.local/schemas/behavior-output-1.0.json",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "scope", "visibility", "source_revision", "generated_at", "status", "views", "gaps"],
+  "properties": {
+    "schema_version": {"const": "1.0"},
+    "scope": {"type": "string", "minLength": 1},
+    "visibility": {"enum": ["internal", "restricted", "public"]},
+    "source_revision": {"type": "string", "minLength": 1},
+    "generated_at": {"type": "string", "format": "date-time"},
+    "status": {"enum": ["succeeded", "partial", "blocked", "failed"]},
+    "views": {"type": "array", "items": {"$ref": "#/$defs/view"}},
+    "gaps": {"type": "array", "items": {"type": "string"}}
+  },
+  "$defs": {
+    "view": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "kind", "evidence_status", "evidence_refs"],
+      "properties": {
+        "id": {"type": "string", "pattern": "^[A-Za-z][A-Za-z0-9_-]*$"},
+        "kind": {"enum": ["sequence", "activity", "state", "event-flow"]},
+        "evidence_status": {"enum": ["verified", "corroborated", "inferred", "unknown", "contradicted"]},
+        "evidence_refs": {"type": "array", "items": {"type": "string"}},
+        "omissions": {"type": "array", "items": {"type": "string"}}
+      },
+      "allOf": [{"if": {"properties": {"evidence_status": {"enum": ["verified", "corroborated"]}}}, "then": {"properties": {"evidence_refs": {"type": "array", "minItems": 1}}}}]
+    }
+  }
+}

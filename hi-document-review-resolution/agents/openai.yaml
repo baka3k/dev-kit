@@ -1,0 +1,4 @@
+interface:
+  display_name: "Document Review Resolution"
+  short_description: "Resolve document comments with an audit ledger"
+  default_prompt: "Use $hi-document-review-resolution to disposition and apply structured document review comments."

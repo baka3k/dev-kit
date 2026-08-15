@@ -1,0 +1,35 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://migration-kit.local/schemas/usecase-output-1.0.json",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "module", "visibility", "source_revision", "generated_at", "status", "usecases", "gaps"],
+  "properties": {
+    "schema_version": {"const": "1.0"},
+    "module": {"type": "string", "minLength": 1},
+    "visibility": {"enum": ["internal", "restricted", "public"]},
+    "source_revision": {"type": "string", "minLength": 1},
+    "generated_at": {"type": "string", "format": "date-time"},
+    "status": {"enum": ["succeeded", "partial", "blocked", "failed"]},
+    "usecases": {"type": "array", "items": {"$ref": "#/$defs/usecase"}},
+    "gaps": {"type": "array", "items": {"type": "string"}}
+  },
+  "$defs": {
+    "usecase": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "actors", "permissions", "business_rules", "related_ids", "test_scenarios", "evidence_status", "evidence_refs"],
+      "properties": {
+        "id": {"type": "string", "pattern": "^UC-[0-9]{3,}$"},
+        "actors": {"type": "array", "items": {"type": "string"}, "minItems": 1},
+        "permissions": {"type": "array", "items": {"type": "string"}},
+        "business_rules": {"type": "array", "items": {"type": "string"}},
+        "related_ids": {"type": "array", "items": {"type": "string"}},
+        "test_scenarios": {"type": "array", "items": {"type": "string"}},
+        "evidence_status": {"enum": ["verified", "corroborated", "inferred", "unknown", "contradicted"]},
+        "evidence_refs": {"type": "array", "items": {"type": "string"}}
+      },
+      "allOf": [{"if": {"properties": {"evidence_status": {"enum": ["verified", "corroborated"]}}}, "then": {"properties": {"evidence_refs": {"type": "array", "minItems": 1}}}}]
+    }
+  }
+}

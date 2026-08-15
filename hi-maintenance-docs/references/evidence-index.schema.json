@@ -1,0 +1,14 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://migration-kit.local/schemas/evidence-index-1.0.json",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "project_identity", "source_revision", "generated_at", "records"],
+  "properties": {
+    "schema_version": {"const": "1.0"},
+    "project_identity": {"type": "object", "required": ["repository"], "properties": {"repository": {"type": "string"}, "project": {"type": "string"}, "database": {"type": "string"}, "collection": {"type": "string"}}, "additionalProperties": false},
+    "source_revision": {"type": "string", "minLength": 1},
+    "generated_at": {"type": "string", "format": "date-time"},
+    "records": {"type": "array", "items": {"type": "object", "required": ["id", "source_path", "retrieval_layer", "claim_type", "status", "confidence", "source_revision", "verified_at"], "properties": {"id": {"type": "string"}, "source_path": {"type": "string", "pattern": "^(?!/)(?!.*\\.\\.).+"}, "anchor": {"type": "string"}, "retrieval_layer": {"enum": ["mind", "graph-semantic", "graph-verified", "serena", "rg"]}, "claim_type": {"type": "string"}, "status": {"enum": ["verified", "corroborated", "inferred", "unknown", "contradicted"]}, "confidence": {"type": "number", "minimum": 0, "maximum": 1}, "source_revision": {"type": "string"}, "verified_at": {"type": "string", "format": "date-time"}, "notes": {"type": "array", "items": {"type": "string"}}}, "additionalProperties": false}}
+  }
+}

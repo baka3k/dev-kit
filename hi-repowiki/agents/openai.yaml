@@ -1,0 +1,4 @@
+interface:
+  display_name: "Repo Wiki Generator"
+  short_description: "Generate comprehensive, evidence-backed repository wikis"
+  default_prompt: "Use $hi-repowiki to generate a comprehensive repository wiki covering architecture, setup, CLI, APIs, data and protocols, testing, deployment, and knowledge cards."

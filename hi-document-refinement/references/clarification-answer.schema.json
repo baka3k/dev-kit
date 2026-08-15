@@ -1,0 +1,32 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://migration-kit.local/schemas/clarification-answer-1.0.json",
+  "title": "Document clarification answers",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "run_id", "base_revision_id", "base_sha256", "cycle", "answers"],
+  "properties": {
+    "schema_version": {"const": "1.0"},
+    "run_id": {"type": "string", "minLength": 1},
+    "base_revision_id": {"type": "string", "pattern": "^r[0-9]{3}(?:-[a-z0-9-]+)?$"},
+    "base_sha256": {"type": "string", "pattern": "^[a-f0-9]{64}$"},
+    "cycle": {"type": "integer", "minimum": 1, "maximum": 2},
+    "answers": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["question_id", "answer", "provided_by", "source", "provenance", "provided_at", "evidence_refs"],
+        "properties": {
+          "question_id": {"type": "string", "pattern": "^CQ-[A-Z0-9_-]+$"},
+          "answer": {"type": ["string", "boolean", "array"], "items": {"type": "string"}},
+          "provided_by": {"type": "string", "minLength": 1},
+          "source": {"enum": ["user", "domain_owner", "reviewer", "external_document"]},
+          "provenance": {"enum": ["human_declared", "reviewer_declared", "unverified_external"]},
+          "provided_at": {"type": "string", "format": "date-time"},
+          "evidence_refs": {"type": "array", "items": {"type": "string"}, "uniqueItems": true}
+        }
+      }
+    }
+  }
+}

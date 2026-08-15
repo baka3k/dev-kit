@@ -1,0 +1,4 @@
+interface:
+  display_name: "Behavior Modeling"
+  short_description: "Model technical behavior, state, and event flows"
+  default_prompt: "Use $hi-behavior-modeling to reconstruct technical sequence and state behavior."

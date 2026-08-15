@@ -1,0 +1,4 @@
+interface:
+  display_name: "Command Spec Discovery"
+  short_description: "Reconstruct code-backed command specifications"
+  default_prompt: "Use $hi-command-spec-discovery to reconstruct a command specification and class, sequence, and state diagrams from code."

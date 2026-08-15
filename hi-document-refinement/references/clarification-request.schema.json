@@ -1,0 +1,36 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://migration-kit.local/schemas/clarification-request-1.0.json",
+  "title": "Document clarification requests",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "run_id", "base_revision_id", "base_sha256", "cycle", "status", "questions"],
+  "properties": {
+    "schema_version": {"const": "1.0"},
+    "run_id": {"type": "string", "minLength": 1},
+    "base_revision_id": {"type": "string", "pattern": "^r[0-9]{3}(?:-[a-z0-9-]+)?$"},
+    "base_sha256": {"type": "string", "pattern": "^[a-f0-9]{64}$"},
+    "cycle": {"type": "integer", "minimum": 1, "maximum": 2},
+    "status": {"enum": ["open", "waiting_for_input", "resolved", "blocked"]},
+    "questions": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["id", "artifact_id", "anchor", "ambiguity", "rationale", "blocking", "answer_type", "choices", "evidence_refs", "state"],
+        "properties": {
+          "id": {"type": "string", "pattern": "^CQ-[A-Z0-9_-]+$"},
+          "artifact_id": {"type": "string", "minLength": 1},
+          "anchor": {"type": "string", "minLength": 1},
+          "ambiguity": {"type": "string", "minLength": 1},
+          "rationale": {"type": "string", "minLength": 1},
+          "blocking": {"type": "boolean"},
+          "answer_type": {"enum": ["free_text", "single_choice", "multi_choice", "boolean"]},
+          "choices": {"type": "array", "items": {"type": "string", "minLength": 1}, "uniqueItems": true},
+          "evidence_refs": {"type": "array", "items": {"type": "string"}, "uniqueItems": true},
+          "state": {"enum": ["open", "answered", "deferred"]}
+        }
+      }
+    }
+  }
+}

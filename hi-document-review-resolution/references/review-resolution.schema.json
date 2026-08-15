@@ -1,0 +1,36 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://migration-kit.local/schemas/review-resolution-1.0.json",
+  "title": "Document review resolution ledger",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "run_id", "base_revision_id", "base_sha256", "review_round", "candidate_revision_id", "candidate_sha256", "resolutions", "changed_artifact_ids", "validation_status"],
+  "properties": {
+    "schema_version": {"const": "1.0"},
+    "run_id": {"type": "string", "minLength": 1},
+    "base_revision_id": {"type": "string", "pattern": "^r[0-9]{3}(?:-[a-z0-9-]+)?$"},
+    "base_sha256": {"type": "string", "pattern": "^[a-f0-9]{64}$"},
+    "review_round": {"type": "integer", "minimum": 1},
+    "candidate_revision_id": {"type": ["string", "null"], "pattern": "^r[0-9]{3}(?:-[a-z0-9-]+)?$"},
+    "candidate_sha256": {"type": ["string", "null"], "pattern": "^[a-f0-9]{64}$"},
+    "resolutions": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["comment_id", "idempotency_key", "disposition", "rationale", "applied_revision_id", "changed_artifact_ids", "evidence_impact"],
+        "properties": {
+          "comment_id": {"type": "string", "pattern": "^RC-[A-Z0-9_-]+$"},
+          "idempotency_key": {"type": "string", "pattern": "^[a-f0-9]{64}$"},
+          "disposition": {"enum": ["accepted", "rejected", "needs_information", "duplicate", "stale", "out_of_scope", "unsupported_by_evidence"]},
+          "rationale": {"type": "string", "minLength": 1},
+          "applied_revision_id": {"type": ["string", "null"]},
+          "changed_artifact_ids": {"type": "array", "items": {"type": "string"}, "uniqueItems": true},
+          "evidence_impact": {"enum": ["preserved", "corroborated", "downgraded", "contradicted", "none"]}
+        }
+      }
+    },
+    "changed_artifact_ids": {"type": "array", "items": {"type": "string"}, "uniqueItems": true},
+    "validation_status": {"enum": ["passed", "failed", "skipped_no_changes"]}
+  }
+}

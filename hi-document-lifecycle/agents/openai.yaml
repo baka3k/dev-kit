@@ -1,0 +1,4 @@
+interface:
+  display_name: "Document Lifecycle"
+  short_description: "Run a three-phase documentation lifecycle"
+  default_prompt: "Use $hi-document-lifecycle to generate, clarify, refine, and review a scoped document."

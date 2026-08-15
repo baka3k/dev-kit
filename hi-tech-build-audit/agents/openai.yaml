@@ -1,0 +1,4 @@
+interface:
+  display_name: "Tech Build Audit"
+  short_description: "Audit stack, build, CI/CD, and deployment"
+  default_prompt: "Use $hi-tech-build-audit to audit this repository build and deployment setup."

@@ -1,0 +1,27 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://migration-kit.local/schemas/diagram-render-result-1.0.json",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "run_id", "records"],
+  "properties": {
+    "schema_version": {"const": "1.0"},
+    "run_id": {"type": "string", "minLength": 1},
+    "records": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["source_artifact_id", "source_sha256", "output_path", "output_sha256", "renderer", "status"],
+        "properties": {
+          "source_artifact_id": {"type": "string", "pattern": "^[A-Za-z0-9._-]+(?:#mermaid-[1-9][0-9]*)?$"},
+          "source_sha256": {"type": "string", "pattern": "^[a-f0-9]{64}$"},
+          "output_path": {"type": "string", "pattern": "^(?!/)(?!.*\\.\\.).+"},
+          "output_sha256": {"type": "string", "pattern": "^[a-f0-9]{64}$"},
+          "renderer": {"type": "string", "minLength": 1},
+          "status": {"enum": ["passed", "failed"]}
+        }
+      }
+    }
+  }
+}

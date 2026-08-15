@@ -1,0 +1,4 @@
+interface:
+  display_name: "Document Refinement"
+  short_description: "Clarify semantics and improve supported diagrams"
+  default_prompt: "Use $hi-document-refinement to analyze and apply evidence-compatible document refinements."

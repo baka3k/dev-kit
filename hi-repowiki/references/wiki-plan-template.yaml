@@ -1,0 +1,61 @@
+version: 1
+
+# Wiki configuration
+repowiki:
+  # Template type: "architecture" for technical analysis, "product_requirement" for product docs
+  template: "architecture"
+
+  # Topic coverage: comprehensive evaluates the full evidence-driven baseline taxonomy.
+  # focused evaluates only included facets and explicitly planned documents.
+  coverage:
+    profile: "comprehensive"
+    include: []
+    # Example: ["protocol.capabilities", "data.schema"]
+    exclude: []
+    # Example: ["troubleshooting.faq"]
+    max_depth: 3
+
+  # Guidance prompts injected during page planning to steer generation focus
+  notes:
+    - text: "Focus on core business workflows and integration points"
+      author: ""
+    - text: "Target audience: new engineers joining the team"
+      author: ""
+
+  # Page allowlist — when non-empty, ONLY these pages are generated (strict mode)
+  # When empty, pages are derived automatically from evidence
+  documents: []
+  # To enable strict mode, replace [] with entries such as:
+  # documents:
+  #   - title: "System Architecture Overview"
+  #     goal: "Describe the overall system architecture and core modules"
+  #     facets: ["core.overview", "core.architecture"]
+  #     order: 10
+  #   - title: "Authentication Flow"
+  #     goal: "Explain the full authentication lifecycle"
+  #     parent: "System Architecture Overview"
+  #     hints: "Include sequence diagram for OAuth flow"
+  #     facets: ["protocol.security"]
+  #     order: 20
+
+# Knowledge card configuration
+knowledgecard:
+  # Guidance prompts influencing module partitioning and card content
+  notes:
+    - text: "Focus on modeling the core domain subsystem"
+      author: ""
+
+# File scope — controls which files are visible during generation
+# Uses .gitignore syntax
+scope:
+  include: []
+  # Example: ["src/**", "lib/**"]
+  exclude:
+    - "**/node_modules/**"
+    - "**/vendor/**"
+    - "**/.git/**"
+    - "**/dist/**"
+    - "**/build/**"
+    - "**/__pycache__/**"
+    - "**/*.generated.*"
+    - "**/*.min.*"

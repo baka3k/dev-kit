@@ -1,0 +1,4 @@
+interface:
+  display_name: "API Contract Discovery"
+  short_description: "Reconstruct evidence-backed API and event contracts"
+  default_prompt: "Use $hi-api-contract-discovery to reconstruct HTTP and event contracts for this service."

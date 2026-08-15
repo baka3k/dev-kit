@@ -1,0 +1,4 @@
+interface:
+  display_name: "Data Model Discovery"
+  short_description: "Reconstruct data models, ownership, and lifecycle"
+  default_prompt: "Use $hi-data-model-discovery to reconstruct persistent and logical data models for this module."

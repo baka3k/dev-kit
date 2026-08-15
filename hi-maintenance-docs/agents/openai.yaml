@@ -1,0 +1,4 @@
+interface:
+  display_name: "Maintenance Documentation"
+  short_description: "Build a navigable evidence-backed maintenance pack"
+  default_prompt: "Use $hi-maintenance-docs to build a complete maintenance documentation pack for this repository."

@@ -1,0 +1,4 @@
+interface:
+  display_name: "Cross-Artifact Validation"
+  short_description: "Validate consistency across discovery outputs"
+  default_prompt: "Use $hi-cross-artifact-validation to validate consistency across all discovery domain artifacts."

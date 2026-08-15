@@ -1,0 +1,4 @@
+interface:
+  display_name: "Module Summary Report"
+  short_description: "Synthesize module evidence and architecture risks"
+  default_prompt: "Use $hi-module-summary-report to synthesize these discovery artifacts."

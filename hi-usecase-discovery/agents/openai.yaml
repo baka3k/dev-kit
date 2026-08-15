@@ -1,0 +1,4 @@
+interface:
+  display_name: "Use-Case Discovery"
+  short_description: "Exhaustively trace business use cases"
+  default_prompt: "Use $hi-usecase-discovery to inventory this module and exhaustively trace its evidence-backed business use cases."

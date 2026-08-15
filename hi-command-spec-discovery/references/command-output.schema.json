@@ -1,0 +1,81 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "command-output.schema.json",
+  "title": "Command Discovery Index",
+  "type": "object",
+  "required": ["schema_version", "source_revision", "status", "commands", "coverage", "gaps"],
+  "properties": {
+    "schema_version": {"const": "1.0"},
+    "source_revision": {"type": "string", "minLength": 1},
+    "status": {"enum": ["succeeded", "partial", "blocked", "failed"]},
+    "commands": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["id", "name", "evidence_status", "document", "definition", "request_fields", "response_fields", "status_words", "diagrams", "evidence_refs"],
+        "properties": {
+          "id": {"type": "string", "minLength": 1},
+          "name": {"type": "string", "minLength": 1},
+          "evidence_status": {"enum": ["verified", "corroborated", "inferred", "unknown", "contradicted"]},
+          "document": {"type": "string", "pattern": "^commands/[^/]+\\.md$"},
+          "definition": {
+            "type": "object",
+            "required": ["command_line", "response_line"],
+            "properties": {
+              "command_line": {"type": "string"},
+              "response_line": {"type": "string"}
+            },
+            "additionalProperties": false
+          },
+          "request_fields": {"$ref": "#/$defs/fields"},
+          "response_fields": {"$ref": "#/$defs/fields"},
+          "status_words": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": ["value", "meaning", "evidence_refs"],
+              "properties": {
+                "value": {"type": "string", "pattern": "^(0x)?[0-9A-Fa-f]{2,8}$"},
+                "meaning": {"type": "string"},
+                "evidence_refs": {"type": "array", "items": {"type": "string"}, "minItems": 1}
+              },
+              "additionalProperties": false
+            }
+          },
+          "diagrams": {
+            "type": "object",
+            "required": ["class", "sequence", "state"],
+            "properties": {
+              "class": {"type": ["string", "null"]},
+              "sequence": {"type": ["string", "null"]},
+              "state": {"type": ["string", "null"]}
+            },
+            "additionalProperties": false
+          },
+          "evidence_refs": {"type": "array", "items": {"type": "string"}, "minItems": 1}
+        },
+        "additionalProperties": false
+      }
+    },
+    "coverage": {"type": "object"},
+    "gaps": {"type": "array", "items": {"type": "string"}}
+  },
+  "$defs": {
+    "fields": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["tag", "length_bytes", "description", "required", "evidence_refs"],
+        "properties": {
+          "tag": {"type": "string", "pattern": "^(0x)?[0-9A-Fa-f]+$"},
+          "length_bytes": {"type": ["integer", "string"], "minimum": 0},
+          "description": {"type": "string"},
+          "required": {"type": "boolean"},
+          "evidence_refs": {"type": "array", "items": {"type": "string"}, "minItems": 1}
+        },
+        "additionalProperties": false
+      }
+    }
+  },
+  "additionalProperties": false
+}

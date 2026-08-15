@@ -1,0 +1,118 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://local.invalid/hi-repowiki/topic-coverage.schema.json",
+  "title": "Repo Wiki Topic Coverage",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "mode", "profile", "source_revision", "facets"],
+  "properties": {
+    "schema_version": { "const": "1.0" },
+    "mode": { "enum": ["generate", "update", "plan-only"] },
+    "profile": { "enum": ["comprehensive", "focused"] },
+    "source_revision": { "type": "string", "minLength": 1 },
+    "facets": {
+      "type": "array",
+      "minItems": 1,
+      "items": { "$ref": "#/$defs/facet" }
+    }
+  },
+  "$defs": {
+    "facet": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "status", "reason", "evidence", "checks", "pages", "merged_into"],
+      "properties": {
+        "id": {
+          "enum": [
+            "core.overview",
+            "core.architecture",
+            "core.extension_points",
+            "installation.prerequisites",
+            "installation.platforms",
+            "installation.database",
+            "installation.environment",
+            "installation.security_production",
+            "cli.commands",
+            "cli.build_automation",
+            "cli.context_projects",
+            "cli.scripting",
+            "languages.supported",
+            "languages.legacy",
+            "languages.scripting_web",
+            "languages.custom_analyzers",
+            "frameworks.detected",
+            "frameworks.generic",
+            "frameworks.custom_overlays",
+            "data.schema",
+            "data.drivers",
+            "data.operations_api",
+            "data.ingestion",
+            "protocol.server_architecture",
+            "protocol.capabilities",
+            "protocol.clients_sdk",
+            "protocol.security",
+            "query.interfaces",
+            "query.search",
+            "incremental.change_detection",
+            "incremental.sync",
+            "api.http_events",
+            "api.internal_extensions",
+            "testing.strategy",
+            "testing.commands",
+            "testing.validation",
+            "operations.deployment",
+            "operations.observability",
+            "operations.scaling_recovery",
+            "developer.workflow",
+            "developer.extension",
+            "troubleshooting.failures",
+            "troubleshooting.faq"
+          ]
+        },
+        "status": {
+          "enum": ["planned", "documented", "merged", "not_applicable", "unknown", "blocked", "excluded_by_plan"]
+        },
+        "reason": { "type": "string", "minLength": 1 },
+        "evidence": {
+          "type": "array",
+          "items": { "type": "string", "minLength": 1 },
+          "uniqueItems": true
+        },
+        "checks": {
+          "type": "array",
+          "items": { "type": "string", "minLength": 1 },
+          "uniqueItems": true
+        },
+        "pages": {
+          "type": "array",
+          "items": { "type": "string", "minLength": 1 },
+          "uniqueItems": true
+        },
+        "merged_into": { "type": ["string", "null"] }
+      },
+      "allOf": [
+        {
+          "if": { "properties": { "status": { "enum": ["planned", "documented", "merged"] } }, "required": ["status"] },
+          "then": {
+            "properties": {
+              "evidence": { "minItems": 1 },
+              "pages": { "minItems": 1 }
+            }
+          }
+        },
+        {
+          "if": { "properties": { "status": { "const": "merged" } }, "required": ["status"] },
+          "then": { "properties": { "merged_into": { "type": "string", "minLength": 1 } } }
+        },
+        {
+          "if": { "properties": { "status": { "const": "documented" } }, "required": ["status"] },
+          "then": { "properties": { "merged_into": { "type": "null" } } }
+        },
+        {
+          "if": { "properties": { "status": { "enum": ["not_applicable", "unknown", "blocked"] } }, "required": ["status"] },
+          "then": { "properties": { "checks": { "minItems": 1 } } }
+        }
+      ]
+    }
+  }
+}

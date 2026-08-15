@@ -1,0 +1,86 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://migration-kit.local/schemas/maintenance-manifest-1.0.json",
+  "title": "Maintenance documentation manifest",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "run_id", "status", "visibility", "source_revision", "generated_at", "validator_version", "freshness", "review_state", "project_identity", "requested_modes", "stages", "artifacts", "evidence", "warnings", "gaps"],
+  "properties": {
+    "schema_version": {"const": "1.0"},
+    "run_id": {"type": "string", "minLength": 1},
+    "status": {"enum": ["running", "succeeded", "partial", "blocked", "failed"]},
+    "visibility": {"enum": ["internal", "restricted", "public"]},
+    "source_revision": {"type": "string", "minLength": 1},
+    "generated_at": {"type": "string", "format": "date-time"},
+    "validator_version": {"type": "string", "minLength": 1},
+    "freshness": {"enum": ["current", "possibly_stale", "stale", "unverifiable"]},
+    "review_state": {"enum": ["unreviewed", "reviewed", "approved"]},
+    "project_identity": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["repository"],
+      "properties": {
+        "repository": {"type": "string", "minLength": 1},
+        "project": {"type": "string"},
+        "database": {"type": "string"},
+        "collection": {"type": "string"}
+      }
+    },
+    "requested_modes": {"type": "array", "items": {"enum": ["system", "usecase", "behavior", "api", "data"]}, "uniqueItems": true},
+    "stages": {"type": "array", "items": {"$ref": "#/$defs/stage"}},
+    "artifacts": {"type": "array", "items": {"$ref": "#/$defs/artifact"}},
+    "evidence": {"type": "array", "items": {"$ref": "#/$defs/evidence"}},
+    "warnings": {"type": "array", "items": {"type": "string"}},
+    "gaps": {"type": "array", "items": {"type": "string"}},
+    "resume_state": {"type": "object"}
+  },
+  "$defs": {
+    "stage": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "producer", "status", "output_root"],
+      "properties": {
+        "id": {"type": "string", "minLength": 1},
+        "producer": {"type": "string", "pattern": "^hi-"},
+        "status": {"enum": ["pending", "running", "succeeded", "partial", "blocked", "failed", "omitted"]},
+        "output_root": {"type": "string", "minLength": 1},
+        "dependencies": {"type": "array", "items": {"type": "string"}}
+      }
+    },
+    "artifact": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "path", "sha256", "producer", "status"],
+      "properties": {
+        "id": {"type": "string", "minLength": 1},
+        "path": {"type": "string", "pattern": "^(?!/)(?!.*\\.\\.).+"},
+        "sha256": {"type": "string", "pattern": "^[a-f0-9]{64}$"},
+        "producer": {"type": "string", "pattern": "^hi-"},
+        "status": {"enum": ["verified", "partial", "omitted", "stale"]},
+        "evidence_refs": {"type": "array", "items": {"type": "string"}}
+      }
+    },
+    "evidence": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "source_path", "retrieval_layer", "claim_type", "status", "confidence", "source_revision", "verified_at"],
+      "properties": {
+        "id": {"type": "string", "minLength": 1},
+        "source_path": {"type": "string", "pattern": "^(?!/)(?!.*\\.\\.).+"},
+        "anchor": {"type": "string"},
+        "repository": {"type": "string"},
+        "project": {"type": "string"},
+        "database": {"type": "string"},
+        "collection": {"type": "string"},
+        "retrieval_layer": {"enum": ["mind", "graph-semantic", "graph-verified", "serena", "rg"]},
+        "claim_type": {"type": "string", "minLength": 1},
+        "relation": {"type": "string"},
+        "status": {"enum": ["verified", "corroborated", "inferred", "unknown", "contradicted"]},
+        "confidence": {"type": "number", "minimum": 0, "maximum": 1},
+        "source_revision": {"type": "string", "minLength": 1},
+        "verified_at": {"type": "string", "format": "date-time"},
+        "notes": {"type": "array", "items": {"type": "string"}}
+      }
+    }
+  }
+}

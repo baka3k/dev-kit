@@ -1,0 +1,42 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://migration-kit.local/schemas/documentation-leaf-manifest-1.0.json",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "producer", "status", "visibility", "source_revision", "generated_at", "project_identity", "output_root", "artifacts", "evidence", "warnings", "gaps"],
+  "properties": {
+    "schema_version": {"enum": ["1.0", "1.1"]},
+    "producer": {"enum": ["hi-usecase-discovery", "hi-behavior-modeling", "hi-api-contract-discovery", "hi-data-model-discovery", "hi-command-spec-discovery", "hi-document-refinement", "hi-document-review-resolution"]},
+    "status": {"enum": ["succeeded", "partial", "blocked", "failed"]},
+    "visibility": {"enum": ["internal", "restricted", "public"]},
+    "source_revision": {"type": "string", "minLength": 1},
+    "generated_at": {"type": "string", "format": "date-time"},
+    "project_identity": {"type": "object", "required": ["repository"], "properties": {"repository": {"type": "string", "minLength": 1}, "project": {"type": "string"}, "database": {"type": "string"}, "collection": {"type": "string"}}, "additionalProperties": false},
+    "output_root": {"type": "string", "pattern": "^(?!/)(?!.*\\.\\.).+"},
+    "artifacts": {"type": "array", "items": {"type": "object", "required": ["id", "path", "sha256", "status", "evidence_refs"], "properties": {"id": {"type": "string"}, "path": {"type": "string", "pattern": "^(?!/)(?!.*\\.\\.).+"}, "sha256": {"type": "string", "pattern": "^[a-f0-9]{64}$"}, "status": {"enum": ["verified", "partial", "omitted", "stale"]}, "evidence_refs": {"type": "array", "items": {"type": "string"}}}, "additionalProperties": false}},
+    "evidence": {"type": "array", "items": {"type": "object", "required": ["id", "source_path", "retrieval_layer", "status", "source_revision"], "properties": {"id": {"type": "string"}, "source_path": {"type": "string", "pattern": "^(?!/)(?!.*\\.\\.).+"}, "retrieval_layer": {"enum": ["mind", "graph-semantic", "graph-verified", "serena", "rg", "human_declared", "reviewer_declared", "unverified_external"]}, "status": {"enum": ["verified", "corroborated", "inferred", "unknown", "contradicted", "declared", "unverified"]}, "source_revision": {"type": "string"}}, "additionalProperties": false}},
+    "warnings": {"type": "array", "items": {"type": "string"}},
+    "gaps": {"type": "array", "items": {"type": "string"}},
+    "resume_state": {"type": "object"},
+    "base_revision_id": {"type": "string", "pattern": "^r[0-9]{3}(?:-[a-z0-9-]+)?$"},
+    "base_sha256": {"type": "string", "pattern": "^[a-f0-9]{64}$"},
+    "candidate_revision_id": {"type": ["string", "null"], "pattern": "^r[0-9]{3}(?:-[a-z0-9-]+)?$"},
+    "candidate_sha256": {"type": ["string", "null"], "pattern": "^[a-f0-9]{64}$"},
+    "changed_artifact_ids": {"type": "array", "items": {"type": "string"}, "uniqueItems": true},
+    "input_record_ids": {"type": "array", "items": {"type": "string"}, "uniqueItems": true},
+    "resolution_record_ids": {"type": "array", "items": {"type": "string"}, "uniqueItems": true}
+  },
+  "allOf": [
+    {
+      "if": {"properties": {"producer": {"enum": ["hi-document-refinement", "hi-document-review-resolution"]}}, "required": ["producer"]},
+      "then": {
+        "properties": {"schema_version": {"const": "1.1"}},
+        "required": ["base_revision_id", "base_sha256", "candidate_revision_id", "candidate_sha256", "changed_artifact_ids", "input_record_ids", "resolution_record_ids"]
+      }
+    },
+    {
+      "if": {"properties": {"candidate_revision_id": {"type": "string"}}, "required": ["candidate_revision_id"]},
+      "then": {"properties": {"artifacts": {"type": "array", "minItems": 1}}}
+    }
+  ]
+}

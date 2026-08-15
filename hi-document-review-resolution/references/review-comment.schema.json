@@ -1,0 +1,36 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://migration-kit.local/schemas/review-comment-1.0.json",
+  "title": "Structured document review comments",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "run_id", "base_revision_id", "base_sha256", "review_round", "comments"],
+  "properties": {
+    "schema_version": {"const": "1.0"},
+    "run_id": {"type": "string", "minLength": 1},
+    "base_revision_id": {"type": "string", "pattern": "^r[0-9]{3}(?:-[a-z0-9-]+)?$"},
+    "base_sha256": {"type": "string", "pattern": "^[a-f0-9]{64}$"},
+    "review_round": {"type": "integer", "minimum": 1},
+    "comments": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["id", "artifact_id", "anchor", "severity", "requested_change", "author", "source", "provenance", "visibility", "created_at", "evidence_refs"],
+        "properties": {
+          "id": {"type": "string", "pattern": "^RC-[A-Z0-9_-]+$"},
+          "artifact_id": {"type": "string", "minLength": 1},
+          "anchor": {"type": "string", "minLength": 1},
+          "severity": {"enum": ["blocking", "major", "minor", "suggestion"]},
+          "requested_change": {"type": "string", "minLength": 1},
+          "author": {"type": "string", "minLength": 1},
+          "source": {"enum": ["user", "reviewer", "domain_owner", "external_document"]},
+          "provenance": {"enum": ["human_declared", "reviewer_declared", "unverified_external"]},
+          "visibility": {"enum": ["internal", "restricted", "public"]},
+          "created_at": {"type": "string", "format": "date-time"},
+          "evidence_refs": {"type": "array", "items": {"type": "string"}, "uniqueItems": true}
+        }
+      }
+    }
+  }
+}
