@@ -1,0 +1,4 @@
+interface:
+  display_name: "Hi Brainstorm"
+  short_description: "Expert debate and scored solution selection."
+  default_prompt: "Use $hi-brainstorm to generate, challenge, score, and select the best solution before implementation."

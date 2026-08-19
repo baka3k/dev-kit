@@ -151,6 +151,7 @@ Set `CLAUDE_CONFIG_DIR`, `CODEX_HOME`, or `XDG_CONFIG_HOME` to override the base
 | Directory | Skill name | Purpose |
 | --- | --- | --- |
 | `hi-scenario/` | `hi-scenario` | Edge-case and test-scenario generation across 12 dimensions. |
+| `hi-brainstorm/` | `hi-brainstorm` | Independent expert ideation, rebuttal, weighted scoring, and solution selection before implementation. |
 | `hi-predict/` | `hi-predict` | Five-persona pre-analysis before risky features, refactors, or releases. |
 | `hi-security/` | `hi-security` | STRIDE + OWASP security audit with MCP-assisted code analysis and optional iterative auto-fix. |
 | `hi-sequential-thinking/` | `hi-sequential-thinking` | Step-by-step reasoning with revision, branching, and hypothesis testing. |
