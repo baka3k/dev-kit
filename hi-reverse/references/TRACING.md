@@ -13,8 +13,8 @@ Trace `<USE_CASE>` in `<MODULE>` from observable trigger to terminal outcome, in
 1. Re-query the use case with business, state, integration, side-effect, and failure wording; do not rely only on discovery labels.
 2. Use `semantic_search(expand_graph:false)` to resolve trigger, entry, handler, and outcome candidates from Qdrant.
 3. Run `explore_graph` for each anchor with separate caller/trigger and callee/outcome relationship intents.
-4. Run vertical graph traversal for each retained anchor: upstream callers/triggers, downstream callees/outcomes, and bidirectional context for uncertain roles.
-5. Run focused graph path queries for trigger -> handler and handler -> outcome with `find_paths`/`trace_flow`, retaining direct, possible, IPC, callback, shared-state, and unknown relationships as returned.
+4. Run `query_subgraph(direction:"all", max_depth:2)` for full context around each retained anchor; use `upstream` for callers/triggers and `downstream` for callees/outcomes when only one side is material.
+5. Use `trace_flow` with direction `out` or `in`, selected `rel_types`, and `max_depth:6` for direct, possible, IPC, callback, and shared-state expansion. Use `find_paths` for trigger -> handler and handler -> outcome when both endpoint IDs are known, retaining unknown relationships without upgrading them.
 6. At every break, query callback/virtual/function-pointer registration, IPC sender/receiver/handler, cross-module boundaries, shared state, and message IDs.
 7. Run `reconstruct_flow` only on compatible path candidates already returned by graph traversal; preserve uncertainty fields.
 8. Query workflow ownership and impact semantically when workflow concepts appear in Graph-RAG evidence.

@@ -35,9 +35,11 @@ If a tool is unavailable, record it once and continue without retrying. Stop des
 
 1. Reuse a confirmed project; otherwise discover and activate it once.
 2. Search narrowly. Treat semantic matches as candidates, not proof.
-3. Verify important claims with direct code, symbol relationships, call paths, or document passages.
-4. Trace only relationships required by the question; cap depth and result count.
-5. Return an Evidence Bundle. Never fabricate missing context.
+3. When only a function name is known, resolve it with `search_functions(query, parser_type)` and retain the returned node ID before graph traversal.
+4. Route graph work by intent: `query_subgraph` for one-function context, `trace_flow` for relationship-filtered expansion, `find_paths` for a known start and end, and `analyze_workflow_impact` for workflow blast radius.
+5. Verify important claims with direct code, symbol relationships, call paths, or document passages.
+6. Trace only relationships required by the question; cap depth and result count.
+7. Return an Evidence Bundle. Never fabricate missing context.
 
 Evidence is sufficient when it identifies the relevant source, supports required relationships, separates facts from inference, and exposes conflicts or gaps.
 

@@ -52,10 +52,10 @@ The following is the complete `graph_mcp` set used by this skill when present. â
 
 | Function | Use | Minimum input | Mode |
 | --- | --- | --- | --- |
-| `query_subgraph` | Expand callers/callees around one queue item in controlled waves. | `function_id`, direction/depth/relationships | Core |
+| `query_subgraph` | Quickly expand one function: `all` callers/callees (default), `upstream` callers, or `downstream` callees. | `function_id`; optional direction, depth 2, parser | Core |
 | `find_paths` | Prove a path between an entry/branch and a terminal symbol. | start and end IDs | Core |
 | `find_path_between_module` | Discover crossings between the selected module and named neighbors. | source and target module tokens | Core when neighbors exist |
-| `trace_flow` | Validate a specific start-to-end flow with selected relationship types. | start/end IDs | Core |
+| `trace_flow` | Expand from one anchor with selected direct/possible/function-pointer/callback relationships, up to depth 6. | `start_id`, `direction` (`out`/`in`), `rel_types` | Core when indirect traversal matters |
 | `trace_flow_between_module` | Validate cross-module flows and direction. | source/target module tokens | Core when crossings exist |
 | `reconstruct_flow` | Convert already verified path JSON into an ordered narrative. | entry-context JSON and paths JSON | Conditional presentation step |
 
@@ -111,9 +111,9 @@ For every canonical module path token:
 Use semantic results only as seeds. Confirm each seed through stable graph IDs and source locations.
 
 1. Search behavior/domain queries with `semantic_search` or `explore_graph` only inside a verified project collection.
-2. Search discovered names with `search_functions`; search routes, messages, data IDs, error strings, SQL, writes, and emitted events with `search_by_code`.
-3. Add retained IDs to the tracing queue. Expand each with `query_subgraph` in increasing depth waves and explicit relationship types.
-4. Prove candidate endpoints with `find_paths` and `trace_flow`. Use module variants whenever a path crosses the selected module boundary.
+2. Search discovered names with `search_functions(query, parser_type)` and retain the returned node IDs; search routes, messages, data IDs, error strings, SQL, writes, and emitted events with `search_by_code`.
+3. Add retained IDs to the tracing queue. Start with `query_subgraph(direction:"all", max_depth:2)`; use `upstream` for callers and `downstream` for callees when only one side is material.
+4. Use `trace_flow` with direction `out` or `in`, `rel_types:["CALLS","POSSIBLE_CALLS"]`, and `max_depth:6` for indirect/callback-aware expansion. Use `find_paths` when both candidate endpoint IDs are known, and module variants at module boundaries.
 5. Query `list_possible_calls` for every unresolved dispatch/callback site and `get_ipc_message` for every sender/receiver clue.
 6. Run applicable workflow/UI/API bridge tools. Provider errors remain explicit gaps and trigger Serena/`rg` reconciliation.
 7. Call `reconstruct_flow` only with path objects already retained in the evidence ledger. It formats evidence; it does not create proof.

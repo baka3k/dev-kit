@@ -99,8 +99,8 @@ Reject cross-project or cross-module mismatches. Do not call provider-ambiguous 
 For every retained trigger, entry candidate, business handler, adapter, side effect, and recovery anchor:
 
 1. issue a focused `explore_graph` query naming the anchor, module, role, and desired direction;
-2. run vertical graph traversal from the retained node IDs: callers/triggers with `query_subgraph(direction:"in")`, callees/outcomes with `query_subgraph(direction:"out")`, and bidirectional context with `query_subgraph(direction:"both")` when roles are unclear;
-3. connect trigger -> handler and handler -> outcome anchors with `find_paths` or `trace_flow`, using `CALLS`, `POSSIBLE_CALLS`, callback/function-pointer, IPC/message, and shared-state relationship types when live metadata exposes them;
+2. resolve name-only anchors with `search_functions(query, parser_type)` when the live provider route is safe, then run `query_subgraph(direction:"all", max_depth:2)` for bidirectional context, `upstream` for callers/triggers, or `downstream` for callees/outcomes;
+3. use `trace_flow` with direction `out` or `in`, selected `rel_types`, and `max_depth:6` for `CALLS`, `POSSIBLE_CALLS`, callback/function-pointer, IPC/message, and shared-state relationships; use `find_paths` to connect trigger -> handler or handler -> outcome when both endpoint IDs are known;
 4. trace module boundaries with `find_path_between_module` or `trace_flow_between_module` for retained external modules;
 5. retain all returned paths and uncertain relationships without upgrading them;
 6. use `reconstruct_flow` only when graph traversal returned path candidates in a compatible shape;
@@ -127,7 +127,8 @@ The default provider-safe graph calls are:
 - `semantic_search` with `expand_graph:false`
 - `explore_graph` with explicit `parser_type` (e.g. `parser_type:"cplus"`)
 - `query_subgraph` for retained node IDs when live metadata lists the tool
-- `find_paths` or `trace_flow` for retained start/end node IDs when live metadata lists the tool
+- `trace_flow` from a retained start node with explicit direction and relationship types when live metadata lists the tool
+- `find_paths` for retained start/end node IDs when live metadata lists the tool
 - `find_path_between_module` or `trace_flow_between_module` for retained module pairs when live metadata lists the tool
 - `reconstruct_flow` for already returned paths
 

@@ -240,6 +240,27 @@ Adds an annotation (notes, tags, or severity level) to a node for code review or
 
 ## Call Graph & Tracing
 
+### Trace routing contract
+
+Resolve a function name to a stable graph ID before tracing:
+
+```text
+search_functions(query="<function_name>", parser_type="<type>")
+```
+
+Retain the returned `node_id`/`symbol_id`, then select the narrowest tool that answers the question:
+
+| Intent | Tool | Key routing |
+| --- | --- | --- |
+| One function, all nearby callers and callees | `query_subgraph` | `direction:"all"`, default, normally `max_depth:2` |
+| Callers only | `query_subgraph` | `direction:"upstream"` |
+| Callees only | `query_subgraph` | `direction:"downstream"` |
+| Relationship-filtered expansion, including possible calls, function pointers, or callbacks | `trace_flow` | `direction:"out"` or `"in"`, selected `rel_types`, up to `max_depth:6` |
+| A known start function to a known end function | `find_paths` | pass both stable function IDs |
+| Workflows affected by changing a function | `analyze_workflow_impact` | pass the stable function ID; retain severity and risk evidence |
+
+Use `query_subgraph` for the fast neighborhood view. Use `trace_flow` when relationship selection or deeper indirect traversal is material. Do not substitute either for `find_paths` when both endpoints are known.
+
 ### `query_subgraph`
 
 Retrieves the call graph context around a function: its callers (who calls it) and its callees (who it calls).
@@ -247,9 +268,9 @@ Retrieves the call graph context around a function: its callers (who calls it) a
 | Param | Type | Required | Default | Description |
 | --- | --- | --- | --- | --- |
 | `function_id` | str | **Yes** |  | Starting function node ID |
-| `max_depth` | int | No | 2 | Graph traversal depth |
-| `relationship_types` | List[str] | No | ["CALLS"] | Filter relationship types |
-| `direction` | str | No | "both" | out (callees), in (callers), both |
+| `direction` | str | No | "all" | `all` (callers and callees), `upstream` (callers), or `downstream` (callees) |
+| `max_depth` | int | No | 2 | Maximum `CALLS` hops |
+| `parser_type` | str | No | None | Parser profile when known |
 | `project_id` | str | No | None | Project identifier (omit for env-default full search) |
 | `content_mode` | str | No | "auto" |  |
 | `include_raw_fields` | bool | No | False |  |
@@ -259,6 +280,12 @@ Retrieves the call graph context around a function: its callers (who calls it) a
 **Returns**: `{nodes: [...], edges: [...]}`
 
 **Use when**: Understanding function dependencies — seeing what relies on this function and what this function relies on.
+
+```text
+query_subgraph(function_id="<symbol_id>", direction="all", max_depth=2, parser_type="<type>")
+query_subgraph(function_id="<symbol_id>", direction="upstream", max_depth=2)
+query_subgraph(function_id="<symbol_id>", direction="downstream", max_depth=2)
+```
 
 ---
 
@@ -272,6 +299,7 @@ Finds all execution call paths between two specific functions.
 | `end_function_id` | str | **Yes** |  | Target function ID |
 | `max_depth` | int | No | 5 | Max path length |
 | `relationship_types` | List[str] | No | ["CALLS"] |  |
+| `parser_type` | str | No | None | Parser profile when known |
 | `project_id` | str | No | None | Project identifier (omit for env-default full search) |
 | `content_mode` | str | No | "auto" |  |
 | `include_raw_fields` | bool | No | False |  |
@@ -310,11 +338,26 @@ Performs advanced flow tracing using custom relationship types.
 | Param | Type | Required | Default | Description |
 | --- | --- | --- | --- | --- |
 | `start_id` | str | **Yes** |  | Start function ID |
-| `end_id` | str | **Yes** |  | End function ID |
-| `rel_types` | List[str] | No | ["CALLS"] | Custom relationship types |
-| `max_depth` | int | No | None |  |
-| `direction` | str | No | None |  |
+| `end_id` | str | No | None | Optional end anchor; use `find_paths` when the question is specifically start → end |
+| `direction` | str | No | None | `out` or `in`; pass explicitly |
+| `rel_types` | List[str] | No | ["CALLS"] | Selected relationship types such as `CALLS` and `POSSIBLE_CALLS` |
+| `max_depth` | int | No | None | Set up to 6 for deeper traversal |
+| `parser_type` | str | No | None | Parser profile when known |
 | `project_id` | str | No | None | Project identifier (omit for env-default full search) |
+
+---
+
+Use `trace_flow` for indirect or callback-aware expansion:
+
+```text
+trace_flow(
+  start_id="<symbol_id>",
+  direction="out",
+  rel_types=["CALLS", "POSSIBLE_CALLS"],
+  max_depth=6,
+  parser_type="<type>"
+)
+```
 
 ---
 
@@ -578,8 +621,10 @@ Reconstructs possible execution flows from a selection of candidate graph paths.
 6. listup_symbols_matching_file_path([...])          → Inventory components and symbols
 7. search_functions("keyword|keyword")               → Find symbols by name
 8. get_symbol(node_id)                               → Inspect deep implementation details
-9. query_subgraph(function_id)                       → Understand the call graph neighbourhood
-10. find_paths(start_id, end_id)                     → Trace exact execution paths
+9. query_subgraph(function_id, direction="all")      → Fast caller + callee neighbourhood
+10. trace_flow(start_id, rel_types, max_depth=6)      → Filtered indirect/callback-aware traversal
+11. find_paths(start_function_id, end_function_id)   → Trace an exact start → end path
+12. analyze_workflow_impact(function_id)              → Assess affected workflows and risk
 
 ```
 

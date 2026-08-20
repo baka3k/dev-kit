@@ -16,9 +16,9 @@ Discover all evidence-supported use-case candidates in `<MODULE>`. Read `GRAPH-R
 3. Pair every applicable `semantic_search(expand_graph:false)` query with `explore_graph`; retain vector seeds and FalkorDB evidence separately.
 4. Build a frontier of module-local functions, classes, types, files, states, messages, and external modules returned by either view.
 5. For every retained trigger, entry candidate, handler, adapter, side effect, and recovery anchor, issue focused `explore_graph` queries for callers/triggers and callees/outcomes.
-6. Run vertical graph traversal for every retained anchor: upstream callers/triggers, downstream callees/outcomes, bidirectional context for unclear roles, and module-to-module paths for external boundaries.
+6. Run vertical graph traversal for every retained anchor: `query_subgraph(direction:"all", max_depth:2)` for full context, `upstream` for callers/triggers, `downstream` for callees/outcomes, and module-to-module paths for external boundaries.
 7. Query every graph break for callback/virtual dispatch, function pointers, IPC sender/receiver/handler, shared state, and cross-module relationships.
-8. Connect each candidate's trigger -> handler -> terminal outcome using `find_paths`/`trace_flow` or module path traversal when node/module anchors exist; run `reconstruct_flow` when those path results are compatible.
+8. Use `trace_flow` with direction `out` or `in`, selected `rel_types`, and `max_depth:6` for indirect/callback-aware expansion. Connect candidates with `find_paths` when the trigger, handler, or terminal endpoint IDs are known; use module path traversal at boundaries and `reconstruct_flow` only when path results are compatible.
 9. Re-query with newly discovered symbols, messages, modules, states, business terms, and error vocabulary.
 10. Continue until two consecutive Graph-RAG passes add no material node, relationship, path, use case, state, message, or external module.
 11. Enter Serena only after the Falkor Graph gate. Inventory Graph-RAG-identified files/classes, confirm references and branch conditions, and fill named source-detail gaps.

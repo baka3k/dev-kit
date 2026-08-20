@@ -55,10 +55,10 @@ Use read-only functions. Do not call `annotate_node`: it mutates the shared grap
 
 | Function | Purpose | Mode |
 | --- | --- | --- |
-| `query_subgraph` | Expand callers and callees around each queued symbol in bounded waves. | Core |
+| `query_subgraph` | Quickly expand one symbol with `all` callers/callees (default), `upstream` callers, or `downstream` callees; normally depth 2. | Core |
 | `find_paths` | Prove dispatcher/entry-to-validator/terminal paths between stable IDs. | Core |
 | `find_path_between_module` | Prove command paths that cross module/file boundaries. | Conditional when neighbors exist |
-| `trace_flow` | Trace selected direct and indirect relationship types for a command path. | Core |
+| `trace_flow` | Expand from one anchor in `out` or `in` direction with selected direct/possible/function-pointer/callback relationships, up to depth 6. | Core when indirect traversal matters |
 | `trace_flow_between_module` | Trace cross-module command execution with provider-aware relationships. | Conditional when crossings exist |
 | `reconstruct_flow` | Format already verified path JSON into ordered, uncertainty-aware flows. | Conditional presentation aid; never proof by itself |
 
@@ -117,9 +117,9 @@ Do not begin from a command handler alone. First build the complete source-file 
 Maintain deterministic `unseen`, `queued`, `traced`, `excluded`, and `gap` sets keyed by stable ID plus source anchor.
 
 1. Seed from command names, opcodes, headers, tag/status constants, dispatch tables, serializers, parsers, registrations, error strings, and terminal effects.
-2. Resolve names with `search_functions` and literals with `search_by_code`; use semantic functions only inside a verified project collection.
-3. Expand each queued symbol with `query_subgraph` in increasing depth waves and explicit relationship types. Add every new in-scope symbol to the queue.
-4. Prove candidate paths with `find_paths` and `trace_flow`; use module variants at boundaries.
+2. Resolve names with `search_functions(query, parser_type)` and retain the returned node IDs; resolve literals with `search_by_code`. Use semantic functions only inside a verified project collection.
+3. Expand each queued symbol first with `query_subgraph(direction:"all", max_depth:2)`; use `upstream` for callers and `downstream` for callees when only one side is material. Add every new in-scope symbol to the queue.
+4. Use `trace_flow` with direction `out` or `in`, `rel_types:["CALLS","POSSIBLE_CALLS"]`, and `max_depth:6` for indirect/callback-aware expansion. Use `find_paths` to prove a path when both endpoints are known, and module variants at boundaries.
 5. Query `list_possible_calls` for each unresolved callback/dynamic dispatch and `get_ipc_message` for every sender/receiver clue.
 6. Run applicable workflow, endpoint, and full-stack bridge calls. Provider failures trigger Serena/`rg` reconciliation.
 7. Trace every branch to a terminal outcome: success response/status, protocol error, validation rejection, retry, abort, timeout, cancellation, persistence/action, or explicit fall-through.

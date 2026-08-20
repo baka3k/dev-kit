@@ -57,7 +57,7 @@ Timeouts: phase 0=180s, phase 1=300s, phase 2=180s, phase 3=60s; total=720s (12m
 
 ## Orchestration Workflow
 
-**Phase 0 — Code Context (3min):** Parse proposal, query `mind_mcp.hybrid_search` (architecture docs) and `graph_mcp.semantic_search` + `trace_flow` (affected code/runtime path), build context package.
+**Phase 0 — Code Context (3min):** Parse the proposal and query `mind_mcp.hybrid_search` for architecture context. In `graph_mcp`, resolve named functions with `search_functions(query, parser_type)` and use `query_subgraph(direction:"all", max_depth:2)` for immediate callers/callees. Use `trace_flow` with direction `out` or `in`, selected `rel_types`, and `max_depth:6` for indirect or callback-aware runtime paths; use `find_paths` for known start/end anchors and `analyze_workflow_impact` for affected workflows, severity, and risk. Build one evidence-scoped context package.
 
 **Phase 1 — Independent Analysis (5min):** Each persona analyzes in isolation (no cross-reading), using MCP context + code reading. Record findings per the `persona_output_format` below.
 

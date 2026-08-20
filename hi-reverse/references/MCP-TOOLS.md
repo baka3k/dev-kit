@@ -82,18 +82,26 @@ Use only with normalized path candidates already returned by `explore_graph` or 
 Use after `semantic_search` and `explore_graph` have produced retained graph node IDs or module pairs:
 
 ```json
-{"function_id": "<retained node id>", "max_depth": 3, "direction": "in"}
+{"function_id": "<retained node id>", "direction": "all", "max_depth": 2, "parser_type": "cplus"}
 ```
 
 ```json
-{"start_function_id": "<trigger node id>", "end_function_id": "<handler or outcome node id>", "max_depth": 6}
+{"function_id": "<retained node id>", "direction": "upstream", "max_depth": 2, "parser_type": "cplus"}
 ```
 
 ```json
-{"start_id": "<trigger node id>", "end_id": "<handler or outcome node id>", "rel_types": ["CALLS", "POSSIBLE_CALLS"], "max_depth": 6}
+{"function_id": "<retained node id>", "direction": "downstream", "max_depth": 2, "parser_type": "cplus"}
 ```
 
-For module boundaries, use the module-path variants with retained source and target module tokens. Run upstream and downstream traversal separately for each retained anchor before moving to Serena. If a path is absent, record the gap; do not replace it with another semantic search unless the gap introduces new vocabulary.
+```json
+{"start_id": "<retained node id>", "direction": "out", "rel_types": ["CALLS", "POSSIBLE_CALLS"], "max_depth": 6, "parser_type": "cplus"}
+```
+
+```json
+{"start_function_id": "<trigger node id>", "end_function_id": "<handler or outcome node id>", "max_depth": 6, "parser_type": "cplus"}
+```
+
+When only a function name is known, call `search_functions(query, parser_type)` and retain its returned node ID before traversal, but only when live metadata confirms the active C++ provider route is safe. Start with `query_subgraph(direction:"all")`; use `upstream` or `downstream` when only callers or callees are material. Use `trace_flow` for selected indirect/callback relationships and `find_paths` when both endpoints are known. For module boundaries, use the module-path variants with retained source and target module tokens. If a path is absent, record the gap; do not replace it with another semantic search unless the gap introduces new vocabulary.
 
 ## Quarantined Calls
 
