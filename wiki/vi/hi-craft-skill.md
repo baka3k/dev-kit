@@ -69,17 +69,17 @@ Diagram dưới đây mở rộng toàn bộ orchestration của `hi-craft`. Ri�
 ```mermaid
 sequenceDiagram
     autonumber
-    participant U as User
-    participant C as hi-craft
-    participant P as hi-plan
-    participant D as hi-docs-seeker
-    participant TM as Task manager
-    participant W as fullstack-developer
-    participant T as Test runner
-    participant F as hi-fix
-    participant R as Code reviewer
-    participant G as Git
-    participant L as hi-log
+    participant U as User<br/>Human actor
+    participant C as hi-craft<br/>Orchestrator skill
+    participant P as hi-plan<br/>Inline invoked skill
+    participant D as hi-docs-seeker<br/>Research skill
+    participant TM as Task manager<br/>State tool
+    participant W as fullstack-developer<br/>Worker subagent
+    participant T as Test runner<br/>External process
+    participant F as hi-fix<br/>Escalation subagent
+    participant R as Code reviewer<br/>Reviewer subagent
+    participant G as Git<br/>CLI tool
+    participant L as hi-log<br/>Finalization skill
 
     U->>C: /hi-craft task, mode hoặc plan path
     C->>C: Resolve intent và mode
@@ -145,6 +145,26 @@ sequenceDiagram
     C-->>U: Final report gồm plan, files, tests, review, commit, log và residual risks
 ```
 
+#### 2.1.1 Actor types
+
+Trong sequence diagram, dòng đầu là actor identity và dòng thứ hai là actor type/title. `Skill` mô tả behavior được nạp vào agent; `SubAgent` là một agent runtime riêng được spawn hoặc launch để thực hiện một scope độc lập.
+
+| Actor | Type / title | Runtime behavior | SubAgent? |
+|---|---|---|---:|
+| User | Human actor | Gửi yêu cầu, approval và quyết định blocking | Không |
+| `hi-craft` | **Orchestrator skill** | Chạy trong current/root agent, giữ workflow state và điều phối các bước | Không |
+| `hi-plan` | Inline invoked skill | Được `hi-craft` gọi inline để tạo plan; contract cấm spawn planner riêng | Không |
+| `hi-docs-seeker` | Research skill | Được current agent invoke khi cần documentation hiện hành | Không |
+| Task manager | State-management tool | Giữ task state theo session qua `TaskUpdate` | Không |
+| `fullstack-developer` | Worker subagent | Được launch theo phase khi parallel execution an toàn | **Có** |
+| Test runner | External process | Chạy test, lint, typecheck hoặc build command và trả exit/output | Không |
+| `hi-fix` | Escalation subagent | Sau failure lần 3, craft spawn agent chạy skill `hi-fix` để deep diagnosis | **Có** |
+| Code reviewer | Reviewer subagent | Review độc lập, trả score, findings và critical count | **Có** |
+| Git | CLI tool | Tạo commit và trả commit identity | Không |
+| `hi-log` | Finalization skill | Ghi change/test/commit evidence vào log | Không |
+
+Một actor mang tên skill không đồng nghĩa với SubAgent. Chỉ các bước dùng semantics `spawn` hoặc `launch` mới tạo agent runtime riêng; các lời gọi `invoke`, `use` hoặc `call inline` chạy như capability của current agent, trừ khi orchestration contract nói khác.
+
 Các ranh giới cần hiểu đúng:
 
 - `hi-plan` là một lời gọi skill duy nhất trong sequence này. Chi tiết scope challenge, research, red-team hoặc validation của plan không được lặp lại ở đây.
@@ -155,18 +175,18 @@ Các ranh giới cần hiểu đúng:
 
 Nguồn đối chiếu: [`hi-craft/SKILL.md`](../../hi-craft/SKILL.md).
 
-#### 2.1.1 Context retrieval trước implementation
+#### 2.1.2 Context retrieval trước implementation
 
 Core contract của `hi-craft` không tự khai báo `mind_mcp`, `graph_mcp` hoặc Serena. Tuy nhiên, trong repository này, [`AGENTS.md`](../../AGENTS.md) yêu cầu mọi task thu thập project context theo đúng thứ tự ưu tiên trước khi thực thi. Vì vậy `hi-craft` cần chạy retrieval chain sau khi đã có plan/readiness context và trước khi sửa code. Chain dừng ngay khi một tầng đã cung cấp đủ evidence.
 
 ```mermaid
 sequenceDiagram
     autonumber
-    participant C as hi-craft
-    participant M as mind_mcp
-    participant G as graph_mcp
-    participant S as Serena
-    participant N as Native rg
+    participant C as hi-craft<br/>Orchestrator skill
+    participant M as mind_mcp<br/>Knowledge MCP service
+    participant G as graph_mcp<br/>Code-graph MCP service
+    participant S as Serena<br/>Code-intelligence MCP service
+    participant N as Native rg<br/>CLI fallback tool
 
     C->>M: Retrieve project docs, concepts và foundational knowledge
     alt mind_mcp đủ evidence
@@ -583,7 +603,7 @@ flowchart TD
     D -->|Yes| C
     C --> F[TaskUpdate all complete]
     F --> G[git commit]
-    G --> H[/hi-log]
+    G --> H["/hi-log"]
     H --> I[Report files, tests, commit, residual risks]
 ```
 

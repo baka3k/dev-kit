@@ -169,17 +169,17 @@ Trong diagram ở trên, `Researchers` là **vai trò agent**, không phải tê
 ```mermaid
 sequenceDiagram
     autonumber
-    participant U as User
-    participant P as hi-plan
-    participant R as Researcher agent
-    participant ST as hi-sequential-thinking
-    participant DS as hi-docs-seeker
-    participant RS as hi-repository-search
-    participant M as mind_mcp
-    participant G as graph_mcp
-    participant F as Serena / rg
-    participant A as Red-team reviewer agents
-    participant O as hi-project-organization
+    participant U as User<br/>Human actor
+    participant P as hi-plan<br/>Orchestrator skill
+    participant R as Researcher<br/>Research subagent
+    participant ST as hi-sequential-thinking<br/>Analysis skill
+    participant DS as hi-docs-seeker<br/>Research skill
+    participant RS as hi-repository-search<br/>Retrieval skill
+    participant M as mind_mcp<br/>Knowledge MCP service
+    participant G as graph_mcp<br/>Code-graph MCP service
+    participant F as Serena / rg<br/>MCP + CLI fallback
+    participant A as Red-team reviewers<br/>Reviewer subagents
+    participant O as hi-project-organization<br/>Organization skill
 
     U->>P: /hi-plan task --full
     P->>P: Pre-creation check & cross-plan scan
@@ -245,6 +245,26 @@ sequenceDiagram
     P->>O: Invoke skill chuẩn hóa vị trí artifact
     P-->>U: Absolute plan path & handoff command
 ```
+
+##### 4.3.1.1 Actor types
+
+Trong sequence diagram, dòng đầu là actor identity và dòng thứ hai là actor type/title. `Skill` là behavior package được current agent hoặc một subagent nạp để thực thi; `SubAgent` là agent runtime riêng được spawn với một scope cụ thể.
+
+| Actor | Type / title | Runtime behavior | SubAgent? |
+|---|---|---|---:|
+| User | Human actor | Gửi planning request, chọn scope và xác nhận trade-off | Không |
+| `hi-plan` | **Orchestrator skill** | Chạy trong current/root agent, giữ workflow state và tổng hợp plan | Không |
+| Researcher | Research subagent | Được `hi-plan` spawn để điều tra một approach hoặc một research lens | **Có** |
+| `hi-sequential-thinking` | Analysis skill | Chạy như capability bên trong researcher khi cần phân rã hoặc so sánh approach | Không |
+| `hi-docs-seeker` | Research skill | Chạy trong researcher để lấy documentation từ nguồn chính thức | Không |
+| `hi-repository-search` | Retrieval skill | Chạy trong researcher để thu thập repository evidence và điều phối retrieval chain | Không theo flow này |
+| `mind_mcp` | Knowledge MCP service | Cung cấp project documents, concepts và architecture context | Không |
+| `graph_mcp` | Code-graph MCP service | Cung cấp semantic candidates, relationships, paths và impact evidence | Không |
+| Serena / `rg` | MCP + CLI fallback tools | Serena xác nhận symbol/reference; `rg` xử lý exact-string gap cuối cùng | Không |
+| Red-team reviewers | Reviewer subagents | Được subcommand `red-team` spawn theo security, assumption, failure hoặc scope lens | **Có** |
+| `hi-project-organization` | Organization skill | Được current agent invoke để chuẩn hóa vị trí và cấu trúc artifact | Không |
+
+Một actor mang tên skill không đồng nghĩa với SubAgent. Trong flow này, chỉ `Researcher` và `Red-team reviewers` là agent runtime riêng; các skill còn lại chạy trong current/root agent hoặc trong researcher subagent đã tồn tại.
 
 Các ranh giới cần hiểu đúng:
 
