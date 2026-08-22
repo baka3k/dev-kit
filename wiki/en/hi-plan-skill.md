@@ -1,30 +1,30 @@
 # Hi Plan Skill: Complete Guide
 
-> `hi-plan` is the skill that turns a technical request into a structured, evidence-based implementation plan with risk checks, ready to be handed off to the implementation step. It does not merely produce a `plan.md` file.
+> `hi-plan` is the skill used to turn a technical request into a structured, evidence-based implementation plan with risk checking, which can be handed off to the implementation step. It does not just create a `plan.md` file.
 
 ## 1. What problem does Hi Plan solve?
 
-When receiving a request like "add a login feature", many questions must be answered before writing code:
+When you receive a request like "add a login feature", many questions must be answered before writing code:
 
-- Which functionality already exists and can be reused?
-- Which files, modules, APIs, or dependencies are affected?
-- Is there another plan working on the same code area?
+- What functionality already exists and can be reused?
+- Which files, modules, APIs or dependencies are affected?
+- Is another plan already working on the same code area?
 - What is the minimum scope? Which parts should be deferred?
-- Which architecture fits, and what are the trade-offs?
+- Which architecture fits and what are the trade-offs?
 - Which assumptions could be wrong in production?
-- How do we verify that the plan is detailed enough for someone else to implement?
-- In what order do the implementation tasks need to depend on each other?
+- How can we verify the plan is detailed enough for someone else to implement?
+- In what order do the implementation tasks depend on each other?
 
-`hi-plan` organizes those questions into a multi-step workflow. The final output is a set of persistent plan files that `hi-craft` or a developer can use as an implementation contract.
+`hi-plan` organizes those questions into a multi-step workflow. The final output is a group of persistent plan files that `hi-craft` or a developer can use as an implementation contract.
 
 ## 2. Overall mental model
 
-You can think of `hi-plan` as a pipeline of four layers:
+You can view `hi-plan` as a pipeline of four layers:
 
-1. **Context**: understand the request, the repository, and existing plans.
-2. **Design**: define scope, research options, and design phases.
-3. **Challenge**: find risks through red-team and confirm decisions through validate.
-4. **Handoff**: write artifacts, hydrate tasks in the session, and hand off to implementation.
+1. **Context**: understand the request, the repository and the existing plans.
+2. **Design**: determine scope, research approaches and design phases.
+3. **Challenge**: find risks with red-team and confirm decisions with validation.
+4. **Handoff**: write artifacts, hydrate session tasks and hand off to implementation.
 
 ```mermaid
 flowchart TD
@@ -57,7 +57,7 @@ flowchart TD
 /hi-plan <task> --no-tasks
 ```
 
-`<task>` is the description of the goal to be planned. The plan is created in the **current working project directory**, not in the user's home directory.
+`<task>` is a description of the goal to be planned. The plan is created in the **current working project directory**, not in the user's home directory.
 
 ### 3.2 Subcommands on an existing plan
 
@@ -69,22 +69,22 @@ flowchart TD
 
 - `red-team` adversarially reviews an existing plan.
 - `validate` interviews the user/stakeholder to finalize assumptions and trade-offs.
-- `archive` cleans up plans that are completed or selected for archiving.
+- `archive` cleans up completed or selected plans for storage.
 
 ## 4. Flags and modes
 
 ### 4.1 Summary table
 
 | Mode | Research | Red team | Validation | Purpose |
-|---|---:|---:|---:|---|
+|---|---|---|---:|---:|---|
 | Default / fast | No | No | No | Quickly create a plan based on local context |
-| `--full` | 1 researcher | Full flow | Full flow | Full pipeline from scope to review |
-| `--hard` | 2 researchers | Yes | Optional | Requires deep analysis and critique |
+| `--full` | 1 researcher | Per full flow | Per full flow | Full pipeline from scope to review |
+| `--hard` | 2 researchers | Yes | Optional | Requires deep analysis and rebuttal |
 | `--parallel` | 2 researchers | Yes | Optional | Parallel research, suitable for large problems |
-| `--two` | 2+ researchers | After approach is chosen | After approach is chosen | Compare multiple directions before committing |
+| `--two` | 2+ researchers | After choosing the approach | After choosing the approach | Compare multiple directions before deciding |
 | `--no-tasks` | Per mode | Per mode | Per mode | Do not create session-scoped tasks after writing the plan |
 
-`--no-tasks` is a modifier and can be combined with other modes, for example:
+`--no-tasks` is a modifier that can be combined with other modes, for example:
 
 ```text
 /hi-plan add audit logging --full --no-tasks
@@ -92,9 +92,9 @@ flowchart TD
 
 ### 4.2 Fast mode
 
-Fast mode is the default when no flag is passed. It skips research, scope challenge, red-team, and validation to prioritize speed.
+Fast mode is the default when no flag is passed. It skips research, scope challenge, red-team and validation to prioritize speed.
 
-Actual flow:
+The actual flow:
 
 ```mermaid
 flowchart LR
@@ -113,10 +113,10 @@ Fast mode is suitable when:
 
 - the request is small or already clear;
 - the user needs a quick draft;
-- research has already been provided beforehand;
-- the plan will be manually reviewed in a later step.
+- research was already provided;
+- the plan will be manually reviewed at a later step.
 
-Fast mode **does not mean the plan has been comprehensively verified**. It only means that the extended review steps are skipped.
+Fast mode **does not mean the plan has been comprehensively verified**. It only means the extended review steps are skipped.
 
 ### 4.3 `--full`
 
@@ -130,8 +130,8 @@ The full flow adds steps before and after writing the plan:
 6. Write `plan.md` and `phase-*.md`.
 7. Red-team review.
 8. Validation interview.
-9. Hydrate tasks if the phase count is sufficient.
-10. Return the output path and craft the handoff.
+9. Hydrate tasks if enough phases.
+10. Return the output path and craft handoff.
 
 ```mermaid
 sequenceDiagram
@@ -156,82 +156,202 @@ sequenceDiagram
     P-->>U: Plan path and implementation handoff
 ```
 
+#### 4.3.1 Full sequence down to skill and MCP functions
+
+In the diagram above, `Researchers` is an **agent role**, not the name of a skill. Per the current contract, a researcher can invoke the three skills explicitly named in the research phase:
+
+- `hi-repository-search` to obtain evidence from the repository;
+- `hi-docs-seeker` to check external documentation;
+- `hi-sequential-thinking` when decomposing or comparing a complex problem is needed.
+
+`hi-repository-search` is the layer that routes down to `mind_mcp`, `graph_mcp`, Serena and `rg`. The `graph_mcp` functions in the branch below are **intent-based**; not every function is always called in a single run.
+
+```mermaid
+sequenceDiagram
+    autonumber
+    participant U as User<br/>Human actor
+    participant P as hi-plan<br/>Orchestrator skill
+    participant R as Researcher<br/>Research subagent
+    participant ST as hi-sequential-thinking<br/>Analysis skill
+    participant DS as hi-docs-seeker<br/>Research skill
+    participant RS as hi-repository-search<br/>Retrieval skill
+    participant M as mind_mcp<br/>Knowledge MCP service
+    participant G as graph_mcp<br/>Code-graph MCP service
+    participant F as Serena / rg<br/>MCP + CLI fallback
+    participant A as Red-team reviewers<br/>Reviewer subagents
+    participant O as hi-project-organization<br/>Organization skill
+
+    U->>P: /hi-plan task --full
+    P->>P: Pre-creation check & cross-plan scan
+    P->>U: Scope challenge (EXPANSION / HOLD / REDUCTION)
+    U-->>P: Finalize scope mode
+    P->>R: Spawn researcher with the question and finalized scope
+
+    opt Complex problem or approach comparison needed
+        R->>ST: Invoke skill to decompose and converge
+    end
+
+    opt External library or API documentation needed
+        R->>DS: Invoke skill to obtain evidence from official sources
+    end
+
+    R->>RS: Invoke skill --deep or --impact
+    RS->>M: Find project concepts & architecture context
+
+    alt mind_mcp sufficient evidence
+        Note over RS,M: Stop the retrieval chain, do not call redundantly
+    else mind_mcp unavailable or lacks evidence
+        RS->>G: list_mcp_functions() + list_parsers()
+        RS->>G: semantic_search(query, collection, top_k)
+        RS->>G: explore_graph(query, parser_type, collection)
+
+        opt Only know a function name
+            RS->>G: search_functions(query)
+        end
+
+        alt Need nearby caller / callee
+            RS->>G: query_subgraph(function_id, direction, depth <= 2)
+        else Need round-trip flow
+            RS->>G: trace_flow(start_id, rel_types, depth <= 6)
+        else Start and end already known
+            RS->>G: find_paths(start_id, end_id, depth <= 5)
+        else Need workflow blast radius
+            RS->>G: analyze_workflow_impact(function_id, depth <= 4)
+        end
+
+        G-->>RS: Candidate nodes, paths & impact evidence
+
+        opt graph_mcp unavailable or lacks evidence
+            RS->>F: Serena symbol search / rg exact-string
+            F-->>RS: Source anchors & direct corroboration
+        end
+    end
+
+    RS-->>R: Evidence Bundle (findings, gaps)
+    R-->>P: Research findings & alternatives
+    P->>P: Analyze codebase, write plan.md & phase files
+
+    opt Red-team enabled
+        P->>A: /hi-plan red-team path
+        A-->>P: Deduplicated findings & severity ranking
+    end
+
+    opt Validation enabled
+        P->>U: /hi-plan validate path
+        U-->>P: Finalize assumptions & trade-offs
+    end
+
+    P->>P: Propagate decisions, hydrate tasks
+    P->>O: Invoke skill to normalize artifact location
+    P-->>U: Absolute plan path & handoff command
+```
+
+##### 4.3.1.1 Actor types
+
+In the sequence diagram, the first line is the actor identity and the second line is the actor type/title. `Skill` is a behavior package loaded by the current agent or a subagent to execute; `SubAgent` is a separate agent runtime spawned with a specific scope.
+
+| Actor | Type / title | Runtime behavior | SubAgent? |
+|---|---|---|---:|
+| User | Human actor | Sends planning requests, chooses scope and confirms trade-offs | No |
+| `hi-plan` | **Orchestrator skill** | Runs in the current/root agent, holds workflow state and synthesizes the plan | No |
+| Researcher | Research subagent | Spawned by `hi-plan` to investigate one approach or one research lens | **Yes** |
+| `hi-sequential-thinking` | Analysis skill | Runs as a capability inside the researcher when decomposing or comparing approaches | No |
+| `hi-docs-seeker` | Research skill | Runs inside the researcher to obtain documentation from official sources | No |
+| `hi-repository-search` | Retrieval skill | Runs inside the researcher to gather repository evidence and coordinate the retrieval chain | Not in this flow |
+| `mind_mcp` | Knowledge MCP service | Provides project documents, concepts and architecture context | No |
+| `graph_mcp` | Code-graph MCP service | Provides semantic candidates, relationships, paths and impact evidence | No |
+| Serena / `rg` | MCP + CLI fallback tools | Serena confirms symbol/reference; `rg` handles the final exact-string gap | No |
+| Red-team reviewers | Reviewer subagents | Spawned by the `red-team` subcommand along security, assumption, failure or scope lenses | **Yes** |
+| `hi-project-organization` | Organization skill | Invoked by the current agent to normalize artifact location and structure | No |
+
+An actor bearing a skill name does not imply a SubAgent. In this flow, only `Researcher` and `Red-team reviewers` are separate agent runtimes; the remaining skills run in the current/root agent or inside the existing researcher subagent.
+
+The boundaries that must be understood correctly:
+
+- A Researcher does **not call** `hi-codebase-research-explorer` by default; the `hi-plan` contract currently does not declare that routing.
+- Red-team reviewers are agents running hostile lenses in `/hi-plan red-team`; the contract does not say reviewer automatically calls `hi-security`.
+- `semantic_search` produces candidates. Relationships are only considered evidence after `explore_graph`, graph traversal or source corroboration.
+- `query_subgraph`, `trace_flow`, `find_paths` and `analyze_workflow_impact` are choice branches based on the question; they are not all run sequentially.
+- When the runtime schema differs from the documentation, the response from `list_mcp_functions()` is authoritative; do not hardcode old parameters.
+
+Reference sources: [`hi-plan/SKILL.md`](../../hi-plan/SKILL.md), [`research-phase.md`](../../hi-plan/references/research-phase.md), [`red-team-workflow.md`](../../hi-plan/references/red-team-workflow.md), [`hi-repository-search/SKILL.md`](../../hi-repository-search/SKILL.md), and [`code_graph.md`](../../hi-repository-search/references/code_graph.md).
+
 ### 4.4 `--hard`
 
 `--hard` uses two researchers and enables red-team. This mode is suitable for:
 
 - cross-module changes;
 - authentication, authorization, payment, data migration;
-- plans with many phases or dependencies;
+- plans with many phases or many dependencies;
 - changes with high production risk.
 
-Validation can still be run afterwards when user confirmation of business or architecture choices is needed.
+Validation can still be run afterward when the user needs to finalize business or architecture choices.
 
 ### 4.5 `--parallel`
 
 `--parallel` also uses two researchers and red-team, but emphasizes parallel investigation. Each researcher should have a different lens, for example:
 
-- researcher A: current code paths, dependencies, and implementation patterns;
-- researcher B: alternative architectures, failure modes, and documentation.
+- researcher A: current code path, dependencies and implementation patterns;
+- researcher B: alternative architecture, failure modes and documentation.
 
-Parallel does not mean "everything runs in parallel". Steps that require prior decisions, such as scope challenge, and steps that require synthesis, such as plan synthesis, must still be ordered.
+Parallel does not mean "everything runs at once". Steps that need a decision first, such as scope challenge, and steps that require synthesis, such as plan synthesis, must still be ordered.
 
 ### 4.6 `--two`
 
-`--two` is for cases where committing to an architecture right away is premature. The workflow creates two or more approaches, then:
+`--two` is for cases where you should not commit to one architecture right away. The workflow creates two or more approaches, then:
 
 1. presents the approaches;
-2. states trade-offs, costs, and risks;
+2. states trade-offs, costs and risks;
 3. lets the user choose;
 4. red-teams and validates the chosen approach;
 5. writes the plan according to the final decision.
 
-`--two` should not be used merely to generate extra documentation. It is valuable when the architecture choice is genuinely unclear.
+Do not use `--two` just to create more documentation. It is valuable when the architecture choice is genuinely unclear.
 
 ### 4.7 `--no-tasks`
 
-By default, `hi-plan` attempts to convert phases into tasks in the current session's task manager. `--no-tasks` skips this step.
+By default, `hi-plan` tries to convert phases into tasks in the current session's task manager. `--no-tasks` skips this step.
 
 Use this flag when:
 
-- only artifacts are needed for review;
+- only an artifact is needed for review;
 - the current task manager does not support it;
 - the plan has few phases;
-- tasks should be hydrated in a different session.
+- you want to hydrate tasks in another session.
 
 Important notes:
 
 - plan files are **persistent**;
-- tasks are **session-scoped** and can disappear when the session ends;
-- the checklists in phase files are the source for re-hydrating tasks in a later session.
+- tasks are **session-scoped** and may disappear when the session ends;
+- the checklists in phase files are a source that can re-hydrate tasks in a later session.
 
 ## 5. Internal steps
 
 ### Step 1: Pre-creation check
 
-The skill determines the request context before writing:
+The skill determines the context of the request before writing:
 
-- current working project directory;
-- existing plan directory;
+- the current working project directory;
+- existing plan directories;
 - which plans are pending/in progress;
-- whether the task is related to or inherits output from another plan;
-- whether there are instructions such as `docs/development-rules.md` that must be followed.
+- whether a task is related to or inherits output from another plan;
+- whether instructions such as `docs/development-rules.md` must be followed.
 
-If the context is unclear, the workflow may ask the user to clarify instead of creating a plan that goes in the wrong direction.
+If the context is unclear, the workflow may ask the user to clarify instead of creating a plan in the wrong direction.
 
 ### Step 2: Cross-plan dependency scan
 
 The skill scans `plans/*/plan.md` and focuses on plans that are not yet `completed` or `cancelled`.
 
-It looks for three types of relationships:
+It looks for three kinds of relationships:
 
 | Relationship | Meaning | Handling |
 |---|---|---|
-| `blockedBy` | The new plan needs output from an earlier plan | Record the earlier plan in `blockedBy` |
+| `blockedBy` | The new plan needs output from a previous plan | Record the previous plan in `blockedBy` |
 | `blocks` | The new plan produces output for another plan | Record the related plan in `blocks` |
-| Overlap | Two plans modify the same file, module, or dependency | Evaluate ordering and update both if needed |
+| Overlap | Two plans modify the same file, module or dependency | Evaluate the order and update both if needed |
 
-Dependencies must be recorded bidirectionally where appropriate. If only one side is recorded, readers of the other plan will not know about the new constraint.
+Dependencies must be recorded in both directions where appropriate. If only one side is recorded, the reader of the other plan will not know there is a new constraint.
 
 ```mermaid
 flowchart TD
@@ -250,48 +370,48 @@ flowchart TD
 
 ### Step 3: Scope challenge
 
-Scope challenge runs before research in the extended modes. It forces the plan author to answer three questions:
+Scope challenge runs before research in the extended modes. It forces the planner to answer three questions:
 
 1. **What already exists?** What can be reused?
-2. **What's the minimum change set?** Which parts are mandatory, and which can be deferred?
-3. **Complexity check** If it exceeds 8 files, 2 new classes, or 3 phases, what is the reason?
+2. **What's the minimum change set?** Which parts are mandatory and which can be deferred?
+3. **Complexity check** If the plan exceeds 8 files, 2 new classes or 3 phases, what is the reason?
 
-Then choose one direction:
+Then choose a direction:
 
 | Choice | Behavior |
 |---|---|
 | `EXPANSION` | Allows `--hard` or `--two`, researches alternatives and stretch goals |
-| `HOLD` | Keeps scope, focuses on edge cases and test coverage |
+| `HOLD` | Keeps the scope, focuses on edge cases and test coverage |
 | `REDUCTION` | Uses the minimal version, defers non-blocking parts |
 
-The scope decision must be maintained throughout the workflow. Scope must not be silently expanded after `REDUCTION` has been chosen.
+The scope decision must be kept throughout the workflow. Do not silently expand the scope after choosing `REDUCTION`.
 
 ### Step 4: Research
 
-Research is skipped in fast mode or when researcher reports already exist. For modes that require research, possible investigation directions include:
+Research is skipped in fast mode or when researcher reports already exist. For modes that need research, the investigation directions can include:
 
-- scan the codebase and find current implementations;
-- read relevant documentation;
+- scan the codebase and find the current implementation;
+- read the related documentation;
 - use sequential thinking for complex problems;
-- review Git history, issues, PRs, or CI when needed;
+- look at Git history, issues, PRs or CI when needed;
 - compare multiple approaches;
 - record edge cases, security and performance implications.
 
-Research is not a step for gathering as much information as possible. The goal is to provide evidence for the decisions in the plan.
+Research is not a step for collecting as much information as possible. The goal is to provide evidence for the decisions in the plan.
 
 ### Step 5: Codebase analysis
 
-This is the step that bridges research and implementation. The plan needs to identify:
+This step connects research with implementation. The plan needs to indicate:
 
-- related modules/files;
-- entry points of the behavior;
-- data flow and dependencies;
-- current patterns that should be reused;
-- files to create/modify/delete;
-- tests and verification points;
-- open risks or assumptions.
+- the related module/file;
+- the entry points of the behavior;
+- the data flow and dependencies;
+- the current patterns to reuse;
+- the files to create/modify/delete;
+- the test and verification points;
+- remaining open risks or assumptions.
 
-If a file is only forwarding or wiring, trace through to the abstraction that directly determines behavior instead of stopping at the intermediate file.
+If a file is only forwarding or wiring, you must trace to the abstraction that directly decides the behavior instead of stopping at the intermediate file.
 
 ### Step 6: Plan documentation
 
@@ -304,9 +424,9 @@ plans/{plan-dir}/
 └── phase-02-name.md
 ```
 
-`plan.md` is the index and high-level contract. Each `phase-*.md` is a concrete implementation unit.
+`plan.md` is the index and the high-level contract. Each `phase-*.md` is a specific implementation unit.
 
-## 6. Artifact structure and output
+## 6. Artifact and output structure
 
 ### 6.1 `plan.md`
 
@@ -329,15 +449,15 @@ created: 2025-12-16
 Some fields can be auto-populated:
 
 - `title`: from the task;
-- `description`: first sentence of the Overview;
+- `description`: the first sentence of the Overview;
 - `status`: defaults to `pending`;
 - `priority`: from the user or `P2`;
-- `effort`: total effort of the phases;
-- `issue`: from the branch if any;
-- `branch`: current branch;
+- `effort`: the total effort of the phases;
+- `issue`: from the branch if available;
+- `branch`: the current branch;
 - `tags`: inferred from keywords;
 - `blockedBy`/`blocks`: from the cross-plan scan;
-- `created`: current date.
+- `created`: the current date.
 
 The body of `plan.md` should be short, usually under 80 lines:
 
@@ -352,11 +472,11 @@ The body of `plan.md` should be short, usually under 80 lines:
 | 1 | [Setup](./phase-01-setup.md) | Pending |
 ```
 
-After review, the file may have additional sections:
+After review, the file may contain additional sections:
 
 - `## Red Team Review`;
 - `## Validation Log`;
-- decisions on rejected/accepted findings;
+- decisions about rejected/accepted findings;
 - unresolved questions or revised assumptions.
 
 ### 6.2 `phase-*.md`
@@ -369,7 +489,7 @@ Each phase needs enough information for another developer to implement without g
 4. functional and non-functional requirements;
 5. architecture, components, data flow;
 6. related code: create/modify/delete;
-7. specific numbered implementation steps;
+7. concrete numbered implementation steps;
 8. success criteria / definition of done;
 9. risk assessment and mitigation.
 
@@ -377,13 +497,13 @@ Each phase needs enough information for another developer to implement without g
 
 Typical output includes:
 
-- absolute path to the plan directory;
-- list of created phases;
-- task hydration status or reason for skipping;
-- if a full flow ran: review/validation summary;
-- craft handoff command to move to the implementation step.
+- the absolute path to the plan directory;
+- the list of created phases;
+- the task hydration status or the reason for skipping;
+- if a full flow ran: the review/validation summary;
+- the craft handoff command to move to the implementation step.
 
-The plan is persistent output on the filesystem. The task list is only auxiliary output in the current session.
+The plan is the persistent output on the filesystem. The task list is only a secondary output in the current session.
 
 ## 7. How are red-team and validate different?
 
@@ -398,10 +518,10 @@ Command:
 Steps:
 
 1. read `plan.md` and every `phase-*.md`;
-2. scale the number of reviewers to the number of phases;
+2. scale the reviewer count to the number of phases;
 3. run the adversarial lenses;
-4. collect, deduplicate, and rank by severity;
-5. cap at 15 findings;
+4. gather, deduplicate and rank by severity;
+5. cap at a maximum of 15 findings;
 6. propose `Accept` or `Reject`;
 7. ask the user how to handle them;
 8. apply accepted findings to the phase files;
@@ -409,14 +529,14 @@ Steps:
 
 Reviewer lenses:
 
-| Lens | Primary question |
+| Lens | Main question |
 |---|---|
-| Security adversary | Are there injection, auth bypass, or data exposure issues? |
-| Assumption destroyer | Which assumptions have no evidence or could be wrong? |
-| Failure mode analyst | What breaks in production? What about timeout, retry, partial failure? |
+| Security adversary | Are there injections, auth bypasses or data exposure? |
+| Assumption destroyer | Which assumption is unsupported or could be wrong? |
+| Failure mode analyst | What breaks in production? How do timeout, retry, partial failure behave? |
 | Scope/complexity critic | Is there over-engineering or scope creep? |
 
-Reviewers by phase count:
+Reviewer count by phase:
 
 | Number of phases | Reviewers |
 |---:|---:|
@@ -443,7 +563,7 @@ flowchart TD
     I --> J[Add Red Team Review log]
 ```
 
-Red-team is not runtime testing and does not make decisions on the user's behalf. It produces evidence and recommendations; user review is a separate gate.
+Red-team is not a runtime test and does not decide on behalf of the user. It produces evidence and proposals; user review is a separate gate.
 
 ### 7.2 Validate: finalize decisions
 
@@ -456,7 +576,7 @@ Command:
 Steps:
 
 1. read the plan and phases;
-2. find assumptions, risks, and trade-offs;
+2. find assumptions, risks and trade-offs;
 3. create critical questions;
 4. mark a recommended option for each question;
 5. ask the user in groups, at most 4 questions at a time;
@@ -464,13 +584,13 @@ Steps:
 7. propagate decisions into the affected phases;
 8. conclude with `proceed` or `revise`.
 
-Red-team asks: **"Where could this plan go wrong?"**
+Red-team asks: **"Where could this plan be wrong?"**
 
-Validate asks: **"Given the available options, which one do the stakeholders confirm?"**
+Validate asks: **"Given the available choices, which one do the stakeholders confirm?"**
 
 Example:
 
-- Red-team discovers the assumption that the API always returns valid responses.
+- Red-team surfaces the assumption that an API always returns a valid response.
 - Validate asks whether malformed responses need handling, how many retries, and which latency trade-off is acceptable.
 
 ```mermaid
@@ -488,47 +608,47 @@ flowchart LR
 
 ## 8. How to verify?
 
-### 8.1 Verify at the workflow level
+### 8.1 Verification at the workflow level
 
-`hi-plan` is not a test runner. In the current documentation, "verify" mainly means checking the completeness and consistency of the planning artifact through gates:
+`hi-plan` is not a test runner. In the current documentation, "verify" mainly means checking the completeness and consistency of the planning artifact across the gates:
 
 | Gate | Check |
 |---|---|
-| Context gate | Was the correct project and the active plans read? |
+| Context gate | Were the correct project and active plans read? |
 | Dependency gate | Were `blockedBy`/`blocks` and overlaps identified? |
-| Scope gate | Is the scope constrained with a reason for the complexity? |
+| Scope gate | Was the scope constrained and was a reason given for complexity? |
 | Research gate | Do the decisions have evidence or comparison? |
-| Architecture gate | Are data flow, module ownership, and related code clear? |
-| Red-team gate | Were security, assumptions, and failure modes challenged? |
-| Validation gate | Did stakeholders confirm blocking trade-offs? |
-| Handoff gate | Do phases have implementation steps and success criteria? |
-| Task gate | Do tasks map correctly to phases and dependencies? |
+| Architecture gate | Are data flow, module ownership and related code clear? |
+| Red-team gate | Were security, assumptions and failure modes challenged? |
+| Validation gate | Did stakeholders confirm the blocking trade-offs? |
+| Handoff gate | Do the phases have implementation steps and success criteria? |
+| Task gate | Do the tasks map correctly to phases and dependencies? |
 
-### 8.2 Manual verification checklist
+### 8.2 Manual verify checklist
 
-Before handoff, the reviewer should check:
+Before handing off, the reviewer should check:
 
 - whether `plan.md` has valid frontmatter;
 - whether every link to `phase-*.md` exists;
-- whether each phase has concrete success criteria;
+- whether each phase has specific success criteria;
 - whether related code distinguishes create/modify/delete;
 - whether phase dependencies are in a sensible order;
-- whether total effort matches the phases;
+- whether the total effort matches the phases;
 - whether important assumptions have an owner or a validation decision;
-- whether accepted red-team findings have been propagated;
-- whether the `Validation Log` records decisions and their impact;
-- whether the plan contains no implementation details contradicting the codebase;
+- whether accepted red-team findings have propagated;
+- whether the `Validation Log` records decisions and impact;
+- whether the plan contains implementation details conflicting with the codebase;
 - whether the output path is inside the current project, not the home directory.
 
-### 8.3 Verify after moving to implementation
+### 8.3 Verification after moving to implementation
 
-`hi-plan` creates the plan; it does not write code. After handoff, an implementation skill such as `hi-craft` runs:
+`hi-plan` creates a plan, it does not implement the code. After the handoff, an implementation skill such as `hi-craft` runs:
 
 ```text
 Plan -> Implement -> Test -> Finalize
 ```
 
-So a distinction must be made:
+Therefore you must distinguish:
 
 - `hi-plan` verifies **plan readiness**;
 - `hi-craft` or a developer verifies **behavior with tests, lint, typecheck, build**;
@@ -536,11 +656,11 @@ So a distinction must be made:
 
 ## 9. Task hydration and dependency
 
-When there are 3 or more phases, the workflow may create one task per phase. Tasks should have:
+When there are 3 or more phases, the workflow can create one task per phase. A task should have:
 
 - `subject`: imperative, under 60 characters;
-- `activeForm`: continuous form;
-- `description`: concrete deliverable and link to the phase;
+- `activeForm`: the continuous form;
+- `description`: a concrete deliverable and a link to the phase;
 - metadata: phase, priority, effort, plan directory, phase file.
 
 Mapping:
@@ -559,7 +679,7 @@ flowchart LR
     H --> I[TaskUpdate during implementation]
 ```
 
-Example dependencies:
+Dependency example:
 
 ```text
 Phase 1: Database migration
@@ -567,7 +687,7 @@ Phase 2: API changes        blockedBy: Phase 1
 Phase 3: UI integration     blockedBy: Phase 2
 ```
 
-If a new session starts, the task list may be empty. In that case, re-hydrate from the checkboxes and unfinished phase files.
+If you move to a new session, the task list may be empty. In that case re-hydrate from the checkboxes and unfinished phase files.
 
 ## 10. Archive workflow
 
@@ -577,60 +697,60 @@ Command:
 /hi-plan archive
 ```
 
-Archive does not automatically mean delete. The workflow needs to:
+Archive is not automatically the same as delete. The workflow must:
 
 1. read `plan.md` and the beginning of the phase files;
 2. ask whether to log with `hi-log`;
-3. ask whether to archive specific plans or all completed plans;
-4. ask whether to move to `plans/archive` or delete permanently;
-5. execute the choice;
+3. ask whether to archive a specific plan or all completed plans;
+4. ask whether to move into `plans/archive` or delete permanently;
+5. carry out the choice;
 6. optionally stage/commit/push if the user requests it.
 
 Output:
 
-- number of plans archived/deleted;
-- table of title, status, created date;
-- log/journal entries created.
+- the number of archived/deleted plans;
+- a table of title, status, created date;
+- the log/journal entries created.
 
 ## 11. When to use which mode?
 
 | Situation | Recommendation |
 |---|---|
 | A small change with a clear pattern | Fast |
-| A regular feature needing research and review | `--full` |
+| An ordinary feature needing research and review | `--full` |
 | High security or production risk | `--hard` |
-| Multiple independent investigation directions | `--parallel` |
-| Unsure which architecture to choose | `--two` |
-| Only want the artifact, no session tasks | `--no-tasks` |
-| An existing plan whose assumptions need breaking | `red-team` |
-| An existing plan whose trade-offs need stakeholder confirmation | `validate` |
-| A finished plan whose workspace needs cleanup | `archive` |
+| Many independent investigation directions | `--parallel` |
+| You do not yet know which architecture to choose | `--two` |
+| You only want an artifact, no session tasks | `--no-tasks` |
+| A plan exists and you want to break its assumptions | `red-team` |
+| A plan exists but stakeholders must finalize trade-offs | `validate` |
+| A plan is finished and the workspace needs cleanup | `archive` |
 
 ## 12. Limitations and points to understand correctly
 
-### 12.1 The full flow does not replace runtime testing
+### 12.1 A full flow does not replace runtime testing
 
-Even if a plan has research, red-team, and validate, it still does not prove the code works. Testing is needed at the implementation step.
+Even a plan with research, red-team and validate still does not prove the code runs correctly. Testing is needed at the implementation step.
 
-### 12.2 Red-team and validate require user participation
+### 12.2 Red-team and validate need user participation
 
-Red-team produces findings and recommendations, but the user chooses apply/review/reject. Validate needs stakeholder answers; if there is no answer for a blocking decision, the recommendation must be `revise`.
+Red-team produces findings and proposals, but the user chooses apply/review/reject. Validate needs stakeholder answers; if there is no answer for a blocking decision, the recommendation must be `revise`.
 
 ### 12.3 Tasks are not the only source of truth
 
-The task manager is session-scoped. The artifacts in `plans/` are the persistent part that can be reviewed, version-controlled, and re-hydrated.
+The task manager is session-scoped. The artifacts in `plans/` are the persistent part that can be reviewed, version-controlled and re-hydrated.
 
 ### 12.4 Scope can change in a controlled way
 
-Scope changes should be recorded in the plan, along with the reason and the impact on phases, effort, dependencies, and success criteria. Work should not be silently added inside a phase.
+Scope changes should be recorded in the plan, along with the reason and the impact on phases, effort, dependencies and success criteria. Do not silently add work within a phase.
 
-### 12.5 The current documentation has one point needing interpretation
+### 12.5 The current documentation has one point that needs interpretation
 
-The mode table describes red-team in `--full` as "Optional", while the full process flow lists red-team and validate as steps of the flow. In operation, understand:
+The mode table describes red-team in `--full` as "Optional", while the full process flow lists red-team and validate as steps of the flow. When operating, you must understand:
 
 - `--hard` and `--parallel` definitely require red-team;
-- the full flow is designed to run red-team/validate after the plan is created;
-- if skipping is desired, the reason must be recorded explicitly, or fast mode should be used instead of calling it full verification.
+- the full flow is designed to run red-team/validate after creating the plan;
+- if you want to skip it, you must state the reason clearly or use fast mode instead of calling it full verification.
 
 ## 13. End-to-end example
 
@@ -640,27 +760,27 @@ Suppose the request is: "Add an audit log for every user permission change".
 /hi-plan add audit logs for user permission changes --hard
 ```
 
-Expected workflow:
+The expected workflow:
 
-1. Scan active plans for a related migration or auth plan.
-2. Scope challenge: log only permission mutations, not every user event yet.
-3. Research: find the current auth service, event bus, schema, and retention policy.
-4. Codebase analysis: identify mutation entry points and transaction boundaries.
-5. Write `plan.md` with phases for schema, backend emission, consumer/storage, and tests.
-6. Red-team finds data exposure, actor spoofing, missing transaction consistency, and log injection.
-7. Validate asks about retention, PII masking, delivery guarantees, and query requirements.
+1. Scan active plans to find related migration or auth plans.
+2. Scope challenge: only log permission mutations, not every user event yet.
+3. Research: find the current auth service, event bus, schema and retention policy.
+4. Codebase analysis: determine mutation entry points and transaction boundaries.
+5. Write `plan.md` with phases for schema, backend emission, consumer/storage and tests.
+6. Red-team finds data exposure, actor spoofing, missing transaction consistency and log injection.
+7. Validate asks about retention, PII masking, delivery guarantee and query requirements.
 8. Propagate the answers into the phases.
 9. Hydrate tasks if there are 3 or more phases.
-10. Hand off the path for implementation.
+10. Hand off the path to implementation.
 
-The plan's success criteria should not merely be "audit log added". They need to be more specific, for example:
+The plan's success criteria should not just be "audit log added". They need to be more specific, for example:
 
 - every permission mutation path is identified;
-- events have actor, target, action, timestamp, and correlation ID;
+- the event has actor, target, action, timestamp and correlation ID;
 - sensitive fields are masked;
-- the failure policy is explicitly decided;
-- there are tests for duplicates, retries, transaction rollback, and unauthorized mutations;
-- phase dependencies and migration rollout are documented.
+- the failure policy is clearly decided;
+- tests cover duplicate, retry, transaction rollback and unauthorized mutation;
+- phase dependencies and the migration rollout are recorded.
 
 ## 14. Quick summary
 
@@ -687,6 +807,6 @@ flowchart TD
     P --> Q
 ```
 
-The shortest sentence to remember:
+The shortest way to remember it:
 
-> `hi-plan` does not only answer "what to do", but also tries to answer "why do it this way, what is affected, what could go wrong, who needs to confirm, and how to hand off so someone else can implement it".
+> `hi-plan` does not just answer "what to do", it also tries to answer "why do it this way, what does it affect, what could go wrong, who must confirm, and how to hand off so someone else can implement it".
