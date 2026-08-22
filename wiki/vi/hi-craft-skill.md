@@ -62,6 +62,148 @@ flowchart TD
     M --> P[Tasks complete, commit, hi-log]
 ```
 
+### 2.1 Sequence chi tiết đến mức skill và execution boundary
+
+Diagram dưới đây mở rộng toàn bộ orchestration của `hi-craft`. Riêng bước Plan được giữ như một black box: `hi-craft` chỉ gọi `hi-plan --fast` và nhận lại plan path/phases, không mở rộng workflow nội bộ của `hi-plan`.
+
+```mermaid
+sequenceDiagram
+    autonumber
+    participant U as User
+    participant C as hi-craft
+    participant P as hi-plan
+    participant D as hi-docs-seeker
+    participant TM as Task manager
+    participant W as fullstack-developer
+    participant T as Test runner
+    participant F as hi-fix
+    participant R as Code reviewer
+    participant G as Git
+    participant L as hi-log
+
+    U->>C: /hi-craft task, mode hoặc plan path
+    C->>C: Resolve intent và mode
+
+    alt Đã truyền plan hoặc phase path
+        C->>C: Đọc artifact và kiểm tra readiness, dependency, success criteria
+    else Chưa có plan và không có user override
+        C->>P: Invoke hi-plan --fast
+        P-->>C: Trả plan path và phase artifacts
+    else User nói just code it hoặc skip planning
+        Note over U,C: Ghi nhận override và không tuyên bố planning gate đã pass
+    end
+
+    opt Full mode hoặc cần documentation hiện hành
+        C->>D: Invoke skill với library, framework hoặc API question
+        D-->>C: Verified primary-source guidance và unresolved gaps
+    end
+
+    C->>TM: TaskUpdate phase hiện tại thành in_progress
+    alt Thực thi tuần tự
+        C->>C: Implement phase tasks trực tiếp theo plan
+    else Các phase độc lập và parallel được phép
+        C->>W: Launch worker cho từng phase không xung đột
+        W-->>C: Trả scoped changes và phase evidence
+    end
+
+    alt Testing được bật
+        C->>T: Chạy focused test và project verification command
+        T-->>C: Trả exit code, failures và warnings
+        alt Tests pass
+            Note over C,T: Giữ command và output làm verification evidence
+        else Failure lần 1 hoặc 2
+            C->>C: Diagnose root cause và áp dụng scoped fix
+            C->>T: Chạy lại cùng verification command
+        else Failure lần 3 trở đi
+            C->>F: Invoke skill để deep diagnosis và root-cause fix
+            F-->>C: Trả fix, evidence và residual gaps
+            C->>T: Chạy lại verification command sau fix
+        end
+    else --no-test
+        C->>C: Ghi rõ testing bị skip và confidence bị giảm
+    end
+
+    opt Mode full, review hoặc auto
+        C->>R: Submit implementation, diff và test evidence
+        R-->>C: Trả score, findings và critical count
+        alt Không có critical và đạt policy
+            opt Không phải auto mode
+                C->>U: Trình approval gate
+                U-->>C: Approve
+            end
+        else Finding có thể sửa trong tối đa 3 cycles
+            C->>C: Apply findings, rerun tests và request re-review
+        else Critical issue hoặc hết fix cycles
+            C->>U: Report blocker và yêu cầu quyết định tiếp theo
+        end
+    end
+
+    C->>TM: TaskUpdate mọi task hoàn tất thành completed
+    C->>G: Commit scoped changes và giữ commit hash
+    C->>L: Invoke skill với change, test và commit evidence
+    L-->>C: Trả log path và recorded summary
+    C-->>U: Final report gồm plan, files, tests, review, commit, log và residual risks
+```
+
+Các ranh giới cần hiểu đúng:
+
+- `hi-plan` là một lời gọi skill duy nhất trong sequence này. Chi tiết scope challenge, research, red-team hoặc validation của plan không được lặp lại ở đây.
+- `hi-docs-seeker` chỉ chạy khi cần documentation hiện hành hoặc research của full mode, không phải mọi lần gọi craft.
+- Test failure lần 1-2 do `hi-craft` tự diagnose và sửa. Từ lần 3 mới chuyển sang `hi-fix`, sau đó vẫn phải chạy lại verification command.
+- Code reviewer là reviewer agent của review gate, không phải một skill được đặt tên riêng trong contract hiện tại.
+- Parallel execution chỉ hợp lệ khi phase dependency, file ownership và shared contract không xung đột.
+
+Nguồn đối chiếu: [`hi-craft/SKILL.md`](../../hi-craft/SKILL.md).
+
+#### 2.1.1 Context retrieval trước implementation
+
+Core contract của `hi-craft` không tự khai báo `mind_mcp`, `graph_mcp` hoặc Serena. Tuy nhiên, trong repository này, [`AGENTS.md`](../../AGENTS.md) yêu cầu mọi task thu thập project context theo đúng thứ tự ưu tiên trước khi thực thi. Vì vậy `hi-craft` cần chạy retrieval chain sau khi đã có plan/readiness context và trước khi sửa code. Chain dừng ngay khi một tầng đã cung cấp đủ evidence.
+
+```mermaid
+sequenceDiagram
+    autonumber
+    participant C as hi-craft
+    participant M as mind_mcp
+    participant G as graph_mcp
+    participant S as Serena
+    participant N as Native rg
+
+    C->>M: Retrieve project docs, concepts và foundational knowledge
+    alt mind_mcp đủ evidence
+        M-->>C: Trả verified project context, dừng retrieval chain
+    else mind_mcp unavailable, no result hoặc còn named gap
+        M-->>C: Trả gap hoặc unavailable status
+        C->>G: semantic_search(query, parser_type, top_k, collection)
+        G-->>C: Trả semantic candidates
+        C->>G: explore_graph(query, parser_type, collection)
+        G-->>C: Trả relationships, paths và logic evidence
+        alt graph_mcp đủ evidence
+            Note over C,G: Ưu tiên structured graph data khi evidence overlap
+        else graph_mcp unavailable, no result hoặc còn named gap
+            C->>S: find_symbol, find_referencing_symbols hoặc search_for_pattern
+            S-->>C: Trả symbol, reference và source anchors
+            alt Serena đủ evidence
+                Note over C,S: Dừng trước native search
+            else Chỉ còn exact-string gap
+                C->>N: rg --fixed-strings trong repository scope
+                N-->>C: Trả exact file và line hits để corroborate
+            end
+        end
+    end
+
+    C->>C: Merge evidence, verify scope và tiếp tục implementation
+```
+
+Quy tắc áp dụng:
+
+- Đây là **project-level requirement** từ `AGENTS.md`, không phải behavior portable của mọi bản cài đặt `hi-craft`.
+- `mind_mcp` dùng cho project knowledge và docs; `graph_mcp` dùng cho semantic code relationships và logic; Serena dùng để xác nhận symbol/reference/source; `rg` chỉ là fallback exact-string cuối cùng.
+- `semantic_search` chỉ tạo candidate. Claim về call path hoặc dependency cần `explore_graph` hoặc direct-source corroboration.
+- Không gọi cả bốn tầng theo thói quen. Chỉ đi xuống tầng tiếp theo khi tầng hiện tại unavailable, không có kết quả hoặc còn một evidence gap được đặt tên.
+- User override planning gate không tự động bỏ qua context retrieval và evidence verification.
+
+Nguồn đối chiếu: [`AGENTS.md`](../../AGENTS.md) và [`hi-craft/SKILL.md`](../../hi-craft/SKILL.md).
+
 ## 3. Hard gate: plan trước code
 
 Quy tắc quan trọng nhất của skill:

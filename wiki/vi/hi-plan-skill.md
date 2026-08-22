@@ -156,6 +156,106 @@ sequenceDiagram
     P-->>U: Plan path and implementation handoff
 ```
 
+#### 4.3.1 Sequence đầy đủ đến mức skill và hàm MCP
+
+Trong diagram ở trên, `Researchers` là **vai trò agent**, không phải tên một skill. Theo contract hiện tại, researcher có thể gọi ba skill được nêu rõ trong research phase:
+
+- `hi-repository-search` để lấy evidence từ repository;
+- `hi-docs-seeker` để kiểm tra documentation bên ngoài;
+- `hi-sequential-thinking` khi cần phân rã hoặc so sánh vấn đề phức tạp.
+
+`hi-repository-search` mới là lớp định tuyến xuống `mind_mcp`, `graph_mcp`, Serena và `rg`. Các hàm `graph_mcp` trong nhánh dưới đây là **theo intent**, không phải mọi hàm đều luôn được gọi trong một run.
+
+```mermaid
+sequenceDiagram
+    autonumber
+    participant U as User
+    participant P as hi-plan
+    participant R as Researcher agent
+    participant ST as hi-sequential-thinking
+    participant DS as hi-docs-seeker
+    participant RS as hi-repository-search
+    participant M as mind_mcp
+    participant G as graph_mcp
+    participant F as Serena / rg
+    participant A as Red-team reviewer agents
+    participant O as hi-project-organization
+
+    U->>P: /hi-plan task --full
+    P->>P: Pre-creation check & cross-plan scan
+    P->>U: Scope challenge (EXPANSION / HOLD / REDUCTION)
+    U-->>P: Chốt scope mode
+    P->>R: Spawn researcher với câu hỏi và scope đã chốt
+
+    opt Vấn đề phức tạp hoặc cần so sánh approach
+        R->>ST: Invoke skill phân rã và hội tụ
+    end
+
+    opt Cần tài liệu library hoặc API bên ngoài
+        R->>DS: Invoke skill lấy evidence từ nguồn chính thức
+    end
+
+    R->>RS: Invoke skill --deep hoặc --impact
+    RS->>M: Tìm project concepts & architecture context
+
+    alt mind_mcp đủ evidence
+        Note over RS,M: Dừng retrieval chain, không gọi dư thừa
+    else mind_mcp unavailable hoặc thiếu evidence
+        RS->>G: list_mcp_functions() + list_parsers()
+        RS->>G: semantic_search(query, collection, top_k)
+        RS->>G: explore_graph(query, parser_type, collection)
+
+        opt Chỉ biết tên function
+            RS->>G: search_functions(query)
+        end
+
+        alt Cần caller / callee lân cận
+            RS->>G: query_subgraph(function_id, direction, depth <= 2)
+        else Cần flow qua lại
+            RS->>G: trace_flow(start_id, rel_types, depth <= 6)
+        else Đã biết start và end
+            RS->>G: find_paths(start_id, end_id, depth <= 5)
+        else Cần blast radius của workflow
+            RS->>G: analyze_workflow_impact(function_id, depth <= 4)
+        end
+
+        G-->>RS: Candidate nodes, paths & impact evidence
+
+        opt graph_mcp unavailable hoặc thiếu evidence
+            RS->>F: Serena symbol search / rg exact-string
+            F-->>RS: Source anchors & direct corroboration
+        end
+    end
+
+    RS-->>R: Evidence Bundle (findings, gaps)
+    R-->>P: Research findings & alternatives
+    P->>P: Analyze codebase, ghi plan.md & phase files
+
+    opt Red-team được bật
+        P->>A: /hi-plan red-team path
+        A-->>P: Deduplicated findings & severity ranking
+    end
+
+    opt Validation được bật
+        P->>U: /hi-plan validate path
+        U-->>P: Chốt assumptions & trade-offs
+    end
+
+    P->>P: Propagate quyết định, hydrate tasks
+    P->>O: Invoke skill chuẩn hóa vị trí artifact
+    P-->>U: Absolute plan path & handoff command
+```
+
+Các ranh giới cần hiểu đúng:
+
+- Researcher **không mặc định gọi** `hi-codebase-research-explorer`; contract của `hi-plan` hiện không khai báo routing đó.
+- Red-team reviewer là agent chạy hostile lens trong `/hi-plan red-team`; contract không nói reviewer tự động gọi `hi-security`.
+- `semantic_search` tạo candidate. Relationship chỉ được coi là evidence sau `explore_graph`, graph traversal hoặc source corroboration.
+- `query_subgraph`, `trace_flow`, `find_paths` và `analyze_workflow_impact` là các nhánh lựa chọn theo câu hỏi; không chạy tuần tự tất cả.
+- Khi runtime schema khác tài liệu, response từ `list_mcp_functions()` là authority; không hardcode tham số cũ.
+
+Nguồn đối chiếu: [`hi-plan/SKILL.md`](../../hi-plan/SKILL.md), [`research-phase.md`](../../hi-plan/references/research-phase.md), [`red-team-workflow.md`](../../hi-plan/references/red-team-workflow.md), [`hi-repository-search/SKILL.md`](../../hi-repository-search/SKILL.md), và [`code_graph.md`](../../hi-repository-search/references/code_graph.md).
+
 ### 4.4 `--hard`
 
 `--hard` dùng hai researcher và bật red-team. Đây là mode phù hợp với:
