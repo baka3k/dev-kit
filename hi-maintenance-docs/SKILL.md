@@ -5,7 +5,7 @@ description: "Orchestrate a complete, navigable, evidence-backed maintenance doc
 
 # Maintenance Documentation
 
-Read [shared/orchestrator-contract.md](../dev-shared/orchestrator-contract.md). Own the run directory, global manifest, joins, contradiction handling, index, freshness, and final status. Leaves own only their isolated outputs.
+Read [dev-shared/orchestrator-contract.md](../dev-shared/orchestrator-contract.md). Own the run directory, global manifest, joins, contradiction handling, index, freshness, and final status. Leaves own only their isolated outputs.
 
 ## Inputs
 

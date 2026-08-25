@@ -5,7 +5,7 @@ description: "Produce draft-only evidence-backed technical behavior as sequence,
 
 # Behavior Modeling
 
-Read [shared/leaf-contract.md](../dev-shared/leaf-contract.md). Operate as a draft-only leaf; lifecycle orchestrator owns refinement, review, and publication.
+Read [dev-shared/leaf-contract.md](../dev-shared/leaf-contract.md). Operate as a draft-only leaf; lifecycle orchestrator owns refinement, review, and publication.
 
 ## Inputs
 
@@ -13,7 +13,7 @@ Require `repo_root`, a module/symbol/use-case anchor, and `output_root`. Accept 
 
 ## Evidence Gate
 
-Read [retrieval-protocol.md](references/retrieval-protocol.md) and [shared/retrieval-protocol.md](../dev-shared/retrieval-protocol.md). Treat semantic matches as candidates. Confirm ordered calls, guards, state reads/writes, and terminal effects with verified graph relationships or source evidence. Reject wrong-project results. Stop the affected mode when no source evidence exists; never invent a transition.
+Read [retrieval-protocol.md](references/retrieval-protocol.md) and [dev-shared/retrieval-protocol.md](../dev-shared/retrieval-protocol.md). Treat semantic matches as candidates. Confirm ordered calls, guards, state reads/writes, and terminal effects with verified graph relationships or source evidence. Reject wrong-project results. Stop the affected mode when no source evidence exists; never invent a transition.
 
 ## Workflow
 

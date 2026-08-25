@@ -5,7 +5,7 @@ description: "Generate or update a comprehensive, evidence-backed repository wik
 
 # Repo Wiki Generator
 
-Read [shared/orchestrator-contract.md](../dev-shared/orchestrator-contract.md). Own the wiki run directory, page generation, knowledge card assembly, wiki_plan configuration, and incremental update logic.
+Read [dev-shared/orchestrator-contract.md](../dev-shared/orchestrator-contract.md). Own the wiki run directory, page generation, knowledge card assembly, wiki_plan configuration, and incremental update logic.
 
 ## Inputs
 
@@ -36,7 +36,7 @@ Require `repo_root` and `project_id`. Accept:
 | 8 | cards | internal (parallel per module) | plan + evidence | knowledge/**/*.md cards |
 | 9 | index | internal | pages + cards | navigation, metadata, manifests |
 
-Read [shared/retrieval-protocol.md](../dev-shared/retrieval-protocol.md) for evidence gathering.
+Read [dev-shared/retrieval-protocol.md](../dev-shared/retrieval-protocol.md) for evidence gathering.
 
 ## Workflow
 

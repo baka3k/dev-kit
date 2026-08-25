@@ -5,7 +5,7 @@ description: "Produce draft-only evidence-backed physical and logical data model
 
 # Data Model Discovery
 
-Read [shared/leaf-contract.md](../dev-shared/leaf-contract.md). Operate as a draft-only leaf; lifecycle orchestrator owns refinement, review, and publication.
+Read [dev-shared/leaf-contract.md](../dev-shared/leaf-contract.md). Operate as a draft-only leaf; lifecycle orchestrator owns refinement, review, and publication.
 
 ## Inputs
 
@@ -13,7 +13,7 @@ Require `repo_root`, database/module/entity scope, and `output_root`. Accept par
 
 ## Evidence Gate
 
-Read [retrieval-protocol.md](references/retrieval-protocol.md) and [shared/retrieval-protocol.md](../dev-shared/retrieval-protocol.md). Distinguish database declarations, migrations, ORM mappings, domain models, DTOs, caches, and inferred usage. Reject wrong-project results. An inferred foreign key, cardinality, owner, or retention policy never becomes a declared constraint.
+Read [retrieval-protocol.md](references/retrieval-protocol.md) and [dev-shared/retrieval-protocol.md](../dev-shared/retrieval-protocol.md). Distinguish database declarations, migrations, ORM mappings, domain models, DTOs, caches, and inferred usage. Reject wrong-project results. An inferred foreign key, cardinality, owner, or retention policy never becomes a declared constraint.
 
 ## Workflow
 

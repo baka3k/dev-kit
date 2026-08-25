@@ -5,7 +5,7 @@ description: "Orchestrates evidence-backed document generation, human clarificat
 
 # Document Lifecycle
 
-Read [shared/orchestrator-contract.md](../dev-shared/orchestrator-contract.md). Own the run root, checkpoint, revision ledger, pauses, joins, `current/` materialization, and final status. Never invoke another orchestrator; leaves never update global lifecycle state.
+Read [dev-shared/orchestrator-contract.md](../dev-shared/orchestrator-contract.md). Own the run root, checkpoint, revision ledger, pauses, joins, `current/` materialization, and final status. Never invoke another orchestrator; leaves never update global lifecycle state.
 
 ## Inputs
 

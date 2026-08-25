@@ -5,7 +5,7 @@ description: "Produce draft-only special command or protocol wire-format specifi
 
 # Command Specification Discovery
 
-Read [shared/leaf-contract.md](../dev-shared/leaf-contract.md). Operate as a draft-only leaf; lifecycle orchestrator owns refinement, review, and publication.
+Read [dev-shared/leaf-contract.md](../dev-shared/leaf-contract.md). Operate as a draft-only leaf; lifecycle orchestrator owns refinement, review, and publication.
 
 ## Inputs
 
@@ -13,7 +13,7 @@ Require `repo_root`, a module path or command anchor, and `output_root`. Accept 
 
 ## Retrieval Gate
 
-Read [retrieval-protocol.md](references/retrieval-protocol.md) and [shared/retrieval-protocol.md](../dev-shared/retrieval-protocol.md). Reject wrong-project results. Treat names, semantic hits, comments, and existing documents as candidates until implementation paths corroborate them.
+Read [retrieval-protocol.md](references/retrieval-protocol.md) and [dev-shared/retrieval-protocol.md](../dev-shared/retrieval-protocol.md). Reject wrong-project results. Treat names, semantic hits, comments, and existing documents as candidates until implementation paths corroborate them.
 
 ## Workflow
 

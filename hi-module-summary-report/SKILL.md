@@ -5,7 +5,7 @@ description: "Synthesize existing module-inventory and tech-audit artifacts into
 
 # Module Summary and Risk Report
 
-Read [shared/leaf-contract.md](../dev-shared/leaf-contract.md). Consume evidence; do not independently rediscover the repository. Lifecycle orchestrator owns refinement, review, approval, and publication.
+Read [dev-shared/leaf-contract.md](../dev-shared/leaf-contract.md). Consume evidence; do not independently rediscover the repository. Lifecycle orchestrator owns refinement, review, approval, and publication.
 
 ## Inputs
 

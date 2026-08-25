@@ -5,7 +5,7 @@ description: "Produce draft-only evidence-backed business use cases for one sour
 
 # Use-Case Discovery
 
-Read [shared/leaf-contract.md](../dev-shared/leaf-contract.md). Operate as a draft-only leaf; lifecycle orchestrator owns refinement, review, and publication. Run four internal phases in one skill.
+Read [dev-shared/leaf-contract.md](../dev-shared/leaf-contract.md). Operate as a draft-only leaf; lifecycle orchestrator owns refinement, review, and publication. Run four internal phases in one skill.
 
 ## Inputs
 
@@ -13,7 +13,7 @@ Require `repo_root`, `module_name`, and at least one canonical module path. Acce
 
 ## Retrieval Gate
 
-Read [graph-retrieval.md](references/graph-retrieval.md), [exhaustive-tracing.md](references/exhaustive-tracing.md), [serena-rg-coverage.md](references/serena-rg-coverage.md), and [shared/retrieval-protocol.md](../dev-shared/retrieval-protocol.md). Stop if no code evidence can establish a module inventory.
+Read [graph-retrieval.md](references/graph-retrieval.md), [exhaustive-tracing.md](references/exhaustive-tracing.md), [serena-rg-coverage.md](references/serena-rg-coverage.md), and [dev-shared/retrieval-protocol.md](../dev-shared/retrieval-protocol.md). Stop if no code evidence can establish a module inventory.
 
 ## Phases
 

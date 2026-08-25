@@ -5,7 +5,7 @@ description: "Validate consistency across discovery outputs (use-case, API, data
 
 # Cross-Artifact Validation
 
-Read [shared/leaf-contract.md](../dev-shared/leaf-contract.md). Validate cross-domain consistency without modifying source artifacts. Operate as a read-only validation leaf.
+Read [dev-shared/leaf-contract.md](../dev-shared/leaf-contract.md). Validate cross-domain consistency without modifying source artifacts. Operate as a read-only validation leaf.
 
 ## Inputs
 
