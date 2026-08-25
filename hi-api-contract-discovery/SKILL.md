@@ -5,7 +5,7 @@ description: "Produce draft-only evidence-backed HTTP and asynchronous API contr
 
 # API Contract Discovery
 
-Read [shared/leaf-contract.md](../shared/leaf-contract.md). Operate as a draft-only leaf; lifecycle orchestrator owns refinement, review, and publication.
+Read [shared/leaf-contract.md](../dev-shared/leaf-contract.md). Operate as a draft-only leaf; lifecycle orchestrator owns refinement, review, and publication.
 
 ## Inputs
 
@@ -13,7 +13,7 @@ Require `repo_root`, service/module/endpoint scope, protocol modes, and `output_
 
 ## Evidence Gate
 
-Read [retrieval-protocol.md](references/retrieval-protocol.md) and [shared/retrieval-protocol.md](../shared/retrieval-protocol.md). A route or topic declaration alone is incomplete: verify registration, handler, parsing, validation, DTO/schema, auth checks, responses/errors, callers/consumers, and downstream effects. Reject wrong-project results; preserve missing elements as gaps.
+Read [retrieval-protocol.md](references/retrieval-protocol.md) and [shared/retrieval-protocol.md](../dev-shared/retrieval-protocol.md). A route or topic declaration alone is incomplete: verify registration, handler, parsing, validation, DTO/schema, auth checks, responses/errors, callers/consumers, and downstream effects. Reject wrong-project results; preserve missing elements as gaps.
 
 ## Workflow
 

@@ -5,7 +5,7 @@ description: "Analyze an evidence-backed draft for ambiguity, terminology gaps, 
 
 # Document Refinement
 
-Read [shared/leaf-contract.md](../shared/leaf-contract.md). Operate as a leaf; never invoke skills, ask on behalf of an orchestrator, spawn workers, overwrite the base revision, or update a global manifest.
+Read [shared/leaf-contract.md](../dev-shared/leaf-contract.md). Operate as a leaf; never invoke skills, ask on behalf of an orchestrator, spawn workers, overwrite the base revision, or update a global manifest.
 
 ## Inputs
 

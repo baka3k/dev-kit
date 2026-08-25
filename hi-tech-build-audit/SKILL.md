@@ -5,7 +5,7 @@ description: "Audit a repository's technology stack, build system, dependency ma
 
 # Technology and Build Audit
 
-Read [shared/leaf-contract.md](../shared/leaf-contract.md). Produce verified build and deployment evidence. Do not own module reconnaissance or cross-artifact synthesis.
+Read [shared/leaf-contract.md](../dev-shared/leaf-contract.md). Produce verified build and deployment evidence. Do not own module reconnaissance or cross-artifact synthesis.
 
 ## Inputs
 
@@ -14,7 +14,7 @@ Require a readable absolute `repo_root`. Accept `target_env`: `local`, `containe
 ## Workflow
 
 1. Validate input and output boundaries.
-2. Use retrieval rules in [audit-checklist.md](references/audit-checklist.md) and [shared/retrieval-protocol.md](../shared/retrieval-protocol.md). Discover callable metadata; fast-fail unavailable layers once.
+2. Use retrieval rules in [audit-checklist.md](references/audit-checklist.md) and [shared/retrieval-protocol.md](../dev-shared/retrieval-protocol.md). Discover callable metadata; fast-fail unavailable layers once.
 3. Inventory languages, runtimes, frameworks, package managers, build systems, dependency locks, generated code, and version constraints.
 4. Verify build, test, lint, packaging, and local-run commands from files. Label convention-inferred commands; never present them as verified.
 5. Inspect CI/CD triggers, jobs, gates, artifacts, secrets references, environments, and deployment targets.

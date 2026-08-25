@@ -5,7 +5,7 @@ description: "Map an unfamiliar repository into an evidence-backed module invent
 
 # Repository Reconnaissance
 
-Read [shared/leaf-contract.md](../shared/leaf-contract.md). Produce structural evidence only. Do not own build auditing, risk synthesis, or full discovery orchestration.
+Read [shared/leaf-contract.md](../dev-shared/leaf-contract.md). Produce structural evidence only. Do not own build auditing, risk synthesis, or full discovery orchestration.
 
 ## Inputs
 
@@ -15,7 +15,7 @@ Reject paths outside the requested repository and output root. Return a structur
 
 ## Retrieval
 
-Read [shared/retrieval-protocol.md](../shared/retrieval-protocol.md). Follow the first successful layer and stop when evidence is sufficient. Treat semantic hits as candidates until direct repository evidence confirms them.
+Read [shared/retrieval-protocol.md](../dev-shared/retrieval-protocol.md). Follow the first successful layer and stop when evidence is sufficient. Treat semantic hits as candidates until direct repository evidence confirms them.
 
 ## Workflow
 
