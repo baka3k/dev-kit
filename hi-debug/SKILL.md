@@ -32,3 +32,4 @@ metadata:
 - **Database/CI:** `psql` for PostgreSQL; `gh` CLI for GitHub Actions logs and pipelines
 - **Codebase:** `hi-docs-seeker` (package docs), `hi-repository-search` (explorer code & doc), `/hi-codebase-research-explorer` (search information)
 - **Frontend/Problem-solving:** Chrome browser or `hi-chrome-devtools` for visual verification; `hi-problem-solving` when stuck
+- **graph_mcp (T3, [dev-shared/graph-function-selection.md](../dev-shared/graph-function-selection.md)):** `query_subgraph` around the failing symbol; `trace_flow` (`in`/`out`, `rel_types:["CALLS","POSSIBLE_CALLS"]`) for indirect/callback paths; `find_paths` from symptom anchor to suspect cause; `list_possible_calls` + `get_ipc_message` for unexplained dispatch; `search_by_code` for exact error/log strings

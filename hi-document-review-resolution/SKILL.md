@@ -23,6 +23,8 @@ Validate with [review-comment.schema.json](references/review-comment.schema.json
 6. Revalidate changed artifacts, dependency closure, links, diagrams, redaction, hashes, and unchanged base files.
 7. Emit candidate revision, resolution ledger, unresolved-items report, evidence-impact report, validation result, local manifest.
 
+When a comment asserts a symbol, endpoint, or behavior, verify it once with `search_functions`/`get_symbol` (T1 per [dev-shared/graph-function-selection.md](../dev-shared/graph-function-selection.md)) before assigning a disposition; unverifiable assertions take `unsupported_by_evidence`.
+
 ## Completion
 
 Complete when: every comment has one disposition, stale comments changed nothing, repeat processing against the same base is idempotent, accepted changes validate, unresolved blocking comments remain visible, and approval state is unchanged.

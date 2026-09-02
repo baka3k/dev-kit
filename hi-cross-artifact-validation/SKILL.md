@@ -28,7 +28,7 @@ Block when fewer than two domain manifests are available.
 
 1. Load all available domain manifests and validate their hashes.
 2. Build a unified stable-ID index from all domain artifacts.
-3. Run each applicable validation check from the table above.
+3. Run each applicable validation check from the table above. Re-resolve disputed stable IDs with `search_functions` and `get_node_details`; verify claimed endpoint or message bridges with `find_callers_of_endpoint` and `get_ipc_message` per [dev-shared/graph-function-selection.md](../dev-shared/graph-function-selection.md) (T2 profile).
 4. Classify findings as `error` (blocks consistency), `warning` (potential issue), or `info` (observation).
 5. Write `cross-validation-report.md` with findings grouped by check, `cross-validation-results.json` per [validation-contract.md](references/validation-contract.md), and `artifact-manifest.json`.
 

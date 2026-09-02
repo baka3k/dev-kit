@@ -13,7 +13,7 @@ Require `repo_root`, database/module/entity scope, and `output_root`. Accept par
 
 ## Evidence Gate
 
-Read [retrieval-protocol.md](references/retrieval-protocol.md) and [dev-shared/retrieval-protocol.md](../dev-shared/retrieval-protocol.md). Distinguish database declarations, migrations, ORM mappings, domain models, DTOs, caches, and inferred usage. Reject wrong-project results. An inferred foreign key, cardinality, owner, or retention policy never becomes a declared constraint.
+Read [retrieval-protocol.md](references/retrieval-protocol.md) and [dev-shared/retrieval-protocol.md](../dev-shared/retrieval-protocol.md). Distinguish database declarations, migrations, ORM mappings, domain models, DTOs, caches, and inferred usage. Reject wrong-project results. An inferred foreign key, cardinality, owner, or retention policy never becomes a declared constraint. Graph profile (T3 in [dev-shared/graph-function-selection.md](../dev-shared/graph-function-selection.md)): `search_by_code` for SQL/DDL and ORM literals, `listup_symbols_matching_file_path` for entity inventory, `get_symbol` for declared constraints.
 
 ## Workflow
 

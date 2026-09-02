@@ -25,7 +25,7 @@ Reverse-engineer behavior from evidence, not symbol-name guesses. FalkorDB plus 
 
 `mind_mcp → graph_mcp/Qdrant → graph_mcp/FalkorDB → Serena → native`
 
-- Read [GRAPH-RAG-PROTOCOL.md](references/GRAPH-RAG-PROTOCOL.md) once when retrieval starts.
+- Read [GRAPH-RAG-PROTOCOL.md](references/GRAPH-RAG-PROTOCOL.md) once when retrieval starts. Cross-check newly added read-side functions against the shared selection layer [dev-shared/graph-function-selection.md](../dev-shared/graph-function-selection.md); the provider-safe call list in GRAPH-RAG-PROTOCOL.md §6 stays authoritative for routing.
 - For `usecase`, read [PROFILE-USECASE.md](references/PROFILE-USECASE.md); for `module` or `migration`, use the generated manifest as the profile guide.
 - Read only the technique file returned by `--next` for the current artifact.
 - Read [MCP-TOOLS.md](references/MCP-TOOLS.md) only when live metadata is ambiguous, a wrapper rejects parameters, or provider routing must be diagnosed.

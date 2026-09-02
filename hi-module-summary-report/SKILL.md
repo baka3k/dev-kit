@@ -24,6 +24,8 @@ Missing/invalid input → return prerequisite result naming the missing producer
 7. Write `module-summary.md`, `risk-assessment.md`, optional diagrams, and `artifact-manifest.json`.
 8. Validate every module is represented and every risk cites evidence.
 
+Graph cross-check (T3 profile): validate recon-supplied dependency claims with `plan_dependency_order` and `compute_scc`, and entry-point claims with `list_up_entrypoint`; record any disagreement as a contradiction per [dev-shared/graph-function-selection.md](../dev-shared/graph-function-selection.md).
+
 ## Completion
 
 Complete when: input coverage explicit, all modules represented, diagrams parse when requested, unsupported claims labeled as inference or gap.

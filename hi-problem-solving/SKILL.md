@@ -32,6 +32,7 @@ Apply when encountering:
 ## Application Process
 
 1. **Identify stuck-type** - Match symptom to technique, load that reference, apply systematically
+2. **Ground in evidence** - For repository-bound problems, ground claims with `graph_mcp.semantic_search`/`explore_graph` (T1 per [dev-shared/graph-function-selection.md](../dev-shared/graph-function-selection.md)); never debate against invented code facts
 
 ## References
 

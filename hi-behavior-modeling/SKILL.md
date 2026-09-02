@@ -13,7 +13,7 @@ Require `repo_root`, a module/symbol/use-case anchor, and `output_root`. Accept 
 
 ## Evidence Gate
 
-Read [retrieval-protocol.md](references/retrieval-protocol.md) and [dev-shared/retrieval-protocol.md](../dev-shared/retrieval-protocol.md). Treat semantic matches as candidates. Confirm ordered calls, guards, state reads/writes, and terminal effects with verified graph relationships or source evidence. Reject wrong-project results. Stop the affected mode when no source evidence exists; never invent a transition.
+Read [retrieval-protocol.md](references/retrieval-protocol.md) and [dev-shared/retrieval-protocol.md](../dev-shared/retrieval-protocol.md). Treat semantic matches as candidates. Confirm ordered calls, guards, state reads/writes, and terminal effects with verified graph relationships or source evidence. Reject wrong-project results. Stop the affected mode when no source evidence exists; never invent a transition. Graph profile (T3 in [dev-shared/graph-function-selection.md](../dev-shared/graph-function-selection.md)): `trace_flow` and `find_paths` for ordered calls, `list_possible_calls` and `get_ipc_message` for indirect and asynchronous bridges, `reconstruct_flow` to narrate already-verified paths.
 
 ## Workflow
 

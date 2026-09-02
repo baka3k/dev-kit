@@ -13,7 +13,7 @@ Use this skill when a task needs Cortex Harness from `https://github.com/baka3k/
 
 ## Operating Rules
 
-1. Gather project context first using the root search directive: `mind_mcp`, then `graph_mcp.semantic_search`, `graph_mcp.`explore_graph` then Serena, then `rg`.
+1. Gather project context first using the root search directive: `mind_mcp`, then `graph_mcp` (`semantic_search`, `explore_graph` — resolve the live catalog with `list_mcp_functions` first), then Serena, then `rg`.
 2. Prefer the installed `dev` command. If it is not on `PATH`, use the repository-local fallback at `C:\ai\cortex-harness\.venv\Scripts\dev.exe` when present.
 3. Do not invent config paths, database names, or project folders. Run `dev status` or inspect the Cortex Harness config before changing it.
 4. For interactive commands, explain what they will ask for and stay with the user until config, sync, and MCP status are verified.

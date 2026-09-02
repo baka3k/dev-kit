@@ -58,6 +58,11 @@ Add `--no-tasks` to skip task hydration.
 9. **Hydrate Tasks** -> TaskCreate per phase
 10. **Output** -> Absolute path + craft command
 
+## Graph Impact Layer (only when graph_mcp is available)
+- T2 profile per [dev-shared/graph-function-selection.md](../dev-shared/graph-function-selection.md): `semantic_search`/`search_functions` for scope anchors, `query_subgraph` for touched areas.
+- Phase ordering evidence: `plan_dependency_order`; blast radius for risky steps: `analyze_workflow_impact`.
+- Fast-fail once; a missing graph layer never blocks planning.
+
 ## Output Requirements
 - Plans in CURRENT WORKING PROJECT DIRECTORY (not user home)
 - Plan files = persistent. Tasks = session-scoped

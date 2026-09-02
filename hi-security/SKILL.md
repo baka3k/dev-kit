@@ -103,7 +103,7 @@ progress_reporting:
 ```yaml
 steps:
   1. For each in-scope file, analyze per STRIDE category
-  2. Use graph_mcp to discover entry points, auth flows, data paths
+  2. Use graph_mcp to discover entry points (`list_up_entrypoint`), auth flows, and data paths (`trace_flow` with `rel_types:["CALLS","POSSIBLE_CALLS"]`; `get_api_call_chain` for endpoint-to-database chains) — selection per `dev-shared/graph-function-selection.md`
   3. Use mind_mcp for security documentation context
   4. Record findings with file:line, category, description
   5. Report: "Phase 1 complete: {count} STRIDE findings"
@@ -167,6 +167,16 @@ mcp_functions:
     params: {start_nodes: auth-related functions, depth: 5}
     output: {paths: auth flow traces}
     expected: "Call paths for auth flows"
+
+  - graph_mcp.search_by_code [required]
+    params: {query: "password secret token hash encode base64"}
+    output: {nodes: secret and sink sites}
+    expected: "Hardcoded secret and crypto sink locations"
+
+  - graph_mcp.list_up_entrypoint [required]
+    params: {modules: "{in-scope modules}"}
+    output: {entry_points: externally callable functions}
+    expected: "Attack surface: externally reachable entry points"
 
   - mind_mcp.hybrid_search [optional]
     params: {query: "security policy compliance", collection: "{collection}", limit: 10}

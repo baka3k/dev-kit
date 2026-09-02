@@ -31,6 +31,7 @@ Standard/Deep: activate hi-codebase-research-explorer Or 2-3 parallel agents.
 ### Step 2: Diagnose (MANDATORY)
 Capture pre-fix state: exact error, stack traces, logs.
 Trace backward: symptom -> immediate cause -> contributing factor -> ROOT CAUSE.
+Graph assist (T2, [dev-shared/graph-function-selection.md](../dev-shared/graph-function-selection.md)): `search_by_code` on the exact error/log string; `query_subgraph(upstream)` on the defective symbol to find affected callers before fixing.
 If difficult: activate hi-debug. If 2+ hypotheses fail -> activate hi-problem-solving.
 
 ### Step 3: Fix

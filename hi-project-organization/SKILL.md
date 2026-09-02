@@ -74,6 +74,7 @@ Read [references/markdown-body-templates.md](references/markdown-body-templates.
 4. Choose flat or nested placement from the output count and ownership.
 5. Apply a Markdown template when relevant.
 6. Check for path conflicts before writing.
+7. For source-file moves, check dependers first with `plan_file_dependency_order` when graph_mcp is available (conditional, T1 per [dev-shared/graph-function-selection.md](../dev-shared/graph-function-selection.md)); fast-fail once and proceed without it otherwise.
 
 ## Organize Existing Files
 

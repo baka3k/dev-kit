@@ -17,6 +17,8 @@ Reject paths outside the requested repository and output root. Return a structur
 
 Read [dev-shared/retrieval-protocol.md](../dev-shared/retrieval-protocol.md). Follow the first successful layer and stop when evidence is sufficient. Treat semantic hits as candidates until direct repository evidence confirms them.
 
+Graph profile (T3 in [dev-shared/graph-function-selection.md](../dev-shared/graph-function-selection.md)): run the inventory group (`listup_symbols_matching_file_path`, `listup_class_matching_path`, `list_up_entrypoint`) for module and entry-point maps; use `plan_dependency_order`, `plan_file_dependency_order`, `plan_function_dependency_order`, and `compute_scc` for dependency waves and cycles at `deep` depth.
+
 ## Workflow
 
 1. Validate inputs and create the output directory.

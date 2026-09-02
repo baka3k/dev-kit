@@ -76,7 +76,7 @@ Full checklist per dimension: `references/dimension-checklist.md`
 ### Phase 0: Target Analysis (2min)
 
 1. Validate target, read source files.
-2. Query graph_mcp: use `semantic_search`/`explore_graph` for candidates and `search_functions(query, parser_type)` when only a function name is known. For retained IDs, use `query_subgraph(direction:"all", max_depth:2)` for nearby callers/callees. Use `trace_flow` with direction `out` or `in`, `rel_types:["CALLS","POSSIBLE_CALLS"]`, and `max_depth:6` for indirect/callback paths; use `find_paths` when both the trigger and error-handler IDs are known (max 10 paths).
+2. Query graph_mcp: use `semantic_search`/`explore_graph` for candidates and `search_functions(query, parser_type)` when only a function name is known. For retained IDs, use `query_subgraph(direction:"all", max_depth:2)` for nearby callers/callees. Use `trace_flow` with direction `out` or `in`, `rel_types:["CALLS","POSSIBLE_CALLS"]`, and `max_depth:6` for indirect/callback paths; use `find_paths` when both the trigger and error-handler IDs are known (max 10 paths). Add `find_workflows_containing` and `analyze_workflow_impact` for blast radius of edge-case anchors (matrix: `dev-shared/graph-function-selection.md`).
 3. Query mind_mcp: `hybrid_search` for feature requirements (limit 10).
 4. Identify entry points, state mutations, external calls.
 5. Report: "Phase 0 complete: Target analyzed".

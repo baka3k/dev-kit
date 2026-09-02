@@ -53,6 +53,7 @@ Aggregate: deduplicate paths/URLs, merge descriptions, note gaps/timeouts, list 
 | Target | Mode | Tools |
 |---|---|---|
 | Local code/files | internal | Glob, Grep, Read, Bash |
+| Graph relationship evidence | internal-indexed | `graph_mcp`: `semantic_search`, `search_functions`, `query_subgraph`, `get_node_details` — [graph-function-selection.md](../dev-shared/graph-function-selection.md) (T2) |
 | Web docs / blog | external | `mcp__MiniMax__web_search`, `mcp__web-reader__webReader` |
 | GitHub repo | external | `mcp__zread__get_repo_structure`, `search_doc`, `read_file` |
 | Image / UI / diagram | external | `mcp__zai-mcp-server__analyze_image`, `ui_to_artifact`, `understand_technical_diagram` |

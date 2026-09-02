@@ -38,7 +38,7 @@ Normalize before synthesis — git metadata, unchanged context, and ANSI codes a
 **Phase 3 - MCP:**
 
 - `mind_mcp`: `hybrid_search`, `query_graph_rag_relation`, `sequential_search`
-- `graph_mcp`: `semantic_search`, `explore_graph`, `search_functions`, `query_subgraph`, `trace_flow`, `find_paths`, `analyze_workflow_impact`
+- `graph_mcp`: `semantic_search`, `explore_graph`, `search_functions`, `search_by_code`, `query_subgraph`, `trace_flow`, `find_paths`, `analyze_workflow_impact` (full selection matrix: `dev-shared/graph-function-selection.md`)
 
 Resolve a function name with `search_functions(query, parser_type)` before traversal. Use `query_subgraph` with `max_depth:2` and direction `all`, `upstream`, or `downstream` for one-function context. Use `trace_flow` with direction `out` or `in`, selected `rel_types`, and `max_depth:6` for indirect/callback-aware expansion; use `find_paths` for a known start and end, and `analyze_workflow_impact` for affected workflows and risk.
 

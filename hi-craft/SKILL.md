@@ -45,6 +45,7 @@ User override: "just code it" or "skip planning" - then respect.
 
 ### Step 2: Implement
 
+Pre-edit impact check (T2, [dev-shared/graph-function-selection.md](../dev-shared/graph-function-selection.md)): `query_subgraph(downstream)` on each touched symbol to catch callers the plan missed; fast-fail once when graph_mcp is unavailable.
 Execute tasks directly. Set TaskUpdate to `in_progress` on each task.
 Parallel mode: launch `fullstack-developer` per phase.
 

@@ -13,7 +13,7 @@ Require `repo_root`, service/module/endpoint scope, protocol modes, and `output_
 
 ## Evidence Gate
 
-Read [retrieval-protocol.md](references/retrieval-protocol.md) and [dev-shared/retrieval-protocol.md](../dev-shared/retrieval-protocol.md). A route or topic declaration alone is incomplete: verify registration, handler, parsing, validation, DTO/schema, auth checks, responses/errors, callers/consumers, and downstream effects. Reject wrong-project results; preserve missing elements as gaps.
+Read [retrieval-protocol.md](references/retrieval-protocol.md) and [dev-shared/retrieval-protocol.md](../dev-shared/retrieval-protocol.md). A route or topic declaration alone is incomplete: verify registration, handler, parsing, validation, DTO/schema, auth checks, responses/errors, callers/consumers, and downstream effects. Reject wrong-project results; preserve missing elements as gaps. Graph profile (T3 in [dev-shared/graph-function-selection.md](../dev-shared/graph-function-selection.md)): seed with `semantic_search`; resolve routes and topics with `search_by_code`; prove consumers and providers with `find_callers_of_endpoint`, `get_api_call_chain`, and `get_ipc_message`.
 
 ## Workflow
 

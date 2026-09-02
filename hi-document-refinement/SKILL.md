@@ -17,7 +17,7 @@ Read [refinement-contract.md](references/refinement-contract.md) for both modes;
 
 1. Validate immutable base revision, artifact hashes, evidence refs, and output isolation.
 2. Inventory ambiguous terminology, inconsistent names, missing actors/participants, guards, branches, states, relationships, constraints, contradictions, and unsupported diagram elements.
-3. Separate code-resolvable gaps from questions requiring human intent or domain semantics. Use source retrieval only to close a named evidence gap.
+3. Separate code-resolvable gaps from questions requiring human intent or domain semantics. Use source retrieval only to close a named evidence gap; verifying a named symbol needs only `search_functions`/`get_symbol` (T1 per [dev-shared/graph-function-selection.md](../dev-shared/graph-function-selection.md)).
 4. Emit stable-ID blocking and non-blocking questions plus a non-mutating refinement proposal.
 
 ## Apply Mode

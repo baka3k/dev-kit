@@ -13,7 +13,7 @@ Require `repo_root`, a module path or command anchor, and `output_root`. Accept 
 
 ## Retrieval Gate
 
-Read [retrieval-protocol.md](references/retrieval-protocol.md) and [dev-shared/retrieval-protocol.md](../dev-shared/retrieval-protocol.md). Reject wrong-project results. Treat names, semantic hits, comments, and existing documents as candidates until implementation paths corroborate them.
+Read [retrieval-protocol.md](references/retrieval-protocol.md) and [dev-shared/retrieval-protocol.md](../dev-shared/retrieval-protocol.md). Reject wrong-project results. Treat names, semantic hits, comments, and existing documents as candidates until implementation paths corroborate them. Graph profile (T3 in [dev-shared/graph-function-selection.md](../dev-shared/graph-function-selection.md)): `search_by_code` for opcodes, literals, and status words; `list_possible_calls` and `get_ipc_message` for indirect dispatch; `find_paths` for dispatcher-to-terminal proof.
 
 ## Workflow
 

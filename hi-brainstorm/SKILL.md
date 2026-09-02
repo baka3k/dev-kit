@@ -52,7 +52,7 @@ If the platform cannot provide isolated agent contexts, perform clearly separate
 
 ### 1. Frame and Ground
 
-Normalize the goal, success measures, constraints, decision deadline, and evidence gaps. For repository decisions, gather context through the project's prescribed search order. Distinguish verified facts, user statements, and assumptions; do not fabricate missing project context.
+Normalize the goal, success measures, constraints, decision deadline, and evidence gaps. For repository decisions, gather context through the project's prescribed search order. Grounding may use `graph_mcp.semantic_search`/`explore_graph` (T1 per `dev-shared/graph-function-selection.md`); treat hits as candidates, never as proof. Distinguish verified facts, user statements, and assumptions; do not fabricate missing project context.
 
 ### 2. Generate Independently
 

@@ -41,6 +41,8 @@ Read [pipeline-contract.md](references/pipeline-contract.md), [evidence-contract
 10. If comments anchored to `r002` exist → invoke `hi-document-review-resolution` → `r003` + disposition ledger. If absent and `review_required=true` → wait. If absent and `review_required=false` → skip.
 11. Build final index from [index-template.md](assets/index-template.md), materialize `current/` from latest validated revision, validate pack, persist status with resume state.
 
+Graph evidence comes from the leaf skills above; run no direct inventory. When validating a claimed anchor during joins, verify it once with `search_functions` or `get_symbol` per [dev-shared/graph-function-selection.md](../dev-shared/graph-function-selection.md) (T3 profile, delegated execution).
+
 **Resume**: Revalidate input, artifact, and parent hashes before skipping completed work. Retry counts never reset.
 
 ## Completion

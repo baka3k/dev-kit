@@ -13,7 +13,7 @@ Require `repo_root`, `module_name`, and at least one canonical module path. Acce
 
 ## Retrieval Gate
 
-Read [graph-retrieval.md](references/graph-retrieval.md), [exhaustive-tracing.md](references/exhaustive-tracing.md), [serena-rg-coverage.md](references/serena-rg-coverage.md), and [dev-shared/retrieval-protocol.md](../dev-shared/retrieval-protocol.md). Stop if no code evidence can establish a module inventory.
+Read [graph-retrieval.md](references/graph-retrieval.md), [exhaustive-tracing.md](references/exhaustive-tracing.md), [serena-rg-coverage.md](references/serena-rg-coverage.md), and [dev-shared/retrieval-protocol.md](../dev-shared/retrieval-protocol.md). Stop if no code evidence can establish a module inventory. The shared function-selection layer lives in [dev-shared/graph-function-selection.md](../dev-shared/graph-function-selection.md); [graph-retrieval.md](references/graph-retrieval.md) remains this skill's deep operational protocol.
 
 ## Phases
 

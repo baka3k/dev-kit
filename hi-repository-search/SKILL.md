@@ -25,7 +25,7 @@ Retrieve and verify context; do not own planning, diagnosis, or implementation d
 Use the first level that yields sufficient evidence:
 
 1. `mind_mcp` for project knowledge and documents.
-2. `graph_mcp.semantic_search`, `graph_mcp.explore_graph` for semantic code discovery and relationships.
+2. `graph_mcp` for semantic code discovery and relationships: `semantic_search`/`explore_graph` for concepts, `search_functions` for names, `search_by_code` for literals, `query_subgraph` for one-hop structure (T2 profile per [dev-shared/graph-function-selection.md](../dev-shared/graph-function-selection.md)).
 3. `serena` for symbols, implementations, references, and structural search.
 4. `rg` for exact-string filesystem search.
 
