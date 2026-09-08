@@ -1,8 +1,8 @@
 ---
 name: hi-brainstorm
 description: Convene an adaptive panel of independent experts to generate competing solutions, challenge assumptions, debate tradeoffs, and select an evidence-backed option with weighted scoring before implementation. Use for ambiguous, consequential, or multi-path decisions; skip trivial work with one obvious reversible solution.
-version: 1.0.0
-last_updated: 2026-08-19
+version: 1.1.0
+last_updated: 2026-09-08
 ---
 
 # HI Brainstorm
@@ -11,128 +11,38 @@ Run a structured expert council before implementation. The outcome is a decision
 
 ## Required Input
 
-Establish:
+Establish: the problem or decision; desired outcomes and measurable success criteria; constraints and non-negotiables; known evidence, affected scope, and candidate options. Ask only when a missing answer could materially change the selected solution; otherwise state bounded assumptions and lower confidence.
 
-- the problem or decision to make;
-- desired outcomes and measurable success criteria;
-- constraints and non-negotiables;
-- known evidence, affected scope, and candidate options, if any.
+Modes: `quick` (3 lenses, 2–3 options, one rebuttal round — omit non-decision-relevant lenses, always keep the skeptic plus a domain or architecture lens, record omissions), `standard` (default: 5 lenses, 3–5 options, initial + final scoring), `deep` (standard + broader evidence, validation experiments, second rebuttal round).
 
-Ask a question only when a missing answer could materially change the selected solution. Otherwise state bounded assumptions and lower confidence accordingly.
+## Council
 
-Modes:
+Moderator frames the decision, protects independence, consolidates options, calculates results, writes the decision; never invents a preferred option or silently changes scores. Lenses: Domain, Systems architect, Delivery engineer, User/value, Risk skeptic (always retain the skeptic; adapt/split as needed).
 
-- `quick`: three expert lenses, usually two or three credible options, one rebuttal round;
-- `standard` (default): five expert lenses, three to five options, initial and final scoring;
-- `deep`: standard mode plus broader evidence gathering, validation experiments, and a second rebuttal round.
-
-## Council Structure
-
-The moderator frames the decision, protects independence, consolidates options, calculates results, and writes the decision. The moderator does not invent a preferred option or silently change expert scores.
-
-Default expert lenses:
-
-1. Domain expert — domain rules, correctness, and context.
-2. Systems architect — boundaries, integration, scale, and long-term fit.
-3. Delivery engineer — feasibility, complexity, testing, operations, and migration.
-4. User/value expert — usefulness, workflow, accessibility, adoption, and time to value.
-5. Risk skeptic — hidden assumptions, security, privacy, reliability, compliance, and simpler alternatives.
-
-Adapt or split lenses when specialist knowledge matters, but always retain an explicit skeptic. Read [references/panel-playbook.md](references/panel-playbook.md) when assembling the panel, prompting experts, or formatting the report.
-
-In `quick` mode, choose the three most decision-relevant lenses, always including the risk skeptic and at least one domain or architecture lens. Record which lenses were omitted and the resulting confidence limitation.
-
-## Independence and Delegation
-
-When collaboration agents are available and delegation is allowed, assign one expert brief per subagent. Run experts concurrently or in waves when slots are limited. For initial generation, use isolated forks with no inherited conversation history (for example, `fork_turns: "none"`) and include the same neutral context packet in every brief. No initial expert may receive another expert's conclusions.
-
-If the platform cannot provide isolated agent contexts, perform clearly separated expert passes, disclose the fallback, and lower confidence. Never describe inherited-context or sequential self-analysis as independent parallel agents.
+Independence: when collaboration agents are available and delegation allowed, one expert brief per subagent (isolated forks, same neutral context packet, run concurrently); experts never see each other's initial conclusions. If isolated contexts are unavailable, run clearly separated passes, disclose the fallback, lower confidence — never describe sequential self-analysis as independent parallel agents.
 
 ## Workflow
 
-### 1. Frame and Ground
-
-Normalize the goal, success measures, constraints, decision deadline, and evidence gaps. For repository decisions, gather context through the project's prescribed search order. Grounding may use `graph_mcp.semantic_search`/`explore_graph` (T1 per `dev-shared/graph-function-selection.md`); treat hits as candidates, never as proof. Distinguish verified facts, user statements, and assumptions; do not fabricate missing project context.
-
-### 2. Generate Independently
-
-Each expert proposes at least one solution without seeing the others. Require the mechanism, expected benefits, costs, key assumptions, failure modes, and a falsification test.
-
-### 3. Form the Candidate Set
-
-Merge duplicates but preserve materially different mechanisms. Aim for three to five credible options; if fewer exist, explain why. Mode counts are defaults: never drop a user-mandated candidate merely to meet a count. Include the status quo, containment, or a reversible experiment when credible. Anonymize option origin before evaluation.
-
-Compare options over the same decision horizon and scope. Do not score an architecture, its rollout policy, and a future experiment as peer solutions unless each includes all associated costs and risks. Merge a hybrid or roadmap into its base option when the near-term mechanism is the same; deferred capabilities receive no benefit score until their costs are also counted.
-
-### 4. Apply Hard Gates
-
-Mark an option `fail` regardless of score when it:
-
-- violates a user non-negotiable or verified constraint;
-- has an unresolved critical security, safety, privacy, legal, or compliance issue;
-- is infeasible under verified technical or operational limits;
-- intrinsically depends on an action the user explicitly excludes or cannot authorize.
-
-Lack of authorization to implement after the council is not an option failure; selection never grants that authorization. Use `conditional` when a blocker has a concrete validation or mitigation. Do not average a failed gate away.
-
-### 5. Score Independently
-
-Use a `1`–`5` scale where `1` is unacceptable and `5` is excellent. Default criteria and weights:
+1. **Frame and ground** — normalize goal, measures, constraints, deadline, evidence gaps; gather repository context per the project's search order; distinguish verified facts, user statements, assumptions.
+2. **Generate independently** — each expert proposes ≥1 solution (mechanism, benefits, costs, assumptions, failure modes, falsification test).
+3. **Form the candidate set** — merge duplicates, preserve distinct mechanisms (3–5 options; never drop a user-mandated candidate for count); same decision horizon and scope; merge hybrids whose near-term mechanism matches a base option; include status quo or a reversible experiment when credible; anonymize origins.
+4. **Apply hard gates** — `fail` any option that violates a non-negotiable/verified constraint, has an unresolved critical security/privacy/legal issue, is infeasible under verified limits, or intrinsically depends on an excluded action. Use `conditional` when a blocker has a concrete mitigation. Never average a failure away. Lack of post-council authorization is not an option failure.
+5. **Score independently** — 1–5 (1 unacceptable, 5 excellent). Weighted score = `sum(weight × median rating / 5)`, 0–100. Preserve dispersion and dissent. Use `scripts/score_options.py` when multiple experts and options exist.
 
 | Criterion | Weight | High score means |
 |---|---:|---|
 | Goal fit | 25 | Directly satisfies the desired outcome |
 | Evidence and feasibility | 20 | Supported and realistically implementable |
 | Risk and safety | 20 | Low residual risk with credible controls |
-| Delivery cost | 15 | Lower effort, complexity, and disruption |
-| Maintainability and reversibility | 10 | Easy to own, change, or roll back |
-| User value and time to value | 10 | Valuable results arrive quickly and clearly |
+| Delivery cost | 15 | Lower effort, complexity, disruption |
+| Maintainability and reversibility | 10 | Easy to own, change, roll back |
+| User value and time to value | 10 | Valuable results arrive quickly |
 
-Customize weights before scoring when the decision requires it, explain why, and keep the total at `100`. Each score needs a short evidence-based rationale, evidence or assumption identifiers, confidence, and any veto concern. Use `scripts/score_options.py` for deterministic validation and aggregation when there are multiple experts and options.
+Customize weights only when the decision requires it, explaining why; total stays 100. Every rating needs evidence or a marked assumption, confidence, and veto concerns.
 
-The weighted score is `sum(weight × median expert rating / 5)`, producing `0`–`100`. Preserve rating dispersion and dissent alongside the median.
-
-### 6. Debate and Rebut
-
-Reveal the anonymized candidate set and initial scorecard. Every expert must:
-
-- state the strongest objection to the leading option;
-- identify one assumption or failure scenario that could reverse the ranking;
-- steelman at least one competing option;
-- propose a mitigation, validation experiment, or reason the concern is fatal.
-
-Revise options only in response to evidence or explicit reasoning. Before final scoring, rerun the same-horizon and material-distinctness check, remove bundled advantages, and merge candidates that differ only by deferred sequencing. Score again independently and record material score changes with their causes.
-
-### 7. Decide
-
-The score informs the decision; it does not replace judgment.
-
-- `SELECT`: top score is at least `75`, leads by at least `5`, passes all gates, and has no unresolved critical objection.
-- `CONDITIONAL`: top score is at least `65`, but the lead is narrow, confidence is low, or explicit mitigations/experiments are required.
-- `NO DECISION`: every option fails a gate or scores below `65`, decisive information is missing, or a critical conflict remains unresolved.
-
-For a tie, prefer stronger goal fit, then lower residual risk, then greater reversibility, then lower delivery cost. Consensus is not required; preserve principled minority dissent.
-
-### 8. Handoff
-
-Produce the output contract below. If implementation was already authorized in the user's request, pass the selected option and conditions into planning. Otherwise stop at the decision. Never treat council selection as new authorization.
-
-For a high-risk selected change, use `hi-predict` afterward to stress-test that proposal before implementation. `hi-brainstorm` selects among solutions; `hi-predict` evaluates the risk of a proposed change.
-
-## Output Contract
-
-Return:
-
-1. decision (`SELECT`, `CONDITIONAL`, or `NO DECISION`) and confidence;
-2. problem frame, success criteria, constraints, facts, and assumptions;
-3. panel composition and any fallback used;
-4. candidate options with mechanisms and hard-gate status;
-5. initial and final scorecards, rank, delta, and important dispersion;
-6. strongest objections, rebuttals, mitigations, and unresolved dissent;
-7. selected solution and why it wins, or the exact evidence needed to decide;
-8. conditions, validation checks, and implementation handoff.
-
-Save a report only when the user requests a persistent artifact; otherwise return it in the conversation.
+6. **Debate and rebut** (panel playbook: [references/panel-playbook.md](references/panel-playbook.md)) — each expert objects to the leader, names a ranking-reversing assumption, steelmans a rival, proposes a mitigation or concedes. Revise only on evidence; re-check horizons and merge sequencing-only variants; re-score and record material changes.
+7. **Decide** — `SELECT`: top ≥75, lead ≥5, all gates pass, no unresolved critical objection. `CONDITIONAL`: top ≥65 but narrow lead, low confidence, or required mitigations. `NO DECISION`: gates fail, top <65, decisive information missing, or critical conflict unresolved. Ties: goal fit → lower risk → reversibility → lower cost. Consensus not required; preserve principled dissent.
+8. **Handoff** — produce the output contract (decision + confidence, frame, panel + fallback, options + gates, scorecards + deltas, objections/mitigations/dissent, selected solution or exact missing evidence, conditions + handoff). If implementation was already authorized, pass the option and conditions into planning; otherwise stop — selection never grants authorization. For a high-risk selected change, follow with `hi-predict`.
 
 ## Non-Negotiable Rules
 
@@ -142,3 +52,5 @@ Save a report only when the user requests a persistent artifact; otherwise retur
 - A critical gate cannot be overruled by voting or a high average.
 - The moderator documents score changes, tie-breaks, and dissent.
 - Stop with `NO DECISION` instead of manufacturing certainty.
+
+Save a report file only when the user requests a persistent artifact.
