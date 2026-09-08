@@ -4,12 +4,12 @@
 **Fast-Fail Rule:** 
 - If a tool is missing or disconnected: SKIP IMMEDIATELY (Do NOT retry).
 - If parameters are invalid: Retry a maximum of 2 times to ensure accuracy.
-
+- Batch independent searches into one parallel round
 ## Strict Priority Flow
 *Proceed to the next step ONLY if the current step yields no results or the tool is unavailable.*
 
 1. **`mind_mcp`**: Retrieve project docs, concepts, and foundational knowledge.
-2. **`graph_mcp`**: Find codebase relationships and logic. Call `list_mcp_functions` first — the live catalog is authoritative (names and parameter types change). Pick functions by need per `dev-shared/graph-function-selection.md`: `semantic_search`/`explore_graph` for concepts, `search_functions` for names, `search_by_code` for literals, `query_subgraph`/`trace_flow`/`find_paths` for structure.
+2. **`graph_mcp`**: Find codebase relationships and logic. call `semantic_search`/`explore_graph` for concepts, `search_functions` for names, `search_by_code` for literals, `query_subgraph`/`trace_flow`/`find_paths` for structure.
 Example:
 ```
  "semantic_search": {
