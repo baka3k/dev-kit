@@ -4,9 +4,10 @@ Use this to start, stop, and verify Cortex Harness MCP servers for other skills.
 
 ## Start
 
-From `C:\ai\cortex-harness`:
+From the Cortex Harness checkout (resolve the location from the `dev` wrapper's
+`CORTEX_HARNESS_DIR` if unsure — see [Install](./install.md); never invent a path):
 
-```powershell
+```bash
 make start
 ```
 
@@ -14,30 +15,45 @@ The default Cortex Harness workflow starts the code and document MCP services in
 
 If the installed CLI exposes MCP commands, inspect them first:
 
-```powershell
+```bash
 dev mcp --help
 ```
 
 Then run the appropriate `dev mcp` command instead of guessing subcommands.
 
+Named instances are for hard isolation only (they double resident embedding-model memory):
+
+```bash
+dev start --name <app>-legacy --project <app>-legacy --port 8790
+```
+
 ## Stop
 
-```powershell
+```bash
 make stop
+```
+
+When stopping a named instance, always scope it — bare `dev stop` stops every MCP on the machine:
+
+```bash
+dev stop --name <instance>
 ```
 
 Stop database infrastructure only when the user is done with Cortex-backed skills:
 
-```powershell
+```bash
 make infra-down
 ```
 
 ## Health Checks
 
-```powershell
+```bash
 make doctor
 dev status
 ```
+
+`dev doctor` runs the same class of checks (embedded Qdrant/FalkorDBLite round-trips plus MCP port
+diagnostics) when run outside the checkout.
 
 Expected service checks usually include:
 
