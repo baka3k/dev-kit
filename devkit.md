@@ -1,6 +1,6 @@
 # DevKit — Workflow Diagrams
 
-> Visual workflows for the 3 core skills: `hi-craft`, `hi-fix`, `hi-plan`. Mapped to current `SKILL.md` versions (craft v3.0.0, fix v2.0.0, plan v2.0.0).
+> Visual workflows for the 3 core skills: `hi-craft`, `hi-fix`, `hi-plan`. Mapped to current `SKILL.md` versions (craft v3.1.0, fix v2.1.0, plan v2.1.0). Delegation semantics: [dev-shared/delegation-contract.md](dev-shared/delegation-contract.md).
 
 ---
 
@@ -44,7 +44,7 @@ graph LR
     B --> C[3. Test<br/>run command]
     C -->|pass| D[4. Finalize<br/>commit + /hi-log]
     C -->|fail ≤2| C
-    C -->|fail ≥3| E[spawn hi-fix]
+    C -->|fail ≥3| E[invoke hi-fix]
 
     classDef step fill:#bbdefb,stroke:#0d47a1,color:#000
     classDef fail fill:#ffcdd2,stroke:#b71c1c,color:#000
@@ -136,7 +136,7 @@ graph LR
 graph TD
     A[1. Pre-Creation Check<br/>Check Plan Context] --> B[2. Cross-Plan Scan<br/>Detect blockedBy/blocks,<br/>update both plans]
     B --> C[3. Scope Challenge<br/>3 questions,<br/>select mode]
-    C --> D[4. Research<br/>Spawn 1 researcher]
+    C --> D[4. Research<br/>Delegate researcher]
     D --> E[5. Codebase Analysis<br/>Read docs, scan if needed]
     E --> F[6. Plan Documentation<br/>plan.md + phase-XX.md]
     F --> G[7. Red Team<br/>/hi-plan red-team path]
@@ -244,8 +244,8 @@ graph TD
 ## 6. General Rules (Cross-cutting)
 
 1. **Hard-gate first, fast-path later** — default to lightweight mode, use flags for expansion.
-2. **Inline > Spawn** — only spawn sub-skills when necessary (3+ fails, 2+ hypothesis fails, large scope).
-3. **Token budget** — each subagent spawn = 10-15K tokens. Prioritize inline methodology.
+2. **Invoke > Delegate** — invoke skills inline by default; delegate roles only on explicit triggers (3+ fails, 2+ hypothesis fails, large scope, `--parallel`). All delegation follows [dev-shared/delegation-contract.md](dev-shared/delegation-contract.md): probe once → role brief → receipt.
+3. **Token budget** — each delegated role = 10-15K tokens. Prioritize inline methodology.
 4. **Test/Verify just enough** — `typecheck+lint` for quick, `+build+test` for standard, `comprehensive` for deep.
 5. **Review optional** — run only via `--review` or `full` mode. Auto-approve requires score ≥ 9.5 + 0 critical.
 6. **Finalize = commit + log** — always conclude with git commit + `/hi-log` (recording decisions, root causes, impacts).

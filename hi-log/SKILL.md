@@ -4,11 +4,11 @@ description: "Write log entries analyzing recent changes and session reflections
 argument-hint: "[topic] [--since <ref>] [--scope <dir>]"
 metadata:
   author: baka3k
-  version: "1.2.0"
+  version: "1.3.0"
 ---
 # Log
 
-Spawn log-writer subagent to explorer memories and recent code changes, write concise log entries to ./docs/logs/.
+Explore memories and recent code changes via the `log-writer` role (delegated, or inline for small sessions), writing concise log entries to ./docs/logs/.
 Focus on key events, changes, impacts, and decisions. Run /hi-project-organization to organize outputs.
 
 ## Arguments
@@ -28,7 +28,8 @@ Keep entries that change behavior, fix risk, or capture a decision.
 Drop noise: trivial formatting, regenerate-only commits, no-op refactors.
 
 ### 3. Write
-Spawn log-writer subagent per `references/log-writer-contract.md`.
+Material session: delegate `log-writer` per `references/log-writer-contract.md` and the delegation contract.
+Small session (trivial diff, no decisions): write entries inline, label `[inline:log-writer]`.
 One file per logical event. Filename: `YYYY-MM-DD-<slug>.md`.
 
 ### 4. Organize
@@ -60,6 +61,7 @@ Why this approach. Alternatives considered.
 ```
 
 ## References
-- Subagent contract: `references/log-writer-contract.md`
+- Worker contract: `references/log-writer-contract.md`
+- Delegation: `../dev-shared/delegation-contract.md`
 - Output: `./docs/logs/`
 - Indexer: `/hi-project-organization`

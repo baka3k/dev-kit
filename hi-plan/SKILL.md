@@ -4,7 +4,7 @@ description: "Plan implementations, design architectures, create technical roadm
 argument-hint: "[task] [--full|--hard|--parallel|--two|--no-tasks]  — default: fast mode. Sub: archive|red-team|validate"
 metadata:
   author: baka3k
-  version: "2.0.0"
+  version: "2.1.0"
 ---
 # Plan - Implementation Planning
 
@@ -50,7 +50,7 @@ Add `--no-tasks` to skip task hydration.
 1. **Pre-Creation Check** -> Check Plan Context
 2. **Cross-Plan Scan** -> Detect blockedBy/blocks, update both
 3. **Scope Challenge** -> Run 3 questions, select mode
-4. **Research** -> Spawn 1 researcher
+4. **Research** -> Delegate `researcher` role per mode (see Delegation)
 5. **Codebase Analysis** -> Read docs, scan if needed
 6. **Plan Documentation** -> Write plan.md + phase-XX.md
 7. **Red Team** -> `/hi-plan red-team {path}`
@@ -62,6 +62,9 @@ Add `--no-tasks` to skip task hydration.
 - T2 profile per [dev-shared/graph-function-selection.md](../dev-shared/graph-function-selection.md): `semantic_search`/`search_functions` for scope anchors, `query_subgraph` for touched areas.
 - Phase ordering evidence: `plan_dependency_order`; blast radius for risky steps: `analyze_workflow_impact`.
 - Fast-fail once; a missing graph layer never blocks planning.
+
+## Delegation
+All worker launches follow [dev-shared/delegation-contract.md](../dev-shared/delegation-contract.md): probe the runtime once, delegate the `researcher` role brief ([dev-shared/roles/researcher.md](../dev-shared/roles/researcher.md)), write a receipt. Mode mapping: `--full` = 1 researcher, `--hard`/`--parallel` = 2, `--two` = 2+. Fast mode never delegates. Without a delegation primitive, research runs inline and is disclosed.
 
 ## Output Requirements
 - Plans in CURRENT WORKING PROJECT DIRECTORY (not user home)

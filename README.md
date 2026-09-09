@@ -294,16 +294,21 @@ Browser task:         hi-chrome-devtools -> inspect/click/screenshot/network
 
 ### Agent Spawning And Delegation
 
-Most DevKit skills stay single-agent by default. Subagents are used only when the skill file explicitly allows delegation and the work has independent tracks, repeated failures, or a mode that asks for parallel execution.
+Most DevKit skills stay single-agent by default. Delegation happens only when the skill file explicitly allows it and the work has independent tracks, repeated failures, or a mode that asks for parallel execution. Because DevKit runs on multiple harnesses (Claude Code, ZCode, Zed, VS Code Copilot) with different delegation primitives, all worker launches follow [dev-shared/delegation-contract.md](dev-shared/delegation-contract.md):
 
-| Skill | Spawns agents? | Trigger / condition |
+1. **Probe once per workflow** — check the runtime for a native subagent tool, then a delegation MCP server, then fall back to inline execution. Probe the tool list, not the harness name.
+2. **Roles are briefs, not agent types** — `researcher`, `implementer` (alias `fullstack-developer`), `reviewer`, `log-writer` are briefs under `dev-shared/roles/` (or skill references) pasted into whatever generic subagent the harness provides.
+3. **Fallback ladder** — native spawn → MCP spawn → inline sequential passes, disclosed as `[inline:<role>]`; sequential self-analysis is never presented as parallel agents.
+4. **Receipts and guards** — every delegation (or inline fallback) writes a receipt to the task primitive or log; max 5 delegated units per workflow; escalation depth 1.
+
+| Skill | Delegates? | Trigger / condition |
 | --- | --- | --- |
 | `hi-codebase-research-explorer` | Yes, by design | Splits local, external, or hybrid exploration into `1-5` non-overlapping agents. Skips task registration when `<=2` agents or task tools are unavailable. Each agent has a 3-minute timeout. |
-| `hi-craft` | Conditional | Parallel mode launches `fullstack-developer` per phase. Test failures are handled directly for attempts 1-2; attempt 3+ spawns `hi-fix`. Planner and tester agents are explicitly not spawned. |
-| `hi-fix` | Conditional | Standard/deep modes can activate `hi-codebase-research-explorer` or `2-3` parallel agents. `--parallel` creates a separate task tree and spawns `fullstack-developer` per independent issue. |
-| `hi-plan` | Conditional | `--full` spawns 1 researcher. `--hard` and `--parallel` use 2 researchers. `--two` uses 2+ researchers for competing approaches. Fast/default mode does not spawn a researcher. |
+| `hi-craft` | Conditional | `--parallel` delegates one `implementer` (`fullstack-developer` alias) per phase. Test failures are handled directly for attempts 1-2; attempt 3+ invokes `hi-fix`. Planner and tester roles are never delegated. |
+| `hi-fix` | Conditional | Standard/deep modes can activate `hi-codebase-research-explorer` or `2-3` parallel workers. `--parallel` creates a separate task tree and delegates `implementer` per independent issue. |
+| `hi-plan` | Conditional | Delegates the `researcher` role: 1 for `--full`, 2 for `--hard` and `--parallel`, 2+ for `--two` (competing approaches). Fast/default mode never delegates. |
 | `hi-debug` | Conditional | Multi-component investigations, parallel log/data collection, or CI/CD failures with 3+ possible causes may spawn parallel collection agents. |
-| `hi-log` | Yes | Spawns a `log-writer` subagent after filtering material changes. If there is no material change, logging aborts. |
+| `hi-log` | Conditional | Delegates `log-writer` for material changes; writes inline for small sessions. If there is no material change, logging aborts. |
 | `hi-repository-search` | Conditional | Does not spawn by default. Uses at most two investigators, code and documents, only when delegation is permitted and the work has independent tracks, spans 3+ subsystems, or needs independent conflict verification. |
 
 ```mermaid

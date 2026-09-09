@@ -4,7 +4,7 @@ description: "ALWAYS activate before fixing ANY bug, error, test failure, CI/CD 
 argument-hint: "[issue] [--standard|--deep|--parallel|--review]  — default: Quick mode"
 metadata:
   author: baka3k
-  version: "2.0.0"
+  version: "2.1.0"
 ---
 # Fix - Issue Resolution
 
@@ -26,7 +26,7 @@ Do NOT fix before Codebase-Research-Explorer + Diagnose. Find ROOT CAUSE first. 
 
 ### Step 1: Codebase-Research-Explorer (locate-only, default)
 Locate affected files and  clear error. One agent is sufficient.
-Standard/Deep: activate hi-codebase-research-explorer Or 2-3 parallel agents.
+Standard/Deep: activate hi-codebase-research-explorer or 2-3 parallel workers per [dev-shared/delegation-contract.md](../dev-shared/delegation-contract.md).
 
 ### Step 2: Diagnose (MANDATORY)
 Capture pre-fix state: exact error, stack traces, logs.
@@ -58,4 +58,4 @@ Full Codebase-Research-Explorer -> Full Diagnose (call hi-debug if needed) -> Fi
 Parallel Codebase-Research-Explorer + Diagnose + Research -> Fix -> Comprehensive Verify -> Review -> Finalize
 
 ### Parallel (2+ independent)
-Separate task tree per issue. Spawn fullstack-developer per issue.
+Separate task tree per issue. Delegate one `implementer` ([dev-shared/roles/implementer.md](../dev-shared/roles/implementer.md)) per issue per [dev-shared/delegation-contract.md](../dev-shared/delegation-contract.md).

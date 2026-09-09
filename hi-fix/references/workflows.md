@@ -23,7 +23,7 @@
 5. Finalize
 
 ## Parallel (2+ independent issues)
-Separate task tree per issue. Spawn fullstack-developer per tree.
+Separate task tree per issue. Delegate one `implementer` per tree ([dev-shared/delegation-contract.md](../../dev-shared/delegation-contract.md)).
 Final integration verify task blocked by all issue verify tasks.
 
 ## Specialized (merge into standard workflow)

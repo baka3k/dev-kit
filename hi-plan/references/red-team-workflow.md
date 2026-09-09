@@ -1,6 +1,6 @@
 # Red Team Review
 
-Adversarial plan review. Spawn hostile reviewers to tear apart the plan.
+Adversarial plan review. Delegate hostile reviewers (delegation contract, role: `reviewer`) to tear apart the plan.
 
 ## Step 1: Read Plan
 Read plan.md + all phase-*.md files.
@@ -12,8 +12,8 @@ Read plan.md + all phase-*.md files.
 | 3-5 | 3 | + Failure Modes |
 | 6+ | 4 | + Scope/Complexity |
 
-## Step 3: Spawn Reviewers
-Launch code-reviewer agents with hostile prompts:
+## Step 3: Delegate Reviewers
+Delegate the `reviewer` role ([dev-shared/roles/reviewer.md](../../dev-shared/roles/reviewer.md)), one worker per lens:
 - Security Adversary: find injection, auth bypass, data exposure
 - Assumption Destroyer: challenge every stated assumption
 - Failure Mode Analyst: what breaks in prod?
