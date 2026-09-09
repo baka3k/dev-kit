@@ -3,22 +3,29 @@
 
 CORTEX_REPO  ?= https://github.com/baka3k/cortex-harness.git
 CORTEX_DIR   ?= $(HOME)/AI/cortex-harness
+# Install from this checkout; only bare `npx skill-dev` (install-latest) pulls the newest GitHub revision.
 SKILL_SOURCE ?= .
 SKILL_DEV    ?= npx --yes skill-dev
 
 .DEFAULT_GOAL := help
-.PHONY: help install doctor prepare
+.PHONY: help install install-latest doctor prepare
 
 help:
 	@echo "dev-kit targets:"
-	@echo "  make install   Install skills via skill-dev (interactive; source: $(SKILL_SOURCE))"
-	@echo "  make doctor    Health check: git/node/npx, uv, skills, Cortex 'dev' command"
-	@echo "  make prepare   Clone cortex-harness into $(CORTEX_DIR) and install 'dev' (no-op if already installed)"
+	@echo "  make install         Install skills from THIS local checkout ($(SKILL_SOURCE)) via skill-dev"
+	@echo "  make install-latest  Install the newest skills from GitHub (baka3/dev-kit) instead"
+	@echo "  make doctor          Health check: git/node/npx, uv, skills, Cortex 'dev' command"
+	@echo "  make prepare         Clone cortex-harness into $(CORTEX_DIR) and install 'dev' (no-op if already installed)"
 	@echo ""
 	@echo "Variables: CORTEX_DIR=$(CORTEX_DIR)  CORTEX_REPO=$(CORTEX_REPO)  SKILL_SOURCE=$(SKILL_SOURCE)"
 
 install:
-	$(SKILL_DEV) $(SKILL_SOURCE)
+	@echo "==> Installing skills from local checkout ($(SKILL_SOURCE)) — pick skills/agent/location in the installer"
+	@$(SKILL_DEV) $(SKILL_SOURCE)
+
+install-latest:
+	@echo "==> Installing latest skills from GitHub (baka3/dev-kit)"
+	@$(SKILL_DEV)
 
 doctor:
 	@echo "==> dev-kit doctor"
