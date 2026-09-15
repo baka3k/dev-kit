@@ -3,6 +3,7 @@ name: dev-shared
 description: "Shared contracts and role briefs referenced by other DevKit skills via ../dev-shared/ paths (delegation, orchestrator, leaf, retrieval, graph selection). Support package: install alongside hi-* skills; never activate directly."
 metadata:
   author: baka3k
+  support: true
 ---
 
 # DevKit Shared Contracts

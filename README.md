@@ -205,6 +205,8 @@ npx skill-dev -v                    # version
 
 During installation, select the skills, target agent, and install location. DevKit supports global and project-local installation.
 
+The `dev-shared/` support package holds the cross-skill contracts (`leaf-contract.md`, `delegation-contract.md`, `graph-function-selection.md`, `roles/…`) that `hi-*` skills reference via `../dev-shared/…` paths. It carries its own marker `SKILL.md` (`metadata.support: true`), so `skill-dev` ships it in every install that includes skills referencing it — the packages land as siblings in the target skills dir and the relative links stay resolvable.
+
 ## Supported Agents
 
 | Agent | Global install | Project install |
