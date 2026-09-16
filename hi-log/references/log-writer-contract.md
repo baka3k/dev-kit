@@ -25,7 +25,7 @@ Defines inputs, outputs, and scope rules for the log-writer subagent spawned by 
 - Impact level declared (low/med/high). No "TBD" placeholders.
 - File references use `path:LINE` form. Commits use full sha.
 - If a section has nothing to say, omit the file entirely (do not log empty events).
-- Cross-link to plans (`./plans/<id>/`) when work traces back to a plan.
+- Cross-link to plans (`./docs/plans/<id>/`) when work traces back to a plan.
 
 ## Timeout
 - 3 min per log-writer spawn. Skip non-responders.

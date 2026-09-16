@@ -27,9 +27,9 @@ Place files consistently without overriding established project conventions.
 | Documentation | `docs/` |
 | Technical logs | `docs/logs/` |
 | Architecture decisions | `docs/decisions/` |
-| Plans | `plans/{timestamp}-{slug}/` |
-| Plan-scoped research/reports | `plans/{plan}/research/`, `plans/{plan}/reports/` |
-| Standalone research/reports | `plans/research/`, `plans/reports/` |
+| Plans | `docs/plans/{timestamp}-{slug}/` |
+| Plan-scoped research/reports | `docs/plans/{plan}/research/`, `docs/plans/{plan}/reports/` |
+| Standalone research/reports | `docs/plans/research/`, `docs/plans/reports/` |
 | Scripts | `scripts/` |
 | Assets | `assets/{type}/` |
 | User guides | Existing `guide/` or `guides/`; otherwise `docs/guides/` |

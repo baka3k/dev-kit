@@ -366,7 +366,7 @@ Khi dùng `--no-test`, output nên ghi rõ testing đã bị skip. Không đư�
 Khi truyền path tới `plan.md` hoặc `phase-*.md`, skill hiểu rằng user muốn thực thi artifact đã tồn tại thay vì tạo plan mới.
 
 ```text
-/hi-craft plans/260814-audit-log/plan.md
+/hi-craft docs/plans/260814-audit-log/plan.md
 ```
 
 Trong code mode:
@@ -742,7 +742,7 @@ Ví dụ cấu trúc report:
 
 ```text
 Mode: full
-Plan: plans/260814-audit-log/plan.md
+Plan: docs/plans/260814-audit-log/plan.md
 Completed phases: 1, 2, 3
 Changed: auth service, audit event schema, integration tests
 Tests: npm test - passed

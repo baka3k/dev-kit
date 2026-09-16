@@ -7,10 +7,10 @@ Read plan.md + first 20 lines of each phase-*.md.
 Ask user: document plans with /hi-log? If yes -> log-writer agent -> ./docs/logs/
 
 ## Step 3: Confirm
-Ask user: archive specific plans or all completed? Delete or move to ./plans/archive?
+Ask user: archive specific plans or all completed? Delete or move to ./docs/plans/archive?
 
 ## Step 4: Archive
-- Move to ./plans/archive, OR
+- Move to ./docs/plans/archive, OR
 - Delete permanently: rm -rf
 
 ## Step 5: Git (optional)

@@ -341,7 +341,7 @@ Nếu context không rõ, workflow có thể yêu cầu người dùng làm rõ 
 
 ### Bước 2: Cross-plan dependency scan
 
-Skill quét `plans/*/plan.md` và tập trung vào các plan chưa `completed` hoặc `cancelled`.
+Skill quét `docs/plans/*/plan.md` và tập trung vào các plan chưa `completed` hoặc `cancelled`.
 
 Nó tìm ba kiểu quan hệ:
 
@@ -355,7 +355,7 @@ Dependency phải được ghi hai chiều khi phù hợp. Nếu chỉ ghi một
 
 ```mermaid
 flowchart TD
-    A[New request] --> B[Read plans/*/plan.md]
+    A[New request] --> B[Read docs/plans/*/plan.md]
     B --> C{Active related plan?}
     C -->|No| D[Continue]
     C -->|Yes| E{Relationship type}
@@ -418,7 +418,7 @@ Nếu một file chỉ forwarding hoặc wiring, cần lần đến abstraction 
 Một plan tối thiểu gồm:
 
 ```text
-plans/{plan-dir}/
+docs/plans/{plan-dir}/
 ├── plan.md
 ├── phase-01-name.md
 └── phase-02-name.md
@@ -702,7 +702,7 @@ Archive không tự động đồng nghĩa với delete. Workflow cần:
 1. đọc `plan.md` và phần đầu của phase files;
 2. hỏi có ghi log bằng `hi-log` không;
 3. hỏi archive plan cụ thể hay tất cả plan completed;
-4. hỏi move vào `plans/archive` hay delete vĩnh viễn;
+4. hỏi move vào `docs/plans/archive` hay delete vĩnh viễn;
 5. thực hiện lựa chọn;
 6. tùy chọn stage/commit/push nếu user yêu cầu.
 
@@ -738,7 +738,7 @@ Red-team đưa ra findings và đề xuất, nhưng user chọn apply/review/rej
 
 ### 12.3 Task không phải source of truth duy nhất
 
-Task manager có tính session-scoped. Artifact trong `plans/` mới là phần persistent có thể review, version-control và re-hydrate.
+Task manager có tính session-scoped. Artifact trong `docs/plans/` mới là phần persistent có thể review, version-control và re-hydrate.
 
 ### 12.4 Scope có thể thay đổi có kiểm soát
 

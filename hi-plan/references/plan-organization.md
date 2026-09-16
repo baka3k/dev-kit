@@ -1,9 +1,9 @@
 # Plan Organization
 
 ## Directory Structure
-Create under CURRENT WORKING PROJECT DIRECTORY.
+Create `docs/plans/{plan-dir}/` under CURRENT WORKING PROJECT DIRECTORY.
 ```
-{plan-dir}/
+docs/plans/{plan-dir}/
 ├── plan.md
 ├── phase-01-name.md
 └── phase-02-name.md

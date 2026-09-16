@@ -9,6 +9,7 @@ docs/
 ├── system-architecture.md
 ├── code-standards.md
 ├── logs/{YYMMDD-HHmm}-{slug}.md
+├── plans/                       (see Plans below)
 ├── decisions/{YYMMDD}-{slug}.md
 └── guides/{topic}.md
 ```
@@ -20,7 +21,7 @@ docs/
 ## Plans
 
 ```text
-plans/
+docs/plans/
 ├── {YYMMDD-HHmm}-{slug}/
 │   ├── plan.md
 │   ├── phase-{NN}-{name}.md

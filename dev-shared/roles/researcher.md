@@ -18,7 +18,7 @@ Produce an evidence-backed research digest that the planning agent can turn into
 
 1. Read project docs first: `README`, `docs/`, `AGENTS.md`/`CLAUDE.md`.
 2. Scan the codebase with the search tools available in your runtime; prefer structured sources (symbols, call paths) over raw text search.
-3. Look for prior art: existing plans (`plans/`), related modules, conventions to follow.
+3. Look for prior art: existing plans (`docs/plans/`), related modules, conventions to follow.
 4. External docs only if the task names a library/API and local evidence is insufficient.
 
 ## Output Format

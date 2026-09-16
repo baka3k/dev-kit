@@ -4,7 +4,7 @@ description: "Write log entries analyzing recent changes and session reflections
 argument-hint: "[topic] [--since <ref>] [--scope <dir>]"
 metadata:
   author: baka3k
-  version: "1.3.0"
+  version: "1.3.1"
 ---
 # Log
 
@@ -34,7 +34,7 @@ One file per logical event. Filename: `YYYY-MM-DD-<slug>.md`.
 
 ### 4. Organize
 Run /hi-project-organization to index logs under ./docs/logs/.
-Ensure cross-links to plans (`./plans/`) and journal entries.
+Ensure cross-links to plans (`./docs/plans/`) and journal entries.
 
 ## Non-Negotiable Rules
 - Do NOT log empty sessions. If no material change -> abort with notice.
@@ -55,7 +55,7 @@ Who/what is affected. Risk level (low/med/high).
 ## Decision
 Why this approach. Alternatives considered.
 ## References
-- plan: ./plans/<id>/plan.md
+- plan: ./docs/plans/<id>/plan.md
 - commit: <sha>
 - memory: <obs-id>
 ```

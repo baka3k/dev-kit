@@ -341,7 +341,7 @@ If the context is unclear, the workflow may ask the user to clarify instead of c
 
 ### Step 2: Cross-plan dependency scan
 
-The skill scans `plans/*/plan.md` and focuses on plans that are not yet `completed` or `cancelled`.
+The skill scans `docs/plans/*/plan.md` and focuses on plans that are not yet `completed` or `cancelled`.
 
 It looks for three kinds of relationships:
 
@@ -355,7 +355,7 @@ Dependencies must be recorded in both directions where appropriate. If only one 
 
 ```mermaid
 flowchart TD
-    A[New request] --> B[Read plans/*/plan.md]
+    A[New request] --> B[Read docs/plans/*/plan.md]
     B --> C{Active related plan?}
     C -->|No| D[Continue]
     C -->|Yes| E{Relationship type}
@@ -418,7 +418,7 @@ If a file is only forwarding or wiring, you must trace to the abstraction that d
 A minimal plan consists of:
 
 ```text
-plans/{plan-dir}/
+docs/plans/{plan-dir}/
 ├── plan.md
 ├── phase-01-name.md
 └── phase-02-name.md
@@ -702,7 +702,7 @@ Archive is not automatically the same as delete. The workflow must:
 1. read `plan.md` and the beginning of the phase files;
 2. ask whether to log with `hi-log`;
 3. ask whether to archive a specific plan or all completed plans;
-4. ask whether to move into `plans/archive` or delete permanently;
+4. ask whether to move into `docs/plans/archive` or delete permanently;
 5. carry out the choice;
 6. optionally stage/commit/push if the user requests it.
 
@@ -738,7 +738,7 @@ Red-team produces findings and proposals, but the user chooses apply/review/reje
 
 ### 12.3 Tasks are not the only source of truth
 
-The task manager is session-scoped. The artifacts in `plans/` are the persistent part that can be reviewed, version-controlled and re-hydrated.
+The task manager is session-scoped. The artifacts in `docs/plans/` are the persistent part that can be reviewed, version-controlled and re-hydrated.
 
 ### 12.4 Scope can change in a controlled way
 

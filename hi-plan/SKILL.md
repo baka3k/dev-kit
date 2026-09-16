@@ -4,14 +4,14 @@ description: "Plan implementations, design architectures, create technical roadm
 argument-hint: "[task] [--full|--hard|--parallel|--two|--no-tasks]  — default: fast mode. Sub: archive|red-team|validate"
 metadata:
   author: baka3k
-  version: "2.1.0"
+  version: "2.1.1"
 ---
 # Plan - Implementation Planning
 
-**Scan `./plans/` first.** If relevant unfinished plans exist, update them. If unclear, ask user.
+**Scan `./docs/plans/` first.** If relevant unfinished plans exist, update them. If unclear, ask user.
 
 ## Cross-Plan Dependency Detection
-1. Scan `plans/*/plan.md` (status != completed/cancelled)
+1. Scan `docs/plans/*/plan.md` (status != completed/cancelled)
 2. Detect overlapping files, shared deps, same feature area
 3. Classify: new needs existing output -> `blockedBy: [dir]`, new changes existing deps -> update both
 4. Bidirectional: update BOTH plan.md files

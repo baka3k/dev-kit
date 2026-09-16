@@ -366,7 +366,7 @@ When using `--no-test`, the output should state clearly that testing was skipped
 When a path to `plan.md` or `phase-*.md` is passed, the skill understands that the user wants to execute an existing artifact rather than create a new plan.
 
 ```text
-/hi-craft plans/260814-audit-log/plan.md
+/hi-craft docs/plans/260814-audit-log/plan.md
 ```
 
 In code mode:
@@ -742,7 +742,7 @@ Example report structure:
 
 ```text
 Mode: full
-Plan: plans/260814-audit-log/plan.md
+Plan: docs/plans/260814-audit-log/plan.md
 Completed phases: 1, 2, 3
 Changed: auth service, audit event schema, integration tests
 Tests: npm test - passed

@@ -130,7 +130,7 @@ Who/what is affected. Risk level (low/med/high).
 ## Decision
 Why this approach. Alternatives considered.
 ## References
-- plan: ./plans/<id>/plan.md
+- plan: ./docs/plans/<id>/plan.md
 - commit: <full sha>
 - memory: <obs-id>
 ```
@@ -171,7 +171,7 @@ Record the rationale, not just the outcome:
 
 Cross-link:
 
-- `./plans/<id>/plan.md`;
+- `./docs/plans/<id>/plan.md`;
 - full commit SHA;
 - memory observation ID;
 - issue/release if any.
@@ -255,7 +255,7 @@ flowchart TD
 ```markdown
 # Refresh token reuse guard — 2026-08-14
 ## Context
-Security follow-up from plans/260814-token-rotation/plan.md.
+Security follow-up from docs/plans/260814-token-rotation/plan.md.
 ## Change
 Added server-side token-family reuse detection in `src/auth/refresh.ts:84`.
 ## Impact
@@ -263,7 +263,7 @@ Affected browser refresh flow; risk high because replayed tokens now revoke the 
 ## Decision
 Reuse existing session store instead of adding a second cache. This keeps revocation atomic; a separate cache was rejected because stale state could weaken enforcement.
 ## References
-- plan: ./plans/260814-token-rotation/plan.md
+- plan: ./docs/plans/260814-token-rotation/plan.md
 - commit: 0123456789abcdef0123456789abcdef01234567
 ```
 

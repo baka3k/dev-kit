@@ -6,7 +6,7 @@
 
 Khi tạo hoặc di chuyển artifact, câu hỏi không chỉ là “file có nội dung đúng không?” mà còn là:
 
-- file nên nằm trong `docs/`, `guides/`, `plans/`, `reports/` hay một category hiện có;
+- file nên nằm trong `docs/`, `guides/`, `docs/plans/`, `reports/` hay một category hiện có;
 - output một file hay một self-contained directory;
 - tên có ổn định, dễ tìm, đúng convention không;
 - nội dung là plan, phase, report, log, ADR, guide hay specification;
@@ -129,9 +129,9 @@ Dùng repository convention trước. Nếu không có:
 | Documentation | `docs/` |
 | Technical logs | `docs/logs/` |
 | Architecture decisions | `docs/decisions/` |
-| Plans | `plans/{timestamp}-{slug}/` |
-| Plan research/reports | `plans/{plan}/research/`, `plans/{plan}/reports/` |
-| Standalone research/reports | `plans/research/`, `plans/reports/` |
+| Plans | `docs/plans/{timestamp}-{slug}/` |
+| Plan research/reports | `docs/plans/{plan}/research/`, `docs/plans/{plan}/reports/` |
+| Standalone research/reports | `docs/plans/research/`, `docs/plans/reports/` |
 | Scripts | `scripts/` |
 | Assets | `assets/{type}/` |
 | User guides | `guide/`, `guides/` hoặc `docs/guides/` |
@@ -201,6 +201,7 @@ docs/
 ├── system-architecture.md
 ├── code-standards.md
 ├── logs/{YYMMDD-HHmm}-{slug}.md
+├── plans/                       (xem Plans bên dưới)
 ├── decisions/{YYMMDD}-{slug}.md
 └── guides/{topic}.md
 ```
@@ -213,7 +214,7 @@ docs/
 ### 5.2 Plans
 
 ```text
-plans/
+docs/plans/
 ├── {YYMMDD-HHmm}-{slug}/
 │   ├── plan.md
 │   ├── phase-{NN}-{name}.md
@@ -355,7 +356,7 @@ Không tạo directory riêng cho một file nếu không có ownership/navigati
 Dùng self-contained directory:
 
 ```text
-plans/260814-auth-flow/
+docs/plans/260814-auth-flow/
 ├── plan.md
 ├── phase-01-schema.md
 ├── phase-02-api.md
@@ -749,7 +750,7 @@ Decision:
 
 - type: report;
 - time-sensitive: yes;
-- default category: `plans/reports/` nếu standalone planning research, hoặc `docs/logs/` nếu technical incident log theo repo convention;
+- default category: `docs/plans/reports/` nếu standalone planning research, hoặc `docs/logs/` nếu technical incident log theo repo convention;
 - name: `incident-260814-<slug>.md` hoặc project convention tương đương;
 - template: Report;
 - frontmatter: type/date.
@@ -773,7 +774,7 @@ Create an implementation plan for token rotation with research and phases.
 Default:
 
 ```text
-plans/260814-0930-token-rotation/
+docs/plans/260814-0930-token-rotation/
 ├── plan.md
 ├── phase-01-storage.md
 ├── phase-02-rotation.md
@@ -788,7 +789,7 @@ Rules:
 - phase numbers zero-padded;
 - research/reports belong to plan;
 - `plan.md` concise và link detailed phases;
-- không để phase files rải ở top-level `plans/`.
+- không để phase files rải ở top-level `docs/plans/`.
 
 ## 17. Ví dụ: tổ chức existing files
 

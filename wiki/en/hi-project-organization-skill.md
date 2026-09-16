@@ -6,7 +6,7 @@
 
 When creating or moving an artifact, the question is not only "does the file have the right content?" but also:
 
-- whether the file should live in `docs/`, `guides/`, `plans/`, `reports/`, or an existing category;
+- whether the file should live in `docs/`, `guides/`, `docs/plans/`, `reports/`, or an existing category;
 - whether to output a single file or a self-contained directory;
 - whether the name is stable, easy to find, and follows the convention;
 - whether the content is a plan, phase, report, log, ADR, guide, or specification;
@@ -129,9 +129,9 @@ Use the repository convention first. If none exists:
 | Documentation | `docs/` |
 | Technical logs | `docs/logs/` |
 | Architecture decisions | `docs/decisions/` |
-| Plans | `plans/{timestamp}-{slug}/` |
-| Plan research/reports | `plans/{plan}/research/`, `plans/{plan}/reports/` |
-| Standalone research/reports | `plans/research/`, `plans/reports/` |
+| Plans | `docs/plans/{timestamp}-{slug}/` |
+| Plan research/reports | `docs/plans/{plan}/research/`, `docs/plans/{plan}/reports/` |
+| Standalone research/reports | `docs/plans/research/`, `docs/plans/reports/` |
 | Scripts | `scripts/` |
 | Assets | `assets/{type}/` |
 | User guides | `guide/`, `guides/` or `docs/guides/` |
@@ -201,6 +201,7 @@ docs/
 ├── system-architecture.md
 ├── code-standards.md
 ├── logs/{YYMMDD-HHmm}-{slug}.md
+├── plans/                       (see Plans below)
 ├── decisions/{YYMMDD}-{slug}.md
 └── guides/{topic}.md
 ```
@@ -213,7 +214,7 @@ docs/
 ### 5.2 Plans
 
 ```text
-plans/
+docs/plans/
 ├── {YYMMDD-HHmm}-{slug}/
 │   ├── plan.md
 │   ├── phase-{NN}-{name}.md
@@ -355,7 +356,7 @@ Do not create a dedicated directory for a single file unless there is an ownersh
 Use a self-contained directory:
 
 ```text
-plans/260814-auth-flow/
+docs/plans/260814-auth-flow/
 ├── plan.md
 ├── phase-01-schema.md
 ├── phase-02-api.md
@@ -749,7 +750,7 @@ Decision:
 
 - type: report;
 - time-sensitive: yes;
-- default category: `plans/reports/` if it is standalone planning research, or `docs/logs/` if it is a technical incident log per repo convention;
+- default category: `docs/plans/reports/` if it is standalone planning research, or `docs/logs/` if it is a technical incident log per repo convention;
 - name: `incident-260814-<slug>.md` or the equivalent project convention;
 - template: Report;
 - frontmatter: type/date.
@@ -773,7 +774,7 @@ Create an implementation plan for token rotation with research and phases.
 Default:
 
 ```text
-plans/260814-0930-token-rotation/
+docs/plans/260814-0930-token-rotation/
 ├── plan.md
 ├── phase-01-storage.md
 ├── phase-02-rotation.md
@@ -788,7 +789,7 @@ Rules:
 - phase numbers are zero-padded;
 - research/reports belong to the plan;
 - `plan.md` is concise and links the detailed phases;
-- do not scatter phase files at the top level of `plans/`.
+- do not scatter phase files at the top level of `docs/plans/`.
 
 ## 17. Example: organizing existing files
 
