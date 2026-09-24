@@ -41,6 +41,7 @@ $ npx skill-dev
   GitHub Copilot
   Cursor
   Continue
+  Antigravity
   Generic
 
 ◇ Install location
@@ -123,6 +124,7 @@ About Serena - refer https://github.com/oraios/serena
 | GitHub Copilot | `~/.copilot/skills`         | `.github/skills`   |
 | Cursor         | `~/.cursor/skills`          | `.cursor/skills`   |
 | Continue       | `~/.continue/skills`        | `.continue/skills` |
+| Antigravity    | `~/.gemini/skills`          | `.gemini/skills`   |
 | Generic        | `~/.devkit/skills`          | `.devkit/skills`   |
 
 Set `CLAUDE_CONFIG_DIR`, `CODEX_HOME`, or `XDG_CONFIG_HOME` to override the base config directory.
@@ -217,6 +219,7 @@ The `dev-shared/` support package holds the cross-skill contracts (`leaf-contrac
 | GitHub Copilot | `~/.copilot/skills` | `.github/skills` |
 | Cursor | `~/.cursor/skills` | `.cursor/skills` |
 | Continue | `~/.continue/skills` | `.continue/skills` |
+| Antigravity | `~/.gemini/skills` | `.gemini/skills` |
 | Generic | `~/.devkit/skills` | `.devkit/skills` |
 
 Set `CLAUDE_CONFIG_DIR`, `CODEX_HOME`, or `XDG_CONFIG_HOME` to override base config directories where supported by the target agent.

@@ -6,26 +6,45 @@ CORTEX_DIR   ?= $(HOME)/AI/cortex-harness
 # Install from this checkout; only bare `npx skill-dev` (install-latest) pulls the newest GitHub revision.
 SKILL_SOURCE ?= .
 SKILL_DEV    ?= npx --yes skill-dev
+# Local skill-dev checkout, preferred over the published npm release when its
+# build output exists. It carries agent targets that are not on npm yet —
+# e.g. Antigravity, which installs into ~/.gemini/skills.
+SKILL_DEV_LOCAL ?= $(HOME)/AI/dev-kit-install
 
 .DEFAULT_GOAL := help
 .PHONY: help install install-latest doctor prepare
 
+# Run the skill-dev installer against source $(1). Prefers the local
+# checkout (run `npm run build` there if dist/ is missing) and falls back
+# to the published npm package.
+define run_skill_dev
+if [ -f "$(SKILL_DEV_LOCAL)/dist/cli.js" ]; then \
+	echo "==> installer: local skill-dev ($(SKILL_DEV_LOCAL)) — includes Antigravity (~/.gemini/skills)"; \
+	node "$(SKILL_DEV_LOCAL)/dist/cli.js" $(1); \
+else \
+	if [ -d "$(SKILL_DEV_LOCAL)" ]; then \
+		echo "==> $(SKILL_DEV_LOCAL)/dist missing — run 'npm run build' there to enable it (falling back to npm skill-dev)"; \
+	fi; \
+	$(SKILL_DEV) $(1); \
+fi
+endef
+
 help:
 	@echo "dev-kit targets:"
-	@echo "  make install         Install skills from THIS local checkout ($(SKILL_SOURCE)) via skill-dev"
+	@echo "  make install         Install skills from THIS local checkout ($(SKILL_SOURCE)) via skill-dev (agents incl. Antigravity -> ~/.gemini/skills)"
 	@echo "  make install-latest  Install the newest skills from GitHub (baka3/dev-kit) instead"
 	@echo "  make doctor          Health check: git/node/npx, uv, skills, Cortex 'dev' command"
 	@echo "  make prepare         Clone cortex-harness into $(CORTEX_DIR) and install 'dev' (no-op if already installed)"
 	@echo ""
-	@echo "Variables: CORTEX_DIR=$(CORTEX_DIR)  CORTEX_REPO=$(CORTEX_REPO)  SKILL_SOURCE=$(SKILL_SOURCE)"
+	@echo "Variables: CORTEX_DIR=$(CORTEX_DIR)  CORTEX_REPO=$(CORTEX_REPO)  SKILL_SOURCE=$(SKILL_SOURCE)  SKILL_DEV_LOCAL=$(SKILL_DEV_LOCAL)"
 
 install:
 	@echo "==> Installing skills from local checkout ($(SKILL_SOURCE)) — pick skills/agent/location in the installer"
-	@$(SKILL_DEV) $(SKILL_SOURCE)
+	@$(call run_skill_dev,$(SKILL_SOURCE))
 
 install-latest:
 	@echo "==> Installing latest skills from GitHub (baka3/dev-kit)"
-	@$(SKILL_DEV)
+	@$(call run_skill_dev,)
 
 doctor:
 	@echo "==> dev-kit doctor"
