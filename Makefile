@@ -8,7 +8,7 @@ SKILL_SOURCE ?= .
 SKILL_DEV    ?= npx --yes skill-dev
 # Local skill-dev checkout, preferred over the published npm release when its
 # build output exists. It carries agent targets that are not on npm yet —
-# e.g. Antigravity, which installs into ~/.gemini/skills.
+# e.g. Antigravity (~/.gemini/skills) and Hermes (~/.hermes/profiles/default/skills).
 SKILL_DEV_LOCAL ?= $(HOME)/AI/dev-kit-install
 
 .DEFAULT_GOAL := help
@@ -19,7 +19,7 @@ SKILL_DEV_LOCAL ?= $(HOME)/AI/dev-kit-install
 # to the published npm package.
 define run_skill_dev
 if [ -f "$(SKILL_DEV_LOCAL)/dist/cli.js" ]; then \
-	echo "==> installer: local skill-dev ($(SKILL_DEV_LOCAL)) — includes Antigravity (~/.gemini/skills)"; \
+	echo "==> installer: local skill-dev ($(SKILL_DEV_LOCAL)) — includes Antigravity (~/.gemini/skills) and Hermes (~/.hermes/profiles/default/skills)"; \
 	node "$(SKILL_DEV_LOCAL)/dist/cli.js" $(1); \
 else \
 	if [ -d "$(SKILL_DEV_LOCAL)" ]; then \
@@ -31,7 +31,7 @@ endef
 
 help:
 	@echo "dev-kit targets:"
-	@echo "  make install         Install skills from THIS local checkout ($(SKILL_SOURCE)) via skill-dev (agents incl. Antigravity -> ~/.gemini/skills)"
+	@echo "  make install         Install skills from THIS local checkout ($(SKILL_SOURCE)) via skill-dev (agents incl. Antigravity + Hermes)"
 	@echo "  make install-latest  Install the newest skills from GitHub (baka3/dev-kit) instead"
 	@echo "  make doctor          Health check: git/node/npx, uv, skills, Cortex 'dev' command"
 	@echo "  make prepare         Clone cortex-harness into $(CORTEX_DIR) and install 'dev' (no-op if already installed)"

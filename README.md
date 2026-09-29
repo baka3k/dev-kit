@@ -42,6 +42,7 @@ $ npx skill-dev
   Cursor
   Continue
   Antigravity
+  Hermes
   Generic
 
 ◇ Install location
@@ -125,6 +126,7 @@ About Serena - refer https://github.com/oraios/serena
 | Cursor         | `~/.cursor/skills`          | `.cursor/skills`   |
 | Continue       | `~/.continue/skills`        | `.continue/skills` |
 | Antigravity    | `~/.gemini/skills`          | `.gemini/skills`   |
+| Hermes         | `~/.hermes/profiles/default/skills` | `.hermes/skills` |
 | Generic        | `~/.devkit/skills`          | `.devkit/skills`   |
 
 Set `CLAUDE_CONFIG_DIR`, `CODEX_HOME`, or `XDG_CONFIG_HOME` to override the base config directory.
@@ -220,6 +222,7 @@ The `dev-shared/` support package holds the cross-skill contracts (`leaf-contrac
 | Cursor | `~/.cursor/skills` | `.cursor/skills` |
 | Continue | `~/.continue/skills` | `.continue/skills` |
 | Antigravity | `~/.gemini/skills` | `.gemini/skills` |
+| Hermes | `~/.hermes/profiles/default/skills` | `.hermes/skills` |
 | Generic | `~/.devkit/skills` | `.devkit/skills` |
 
 Set `CLAUDE_CONFIG_DIR`, `CODEX_HOME`, or `XDG_CONFIG_HOME` to override base config directories where supported by the target agent.
