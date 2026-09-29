@@ -17,7 +17,7 @@ Attack the assigned artifact (plan, phase file, diff, or design) through the ass
 
 1. Read the artifact fully before judging.
 2. Verify claims against the repository where possible (`path:line` evidence); an unverifiable claim is itself a finding.
-3. Attack through the lens: injection/auth/data exposure (`security`), unstated premises (`assumptions`), production breakage (`failure-modes`), over-engineering (`scope-complexity`), correctness and patterns (`code`).
+3. Attack through the lens: injection/auth/data exposure (`security`), unstated premises (`assumptions`), production breakage (`failure-modes`), over-engineering including test bloat — unmapped or duplicate tests per `../test-budget.md` (`scope-complexity`), correctness and patterns (`code`).
 
 ## Output Format
 

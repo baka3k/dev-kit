@@ -277,6 +277,7 @@ flowchart LR
 | `--review` | `review` | Skip research, review is mandatory |
 | `--auto`, "trust me", "yolo" | `auto` | Auto-approve review |
 | `--no-test` | `no-test` | Skip testing |
+| `--test-budget=N` | any mode | Raise the soft test ceiling to N for this run; see 6.3.1 |
 | Path to `plan.md` or `phase-*.md` | `code` | Execute an existing plan |
 
 A request can both name a task and carry a flag. The skill must resolve the intent before doing the code work in order to know whether to create a plan, read a plan or directly run a phase.
@@ -475,6 +476,8 @@ A good implementation does not just "make it run"; it preserves traceability fro
 #### 6.3.1 Default testing
 
 Except for `--no-test`, the skill must run the test command and inspect the output. Testing is not just "calling a command"; you need to look at the exit code, meaningful failures and warnings, and the coverage of the changed behavior.
+
+New tests follow the proportionate-test contract [dev-shared/test-budget.md](../../dev-shared/test-budget.md): every test maps to a plan criterion or a fixed bug, three values per input dimension (`typical`, `boundary`, `invalid`), parameterized over duplicated cases. The soft ceiling is ~10–15 new test functions per task/phase; exceeding it requires a one-line justification, `--test-budget=N`, or an explicit "exhaustive tests" request. The finalize report includes the rule → test-name checklist.
 
 The verification layers can include:
 

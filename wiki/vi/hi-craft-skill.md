@@ -277,6 +277,7 @@ flowchart LR
 | `--review` | `review` | Bỏ qua research, review là bắt buộc |
 | `--auto`, “trust me”, “yolo” | `auto` | Auto-approve review |
 | `--no-test` | `no-test` | Bỏ qua testing |
+| `--test-budget=N` | mọi mode | Nâng trần test mềm lên N cho lần chạy này; xem 6.3.1 |
 | Path tới `plan.md` hoặc `phase-*.md` | `code` | Thực thi plan đã tồn tại |
 
 Một request có thể vừa chỉ ra task vừa có cờ. Skill phải resolve intent trước khi thực hiện code để biết cần tạo plan, đọc plan hay trực tiếp chạy một phase.
@@ -475,6 +476,8 @@ Một implementation tốt không chỉ “làm cho chạy”, mà phải giữ 
 #### 6.3.1 Test mặc định
 
 Trừ `--no-test`, skill phải chạy test command và kiểm tra output. Test không chỉ là “gọi command”; cần xem exit code, failures, warnings có ý nghĩa và coverage của behavior đã đổi.
+
+Test mới tuân theo contract proportionate-test [dev-shared/test-budget.md](../../dev-shared/test-budget.md): mỗi test map về một tiêu chí của plan hoặc một bug đã fix, ba giá trị mỗi input dimension (`typical`, `boundary`, `invalid`), ưu tiên parameterize thay vì nhân bản case. Trần mềm là ~10–15 test function mới mỗi task/phase; vượt trần cần một dòng lý giải, `--test-budget=N`, hoặc yêu cầu “exhaustive tests” rõ ràng. Report finalize kèm checklist rule → tên test.
 
 Các lớp verify có thể gồm:
 

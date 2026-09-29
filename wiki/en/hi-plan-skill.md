@@ -491,7 +491,8 @@ Each phase needs enough information for another developer to implement without g
 6. related code: create/modify/delete;
 7. concrete numbered implementation steps;
 8. success criteria / definition of done;
-9. risk assessment and mitigation.
+9. risk assessment and mitigation;
+10. test scope: mapped acceptance criteria and expected size (S/M/L) per `dev-shared/test-budget.md`.
 
 ### 6.3 Final workflow output
 

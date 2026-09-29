@@ -618,6 +618,8 @@ flowchart TD
 
 Critical không đồng nghĩa scenario chắc chắn xảy ra; nó phản ánh impact nếu xảy ra.
 
+Theo `dev-shared/test-budget.md`, chỉ scenario Immediate và Sprint được viết thành unit test ngay; item Backlog nằm lại trong bảng backlog của report thay vì vào test suite.
+
 ## 12. Output contract
 
 Report chuẩn có title:

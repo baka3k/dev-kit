@@ -1,8 +1,8 @@
 ---
 name: hi-scenario
 description: Generate comprehensive edge cases and test scenarios by decomposing features across 12 dimensions (user types, input extremes, timing, scale, state, environment, errors, authorization, data integrity, integration, compliance, business logic). Uses mind_mcp for feature requirements context and graph_mcp for code path discovery. Use before implementation, during code review, or when planning test coverage.
-version: 1.1.0
-last_updated: 2026-09-08
+version: 1.2.0
+last_updated: 2026-09-30
 hooks:
   pre:
     - name: input-validation
@@ -54,7 +54,7 @@ Filter relevant dimensions first; generate scenarios only for those.
 1. **Dimension filtering** — mark applicable/skipped with reason; prioritize by risk.
 2. **Scenario generation** — 3–5 concrete, reproducible, implementation-agnostic scenarios per applicable dimension; high-risk dimensions first.
 3. **Severity classification** — per the table above; auth bypass/data exposure/silent corruption always Critical.
-4. **Report generation** — table by dimension & severity, applicability summary, test priorities (Critical → immediate).
+4. **Report generation** — table by dimension & severity, applicability summary, test priorities (Critical → immediate). Only Critical + High are flagged for unit tests now per [dev-shared/test-budget.md](../dev-shared/test-budget.md); Medium/Low stay in the backlog section.
 
 ## Non-Negotiable Rules
 
@@ -64,6 +64,7 @@ Filter relevant dimensions first; generate scenarios only for those.
 - Auth bypass or data exposure always classified as Critical.
 - Never skip error cascades dimension for server-side code.
 - Provide reason for every skipped dimension.
+- Only Critical and High scenarios become unit tests now; Medium and Low go to the backlog (dev-shared/test-budget.md).
 - Graph-derived scenarios must reference actual code paths.
 
 ## Fallback

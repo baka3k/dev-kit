@@ -4,7 +4,7 @@ description: "Plan implementations, design architectures, create technical roadm
 argument-hint: "[task] [--full|--hard|--parallel|--two|--no-tasks]  — default: fast mode. Sub: archive|red-team|validate"
 metadata:
   author: baka3k
-  version: "2.1.1"
+  version: "2.2.0"
 ---
 # Plan - Implementation Planning
 
@@ -71,6 +71,7 @@ All worker launches follow [dev-shared/delegation-contract.md](../dev-shared/del
 - Plan files = persistent. Tasks = session-scoped
 - Invoke /hi-project-organization after output
 - Respect `./docs/development-rules.md`
+- Each `phase-XX.md` states its test scope: mapped acceptance criteria + expected size (S/M/L) per [dev-shared/test-budget.md](../dev-shared/test-budget.md)
 
 ## Task Management
 - Auto-hydrate tasks after plan write (skip --no-tasks)

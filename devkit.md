@@ -1,6 +1,6 @@
 # DevKit — Workflow Diagrams
 
-> Visual workflows for the 3 core skills: `hi-craft`, `hi-fix`, `hi-plan`. Mapped to current `SKILL.md` versions (craft v3.1.0, fix v2.1.0, plan v2.1.0). Delegation semantics: [dev-shared/delegation-contract.md](dev-shared/delegation-contract.md).
+> Visual workflows for the 3 core skills: `hi-craft`, `hi-fix`, `hi-plan`. Mapped to current `SKILL.md` versions (craft v3.2.0, fix v2.1.0, plan v2.2.0). Delegation semantics: [dev-shared/delegation-contract.md](dev-shared/delegation-contract.md).
 
 ---
 

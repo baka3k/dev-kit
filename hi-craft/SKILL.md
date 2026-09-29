@@ -1,10 +1,10 @@
 ---
 name: hi-craft
 description: "ALWAYS activate before implementing ANY feature, plan, or fix."
-argument-hint: "[task] [--full|--parallel|--review|--auto|--no-test]  — default: fast mode"
+argument-hint: "[task] [--full|--parallel|--review|--auto|--no-test|--test-budget=N]  — default: fast mode"
 metadata:
   author: baka3k
-  version: "3.1.0"
+  version: "3.2.0"
 ---
 # Craft - Feature Implementation
 
@@ -21,6 +21,7 @@ User override: "just code it" or "skip planning" - then respect.
 | --review | review |There are gate reviews at the end. |
 | --auto, "trust me", "yolo" | auto | Auto-approve all |
 | --no-test | no-test | Skip testing |
+| --test-budget=N | any | Set the soft test ceiling to N for this run (combine with any mode); see Step 3 |
 | Path to plan.md/phase-*.md | code | Execute existing plan |
 | Default | fast | Skip research, skip review, fast test |
 
@@ -58,6 +59,8 @@ Run the test command. Check the output. If it fails:
 * 1st-2nd time: analyze and fix it yourself.
 * 3rd+ time: invoke `hi-fix` for in-depth debugging.
 Do not spawn a separate tester.
+
+New tests follow [dev-shared/test-budget.md](../dev-shared/test-budget.md): map each test to a plan criterion or a fixed bug, parameterize instead of duplicating, and include the rule → test-name checklist in the finalize report. `--test-budget=N` raises the soft ceiling for this run; an explicit "exhaustive tests" request lifts it entirely.
 
 ### Step 4: Finalize
 1. TaskUpdate all tasks complete

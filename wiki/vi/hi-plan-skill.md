@@ -491,7 +491,8 @@ Mỗi phase cần đủ thông tin để một developer khác có thể triển
 6. related code: create/modify/delete;
 7. implementation steps đánh số cụ thể;
 8. success criteria / definition of done;
-9. risk assessment và mitigation.
+9. risk assessment và mitigation;
+10. test scope: tiêu chí chấp nhận đã map và độ lớn dự kiến (S/M/L) theo `dev-shared/test-budget.md`.
 
 ### 6.3 Output cuối workflow
 

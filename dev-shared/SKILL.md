@@ -15,6 +15,7 @@ installed as a sibling of the skills that use it.
 - `delegation-contract.md` — probe → role brief → spawn/inline → receipt. Every worker launch follows this.
 - `orchestrator-contract.md` — ownership, worker constraints, failure/resume semantics for lifecycle orchestrators.
 - `leaf-contract.md` — evidence-backed artifacts, local manifest, completion conditions for leaf skills.
+- `test-budget.md` — proportionate testing: mapping rule, three values per dimension, tiers, soft ceiling with justification. Followed by every skill or role that plans, writes, or reviews tests.
 - `retrieval-protocol.md` — layered search order shared by discovery skills.
 - `graph-function-selection.md` — when to use which `graph_mcp` function.
 - `roles/` — paste-into-prompt briefs for delegated roles (`researcher`, `implementer`, `reviewer`).

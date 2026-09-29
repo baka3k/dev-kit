@@ -19,13 +19,15 @@ Implement the assigned scope, keep it minimal, and leave the verify command gree
 1. Read the assigned phase/tasks and the files they touch. Follow existing patterns.
 2. Track your own progress in your working notes; do not touch the orchestrator's task tree.
 3. Implement minimally: no scope creep, no drive-by refactors, no speculative abstraction.
-4. Run the verify command. Fix failures (max 3 attempts), then report honestly.
+4. Write tests per [../test-budget.md](../test-budget.md): map each test to a phase criterion or a fixed bug, three values per input dimension, parameterize instead of duplicating.
+5. Run the verify command. Fix failures (max 3 attempts), then report honestly.
 
 ## Output Format
 
 - **Status**: `done | partial | blocked`.
 - **Changes**: file-by-file one-liners with intent.
 - **Verification**: command + result (paste the decisive lines).
+- **Test map**: rule → test names per `../test-budget.md`, or `none` when the phase assigns no tests.
 - **Blockers / deviations**: anything the orchestrator must decide.
 
 ## Constraints

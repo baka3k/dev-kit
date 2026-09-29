@@ -618,6 +618,8 @@ flowchart TD
 
 Critical does not mean the scenario is certain to happen; it reflects the impact if it does.
 
+Per `dev-shared/test-budget.md`, only Immediate and Sprint scenarios become unit tests now; Backlog items stay in the report's backlog table instead of entering the test suite.
+
 ## 12. Output contract
 
 The standard report has the title:
