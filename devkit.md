@@ -22,6 +22,7 @@
 | `hi-repository-search` | Code + Doc exploration | Search & explore ingested repos via code graph (Qdrant/Neo4j/FalkorDb) + document graph RAG (Qdrant/Neo4j/FalkorDb). Semantic search, call graph tracing, dependency analysis, entity extraction. |
 | `hi-chrome-devtools` | Browser automation | Browser automation via Puppeteer CLI with persistent sessions. Screenshots, performance, network, scraping, form automation, auth, debugging. |
 | `hi-cortex` | Harness infrastructure | Install and operate Cortex Harness: config, source-code sync, documentation sync, database infrastructure, and MCP lifecycle for use by other skills. |
+| `typesafe-ai` | AI feature building | Build AI-powered features with TypeSafe System One models (Jev): typed judgments (Choice/Score/Noul) as programming primitives. The optional judgment backend behind [dev-shared/jev-contract.md](dev-shared/jev-contract.md). |
 
 ## 1. `hi-craft` — Feature Implementation
 
@@ -249,3 +250,4 @@ graph TD
 4. **Test/Verify just enough** — `typecheck+lint` for quick, `+build+test` for standard, `comprehensive` for deep.
 5. **Review optional** — run only via `--review` or `full` mode. Auto-approve requires score ≥ 9.5 + 0 critical.
 6. **Finalize = commit + log** — always conclude with git commit + `/hi-log` (recording decisions, root causes, impacts).
+7. **Jev optional** — typed judgment calls (routing, triage, scoring) may use `dev-shared/jev/jev_ask.py` per [dev-shared/jev-contract.md](dev-shared/jev-contract.md). On probe failure or low confidence, fall through to the existing heuristic — behavior is identical with or without Jev.

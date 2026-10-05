@@ -32,6 +32,7 @@ $ npx skill-dev
 │  ◼ hi-scenario
 │  ◼ hi-security
 │  ◼ hi-sequential-thinking
+│  ◼ typesafe-ai
 └ ....
 
 ◇ Select target agent
