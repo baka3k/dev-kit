@@ -30,3 +30,7 @@ Example:
 - **Strict Scope:** Touch only what's necessary. Clean up your own mess.
 - **Success Criteria:** Iterate until explicitly verified.
 - The agent always responds in English.
+
+## When any decision is needed:
+1. Try Jev AI (typesafe-ai) first.
+2. If Jev AI fails, decide yourself.
