@@ -77,7 +77,7 @@ The "Additions" column lists functions beyond the tier baseline that the skill t
 | hi-project-organization | T1 | conditional `plan_file_dependency_order` for layout moves |
 | hi-brainstorm, hi-problem-solving | T1 | grounding only |
 | hi-document-refinement, hi-document-review-resolution, hi-document-lifecycle | T1 | `search_functions` / `get_symbol` to verify named symbols in drafts and comments |
-| hi-pptx, hi-sequential-thinking, hi-docs-seeker, hi-chrome-devtools, hi-log, hi-cortex | T0 | not applicable |
+| slide-kit, hi-sequential-thinking, hi-docs-seeker, hi-chrome-devtools, hi-log, hi-cortex | T0 | not applicable |
 
 ## Guardrails
 

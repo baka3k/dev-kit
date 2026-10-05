@@ -1,0 +1,130 @@
+{
+  "output": "example_deck.pptx",
+  "slides": [
+    {
+      "layout": "cover",
+      "title": "Web Platform Approach (Phase 1)",
+      "date": "OCT 29 2026",
+      "notes": "Slide mở đầu: nêu bối cảnh và mục tiêu giai đoạn 1."
+    },
+    {
+      "layout": "agenda",
+      "items": [
+        "Tổng quan tính năng",
+        "Danh mục nội dung",
+        "Luồng xử lý dữ liệu",
+        "Workflow biên tập",
+        "Kiến trúc tổng thể",
+        "Cấu hình chỉ mục tìm kiếm",
+        "Kế hoạch triển khai"
+      ]
+    },
+    {
+      "layout": "content",
+      "title": "1. Tổng quan tính năng",
+      "body": [
+        { "type": "bullets", "items": [
+          { "t": "**Website tin tức & thương mại dịch vụ**: xây dựng trên nền tảng CMS headless" },
+          { "t": "**Giai đoạn 1** tập trung nhóm tính năng cốt lõi", "lvl": 0 },
+          { "t": "Trang chủ, danh mục, trang chi tiết", "lvl": 1 },
+          { "t": "Tìm kiếm và lọc theo nhiều tiêu chí", "lvl": 1 },
+          { "t": "Quản trị nội dung tập trung", "lvl": 1 },
+          { "t": "**Giai đoạn 2** mở rộng cá nhân hóa và tích hợp hệ thống bên ngoài", "lvl": 0 }
+        ], "size": 12 },
+        { "type": "table", "header": ["Hạng mục", "Phạm vi", "Ghi chú"],
+          "cols": [0.3, 0.45, 0.25],
+          "rows": [
+            ["Nội dung", "Bài viết, video, playlist", "[[green|Đã chốt]]"],
+            ["Thương mại", "Sản phẩm, gói, khuyến mãi", "[[green|Đã chốt]]"],
+            ["Tích hợp", "Đồng bộ dữ liệu master", "[[orange|Đang làm rõ]]"]
+          ], "h": 150 }
+      ]
+    },
+    {
+      "layout": "content",
+      "title": "2. Danh mục nội dung",
+      "body": [
+        { "type": "cards",
+          "groups": [
+            { "title": "Trang chủ", "chips": [
+              "Hero section",
+              { "t": "Menu chức năng", "lvl": 1 },
+              "Banner (Web)",
+              "Tiêu điểm"
+            ]},
+            { "title": "Về chúng tôi", "chips": [
+              { "t": "Giới thiệu (Web)", "link": true },
+              "Giới thiệu trung tâm",
+              "Đội ngũ chuyên gia"
+            ]},
+            { "title": "Danh mục dịch vụ", "chips": [
+              { "t": "Dịch vụ lẻ", "link": true },
+              "Nền tảng dịch vụ (chưa login)",
+              "Kết quả dịch vụ",
+              { "t": "Đặt lịch (Phase 2)", "tone": "blue" }
+            ]},
+            { "title": "Tài khoản", "chips": [
+              "Thông tin cá nhân",
+              "Lịch sử giao dịch",
+              "Thông báo"
+            ]}
+          ],
+          "legend": { "label": "Color key", "swatches": [["92D050", "Phase 1"], ["73B5FF", "Phase 2"]] }
+        }
+      ]
+    },
+    {
+      "layout": "content",
+      "title": "3. Phạm vi dữ liệu cần đồng bộ",
+      "body": [
+        { "type": "table",
+          "header": ["STT", "Nhóm", "Đối tượng", "Nguồn", "Hành động"],
+          "cols": [0.06, 0.16, 0.2, 0.14, 0.44],
+          "rows": [
+            ["1", "Sản phẩm", "Sản phẩm lẻ", "PIM", "**Đồng bộ toàn bộ** thuộc tính cơ bản (mã, tên, giá)\nBật/tắt hiển thị trên storefront"],
+            ["2", "^", "Gói combo", "PIM", "**Đồng bộ toàn bộ** thông tin gói (vaccine trong gói)"],
+            ["3", "^", "Nhóm danh mục", "Tạo tay", "Tạo tay theo nhóm bệnh [[red|không tích hợp với PIM]]"],
+            ["4", "Nội dung", "Bài viết thường", "CMS", "Tạo mới / lưu trữ trên CMS mới"],
+            ["5", "^", "Video playlist", "CMS", "Tạo mới / lưu trữ trên CMS mới"],
+            ["6", "Master data", "Quốc gia", "DSMS", "Bổ sung thông tin, [[green|đồng bộ định kỳ hằng ngày]]"]
+          ], "size": 9 }
+      ],
+      "note": "Ghi chú: các dòng gạch đỏ cần xác nhận lại với đội PIM trước sprint 2.",
+      "note_size": 9
+    },
+    {
+      "layout": "content",
+      "title": "4. Kiến trúc tổng thể",
+      "body": [
+        { "type": "columns", "weights": [0.42, 0.58], "cols": [
+          { "type": "table", "header": ["Lớp", "Thành phần", "Vai trò"],
+            "cols": [0.22, 0.34, 0.44],
+            "rows": [
+              ["Ingress", "API Gateway", "Định tuyến, rate-limit"],
+              ["Dịch vụ", "Content API", "Phục vụ nội dung public"],
+              ["^", "Search API", "Tìm kiếm toàn văn"],
+              ["^", "Media API", "Phục vụ ảnh, video"],
+              ["Core", "CMS", "Biên tập & xuất bản"],
+              ["Nền tảng", "Data Platform", "Streaming, lưu trữ, cache"],
+              ["Vận hành", "Monitoring", "Metric, log, cảnh báo"]
+            ], "size": 9 },
+          { "type": "image", "path": "example_diagram.png" }
+        ]}
+      ]
+    },
+    {
+      "layout": "content",
+      "title": "5. Cấu hình chỉ mục tìm kiếm",
+      "body": [
+        { "type": "code", "size": 8, "panels": [
+          { "title": "Index template – Sản phẩm", "code": "{\n  \"name\": { \"type\": \"text\", \"analyzer\": \"standard\" }, // Tên\n  \"category\": { \"type\": \"keyword\" }, // Nhóm danh mục\n  \"price\": { \"type\": \"float\" }, // Giá bán\n  \"tags\": { \"type\": \"keyword\" }, // Từ khóa tìm kiếm\n  \"in_stock\": { \"type\": \"boolean\" },\n  \"updated_at\": { \"type\": \"date\" }\n}" },
+          { "title": "Index template – Tin tức", "code": "{\n  \"title\": { \"type\": \"text\", \"analyzer\": \"standard\" }, // Tiêu đề\n  \"content\": { \"type\": \"text\", \"analyzer\": \"standard\" },\n  \"author\": { \"type\": \"keyword\" }, // Tác giả\n  \"published_at\": { \"type\": \"date\" }, // Ngày đăng\n  \"topics\": { \"type\": \"keyword\" }\n}" }
+        ] }
+      ]
+    },
+    {
+      "layout": "thanks",
+      "title": "THANK YOU"
+    }
+  ]
+}
