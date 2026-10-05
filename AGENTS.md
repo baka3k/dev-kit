@@ -32,5 +32,5 @@ Example:
 - The agent always responds in English.
 
 ## When any decision is needed:
-1. Try Jev AI (typesafe-ai) first.
-2. If Jev AI fails, decide yourself.
+1. Ask Jev AI first — query recipe: `typesafe-ai/reference.md`.
+2. If Jev AI fails (error, no network, no key), decide yourself.
