@@ -1,10 +1,11 @@
 #!/usr/bin/env python3
-"""Generate a .pptx deck in the navy/teal corporate style from a JSON spec.
+"""Generate a .pptx deck in the Modernization corporate style (Template3).
 
 Usage:
     python3 gen_deck.py spec.json -o deck.pptx
 
-Brand-neutral by design: no logos are placed on any slide.
+All geometry/colors/fonts below were extracted from the reference template
+(13.33x7.5in, Lato, slate #445469 text, navy constellation cover art).
 """
 
 from __future__ import annotations
@@ -19,55 +20,63 @@ from pathlib import Path
 from PIL import Image
 from pptx import Presentation
 from pptx.dml.color import RGBColor
-from pptx.enum.shapes import MSO_SHAPE
+from pptx.enum.shapes import MSO_CONNECTOR, MSO_SHAPE
 from pptx.enum.text import MSO_ANCHOR, PP_ALIGN
 from pptx.oxml.ns import qn
 from pptx.util import Emu, Length, Pt
 
 # ---------------------------------------------------------------- constants
+# Every value below is measured from Template3.pptx (pt on a 960x540 canvas).
 
-SLIDE_W, SLIDE_H = 960.0, 540.0          # pt (16:9)
-BAND_H = 60.0                            # header band height on content slides
-BODY_TOP, BODY_BOTTOM = 72.0, 520.0      # usable body area on content slides
-GAP = 10.0                               # vertical gap between body blocks
+SLIDE_W, SLIDE_H = 960.0, 540.0          # pt (16:9, 12192000x6858000 EMU)
+BODY_TOP, BODY_BOTTOM = 88.0, 500.0      # usable body area on content slides
+BODY_X, BODY_W = 46.7, 872.3             # body column (aligns with title box)
+GAP = 14.0                               # vertical gap between body blocks
 
 ASSETS = Path(__file__).resolve().parent.parent / "assets"
 
-INK = "29333A"        # body text
+INK = "445469"         # theme dk1/dk2 = all body text (scheme tx1/tx2)
+SLATE = "46546C"       # theme accent1 - flow boxes, connectors
+BLUE = "1986AF"        # theme accent2 - table header, infobox base
+TEAL = "46BE9C"        # theme accent3
+LIME = "9CB631"        # theme accent4 - highlighted flow boxes
+ORANGE = "FB8635"      # theme accent5 - dashed annotation lines
+RED_ACC = "D53E23"     # theme accent6
 WHITE = "FFFFFF"
-TEAL = "32B2C1"       # table headers, accents
-TEAL_DARK = "0F4950"
-TINT_L = "E8F2F4"     # zebra row light
-TINT_M = "CDE4E9"     # zebra row dark
-GREEN = "00B050"      # positive / done
-GREEN_L = "92D050"    # legend "phase 1"
-BLUE_L = "73B5FF"     # legend "phase 2"
-CHIP_G = "A7FFCF"     # sitemap chip green
-CHIP_B = "C9DCFF"     # sitemap chip blue
-ORANGE = "F88728"     # accent / update
-PEACH = "FDE0C0"      # update highlight fill
-RED = "E02020"        # warnings / "tobe update"
-GRAY = "7F7F7F"       # page numbers
-BORDER = "BFBFBF"     # card borders
-LEGEND_BG = "D9D9D9"  # legend band
-NAVY_LINE = "2E6FBE"  # agenda pill outline
-LINK = "1155CC"       # link-style text
+INFOBOX_BG = "C9EAF7"  # accent2 lumMod20/lumOff80 - slide-6 info boxes
+ZEBRA_L = "C9EAF7"     # table zebra
+ZEBRA_R = "EAF6FC"
+NOTE_RED = "FF0000"    # red bold-italic footnotes
+PAGENUM_GRAY = "7F7F7F"  # bg1 lumMod50
+RULE_GRAY = "A6A6A6"   # bg1 lumMod65 - tick left of the page number
+GRAY = "7F7F7F"
+BORDER = "BFBFBF"
+LINK = "0066B3"        # square 1 blue, used for link text
+SQ_BLUE = "0066B3"     # 3 accent squares under the title
+SQ_ORANGE = "F36F21"
+SQ_GREEN = "22B24C"
+CHIP_G = "EFF5DA"      # lime tint
+CHIP_B = "D9EDF8"      # blue tint
+CHIP_P = "FDE4D0"      # orange tint
+LEGEND_BG = "EDEFF2"
+TIMELINE_LINE = "8A93A0"
+TIMELINE_DOT = "45546B"
 
-CODE_TEXT = "3B4249"
+CODE_TEXT = "E8ECF1"   # code on dark slate panel
 CODE_KEY = "E06C75"
 CODE_STR = "98C379"
-CODE_COM = "7F848E"
+CODE_COM = "97A3B3"
 CODE_NUM = "D19A66"
-CODE_BORDER = "2E75B6"
 
-F_MAIN = "Calibri"
+F_MAIN = "Lato Regular"   # template body/title typeface
+F_PAGENUM = "Lato"
 F_CODE = "Menlo"
-F_DATE = "Segoe UI"
 
 MARKUP_RE = re.compile(r"(\*\*.+?\*\*|\[\[[a-z]+\|.+?\]\])", re.S)
 NAMED_COLORS = {
-    "red": RED, "green": GREEN, "orange": ORANGE, "teal": TEAL,
-    "tealdark": TEAL_DARK, "blue": LINK, "gray": GRAY, "white": WHITE, "ink": INK,
+    "red": RED_ACC, "green": "21B14B", "orange": ORANGE, "teal": BLUE,
+    "tealdark": "0E5F7E", "blue": LINK, "gray": GRAY, "white": WHITE,
+    "ink": INK, "lime": LIME, "slate": SLATE,
 }
 
 warnings: list[str] = []
@@ -111,29 +120,38 @@ def add_rect(slide, x, y, w, h, fill=None, line=None, line_w=1.0, rounded=False,
         sp.line.color.rgb = _rgb(line)
         sp.line.width = Pt(line_w)
         if dash:
-            ln = sp.line._get_or_add_ln()
-            d = ln.makeelement(qn("a:prstDash"), {"val": dash})
-            ln.append(d)
+            _line_dash(sp, dash)
     return sp
 
 
-def _set_fill_alpha(shape, alpha_pct: float):
-    """alpha_pct: 0..100 opacity of the solid fill."""
-    solid = shape.fill._xPr.find(qn("a:solidFill"))
-    clr = solid.find(qn("a:srgbClr"))
-    a = clr.makeelement(qn("a:alpha"), {"val": str(int(alpha_pct * 1000))})
-    clr.append(a)
-
-
-def _set_line_alpha(shape, alpha_pct: float):
+def _line_dash(shape, dash: str):
     ln = shape.line._get_or_add_ln()
-    solid = ln.find(qn("a:solidFill"))
-    if solid is None:
-        return
-    clr = solid.find(qn("a:srgbClr"))
-    if clr is not None:
-        a = clr.makeelement(qn("a:alpha"), {"val": str(int(alpha_pct * 1000))})
-        clr.append(a)
+    d = ln.find(qn("a:prstDash"))
+    if d is None:
+        d = ln.makeelement(qn("a:prstDash"), {"val": dash})
+        ln.append(d)
+    else:
+        d.set("val", dash)
+
+
+def _set_arrowhead(shape, end_type="triangle"):
+    ln = shape.line._get_or_add_ln()
+    te = ln.find(qn("a:tailEnd"))
+    if te is None:
+        te = ln.makeelement(qn("a:tailEnd"), {"type": end_type, "w": "med", "len": "med"})
+        ln.append(te)
+
+
+def _add_line(slide, x1, y1, x2, y2, color=SLATE, line_w=1.0, dash=None, arrow=False):
+    conn = slide.shapes.add_connector(MSO_CONNECTOR.STRAIGHT, Pt(x1), Pt(y1), Pt(x2), Pt(y2))
+    conn.shadow.inherit = False
+    conn.line.color.rgb = _rgb(color)
+    conn.line.width = Pt(line_w)
+    if dash:
+        _line_dash(conn, dash)
+    if arrow:
+        _set_arrowhead(conn)
+    return conn
 
 
 def parse_markup(text: str):
@@ -157,12 +175,20 @@ def parse_markup(text: str):
 
 def add_text(slide, x, y, w, h, content, size=10, color=INK, bold=False, italic=False,
              font=F_MAIN, align="left", anchor="top", line_spacing=None,
-             space_after=0, wrap=True, shrink=False):
-    """content: str (markup allowed) or list[str] paragraphs."""
+             space_after=0, wrap=True, shrink=False, inset=False):
+    """content: str (markup allowed) or list[str] paragraphs.
+
+    inset=True keeps PowerPoint's default 7.2/3.6pt box insets (used by the
+    template's placeholder-equivalent text); default is zero margins.
+    """
     tb = slide.shapes.add_textbox(Pt(x), Pt(y), Pt(w), Pt(h))
     tf = tb.text_frame
     tf.word_wrap = wrap
-    tf.margin_left = tf.margin_right = tf.margin_top = tf.margin_bottom = 0
+    if inset:
+        tf.margin_left = tf.margin_right = Pt(7.2)
+        tf.margin_top = tf.margin_bottom = Pt(3.6)
+    else:
+        tf.margin_left = tf.margin_right = tf.margin_top = tf.margin_bottom = 0
     tf.vertical_anchor = {
         "top": MSO_ANCHOR.TOP, "middle": MSO_ANCHOR.MIDDLE, "bottom": MSO_ANCHOR.BOTTOM,
     }[anchor]
@@ -188,10 +214,12 @@ def add_text(slide, x, y, w, h, content, size=10, color=INK, bold=False, italic=
     return tb
 
 
-def set_bullet(par, char: str, color=INK, font="Arial", indent_pt=10):
-    """Attach a real bullet character to a paragraph."""
+def set_bullet(par, char: str, color=INK, font="Arial", indent_pt=22.5, marL_pt=None):
+    """Real bullet char, template style: text at marL, bullet hanging indent_pt
+    before it (template uses marL 22.5/58.5/94.5pt with a fixed 22.5pt hang)."""
+    marL = marL_pt if marL_pt is not None else indent_pt
     pPr = par._p.get_or_add_pPr()
-    pPr.set("marL", str(int(indent_pt * 12700)))
+    pPr.set("marL", str(int(marL * 12700)))
     pPr.set("indent", str(-int(indent_pt * 12700)))
     buClr = pPr.makeelement(qn("a:buClr"), {})
     srgb = buClr.makeelement(qn("a:srgbClr"), {"val": color})
@@ -202,40 +230,59 @@ def set_bullet(par, char: str, color=INK, font="Arial", indent_pt=10):
         pPr.append(el)
 
 
-def est_lines(text: str, width_pt: float, size: float) -> int:
-    """Rough wrapped-line estimate for Calibri-like text."""
+def est_lines(text: str, width_pt: float, size: float, char_w: float = 0.52) -> int:
+    """Rough wrapped-line estimate for Lato-like text."""
     text = re.sub(r"\*\*|\[\[[a-z]+\||\]\]", "", str(text))
-    cpl = max(8, width_pt / (size * 0.48))
+    cpl = max(8, width_pt / (size * char_w))
     total = 0
     for chunk in text.split("\n"):
         total += max(1, math.ceil(len(chunk) / cpl))
     return total
 
 
+def text_w(text: str, size: float) -> float:
+    clean = re.sub(r"\*\*|\[\[[a-z]+\||\]\]", "", str(text))
+    return len(clean) * size * 0.5
+
+
 # ---------------------------------------------------------------- chrome
+# Content-slide furniture measured on layout2: eyebrow + 32pt title + 3 accent
+# squares + page number with gray tick (bottom-right). No logo is ever drawn.
 
-def add_page_number(slide, n: int):
-    add_text(slide, SLIDE_W - 34, SLIDE_H - 26, 24, 18, str(n), size=10,
-             color=GRAY, align="right")
+EYEBROW_POS = (30.7, 11.8, 388.1, 11.6)
+TITLE_POS = (30.7, 25.8, 872.3, 33.5)
+SQUARES = ((33.8, 63.3), (48.3, 63.3), (62.8, 63.3))   # 8.6x7.2 each
+SQ_SIZE = (8.6, 7.2)
+PAGENUM_POS = (931.6, 508.9, 28.6, 28.8)
+RULE_POS = (930.4, 512.1, 0.7, 21.6)
+NOTE_BOX = (8.9, 460.0, 942.0, 78.4)   # bottom-anchored, grows upward
 
 
-def content_chrome(slide, title: str, page_no: int | None):
-    add_picture(slide, ASSETS / "header_band.jpg", 0, 0, SLIDE_W, BAND_H)
-    add_text(slide, 26, 0, 690, BAND_H, title, size=24, color=WHITE, bold=True,
-             anchor="middle")
+def content_chrome(slide, prs, title: str, eyebrow: str, page_no: int | None):
+    add_text(slide, *EYEBROW_POS[:2], EYEBROW_POS[2], EYEBROW_POS[3], eyebrow,
+             size=12, color=INK, inset=True, wrap=False)
+    add_text(slide, *TITLE_POS, title, size=32, color=INK, inset=True,
+             line_spacing=0.9, wrap=False)
+    for (sx, sy), col in zip(SQUARES, (SQ_BLUE, SQ_ORANGE, SQ_GREEN)):
+        add_rect(slide, sx, sy, SQ_SIZE[0], SQ_SIZE[1], fill=col, rounded=True,
+                 radius=0.167)
     if page_no is not None:
-        add_page_number(slide, page_no)
+        add_rect(slide, *RULE_POS, fill=RULE_GRAY)
+        add_text(slide, *PAGENUM_POS, str(page_no), size=10, color=PAGENUM_GRAY,
+                 font=F_PAGENUM, align="center", anchor="middle")
 
 
 # ---------------------------------------------------------------- block renderers
 
 def render_heading(slide, x, y, w, h, block):
-    add_text(slide, x, y, w, min(h, 26), block.get("text", ""), size=block.get("size", 16),
+    add_text(slide, x, y, w, min(h, 26), block.get("text", ""), size=block.get("size", 18),
              color=block.get("color", INK), bold=True, anchor="middle")
 
 
 def render_bullets(slide, x, y, w, h, block):
-    size = block.get("size", 10)
+    """Template bullet text: 18pt lvl0 / 16pt lvl1 / 14pt lvl2, marL 22.5pt hanging."""
+    base = block.get("size", 18)
+    scale = base / 18.0
     items = block["items"]
     tb = slide.shapes.add_textbox(Pt(x), Pt(y), Pt(w), Pt(h))
     tf = tb.text_frame
@@ -248,15 +295,16 @@ def render_bullets(slide, x, y, w, h, block):
         lvl = int(it.get("lvl", 0))
         p = tf.paragraphs[0] if first else tf.add_paragraph()
         first = False
-        p.space_after = Pt(it.get("space_after", 4 if lvl == 0 else 2))
+        p.space_after = Pt(it.get("space_after", 6 if lvl == 0 else 2))
         p.line_spacing = 1.0
-        char = {0: "\u25aa", 1: "\u25cb", 2: "\u2013"}.get(lvl, "\u25aa")
-        set_bullet(p, char, color=INK, indent_pt=10 + 12 * lvl)
+        set_bullet(p, "\u2022", color=it.get("color", INK), indent_pt=22.5,
+                   marL_pt=22.5 + 36 * lvl)
         base_bold = bool(it.get("bold", False))
+        size = it.get("size", (18, 16, 14)[min(lvl, 2)] * scale)
         for txt, b, c in parse_markup(it.get("t", "")):
             r = p.add_run()
             r.text = txt
-            r.font.size = Pt(it.get("size", size))
+            r.font.size = Pt(size)
             r.font.name = F_MAIN
             r.font.bold = base_bold or b
             r.font.color.rgb = _rgb(c or it.get("color", INK))
@@ -278,7 +326,7 @@ def fit_table(block, col_w: list[float], h_avail: float | None):
             lines = max(est_lines(c, cw[j] - 10, size) for j, c in enumerate(r))
             est += min(200, lines * size * 1.25 + 8)
         return size, est
-    for cand in (10, 9, 8):
+    for cand in (11, 10, 9, 8):
         est = 26.0 if header else 0.0
         for r in rows:
             lines = max(est_lines(c, cw[j] - 10, cand) for j, c in enumerate(r))
@@ -338,7 +386,7 @@ def render_table(slide, x, y, w, h, block):
             stripped = lntext.lstrip()
             bullet = None
             if stripped.startswith(("- ", "* ")):
-                bullet, stripped = "\u25aa", stripped[2:]
+                bullet, stripped = "\u2022", stripped[2:]
             elif stripped.startswith("o "):
                 bullet, stripped = "\u25cb", stripped[2:]
             if bullet:
@@ -355,10 +403,10 @@ def render_table(slide, x, y, w, h, block):
     if header:
         tbl.rows[0].height = Pt(24)
         for j, htxt in enumerate(header):
-            fill_cell(tbl.cell(0, j), htxt, size, WHITE, True, "left", TEAL)
+            fill_cell(tbl.cell(0, j), htxt, size, WHITE, True, "left", BLUE)
         ri = 1
     for i, row in enumerate(rows):
-        zebra = TINT_L if i % 2 == 0 else TINT_M
+        zebra = ZEBRA_L if i % 2 == 0 else ZEBRA_R
         lines = max(est_lines(c, col_w[j] - 10, size) for j, c in enumerate(row))
         tbl.rows[ri + i].height = Pt(min(200, lines * size * 1.25 + 8))
         for j, ctxt in enumerate(row):
@@ -400,7 +448,32 @@ def render_image(slide, x, y, w, h, block):
         iw, ih = im.size
     scale = min(w / iw, h / ih)
     dw, dh = iw * scale, ih * scale
-    add_picture(slide, str(path), x + (w - dw) / 2, y + (h - dh) / 2, dw, dh)
+    ix, iy = x + (w - dw) / 2, y + (h - dh) / 2
+    add_picture(slide, str(path), ix, iy, dw, dh)
+
+    caption = block.get("caption")
+    if caption:
+        cy = min(iy + dh + 6, SLIDE_H - 22)
+        add_text(slide, x, cy, w, 20, caption, size=14, color=INK, italic=True,
+                 align="center", wrap=False)
+
+    # Slide-11 style annotations: slate label + dashed orange leader line.
+    for co in block.get("callouts", []):
+        lx, ly = co["xy"]
+        lw = co.get("w", text_w(co["text"], 18))
+        lh = 26.0
+        add_text(slide, lx, ly, lw + 6, lh, co["text"], size=co.get("size", 18),
+                 color=INK, wrap=False)
+        px, py = co["point"]
+        if px > lx + lw:                     # label sits left of the target point
+            ex, ey = lx + lw + 4, ly + lh / 2
+        elif px < lx:                        # label sits right of the target point
+            ex, ey = lx - 4, ly + lh / 2
+        else:
+            ex, ey = lx + lw / 2, ly - 4 if py < ly else ly + lh + 4
+        _add_line(slide, ex, ey, px, py, color=co.get("color", ORANGE),
+                  line_w=co.get("line_w", 1.5), dash="dash",
+                  arrow=co.get("arrow", False))
 
 
 CODE_TOKEN_RE = re.compile(
@@ -432,6 +505,7 @@ def _code_line_runs(line: str):
 
 
 def render_code(slide, x, y, w, h, block):
+    """Dark slate rounded panels (theme accent1 background)."""
     panels = block.get("panels") or [block]
     n = len(panels)
     gap = 12.0
@@ -439,13 +513,12 @@ def render_code(slide, x, y, w, h, block):
     size = block.get("size", 8)
     for k, panel in enumerate(panels):
         px = x + k * (pw + gap)
-        card = add_rect(slide, px, y, pw, h, fill=WHITE, line=CODE_BORDER,
-                        line_w=1.2, rounded=True, radius=0.055)
+        card = add_rect(slide, px, y, pw, h, fill=SLATE, rounded=True, radius=0.055)
         card.text_frame.text = ""
         ty = y + 6
         if panel.get("title"):
             add_text(slide, px + 10, ty, pw - 20, 14, panel["title"], size=8.5,
-                     color=INK, bold=True)
+                     color=CODE_TEXT, bold=True)
             ty += 16
         body = panel.get("code", "")
         tb = slide.shapes.add_textbox(Pt(px + 10), Pt(ty), Pt(pw - 20), Pt(y + h - ty - 6))
@@ -521,7 +594,7 @@ def render_cards(slide, x, y, w, h, block):
                 for r in tb.text_frame.paragraphs[0].runs:
                     r.font.underline = True
             else:
-                fill_hex = {"green": CHIP_G, "blue": CHIP_B, "peach": PEACH}.get(
+                fill_hex = {"green": CHIP_G, "blue": CHIP_B, "peach": CHIP_P}.get(
                     chip.get("tone", "green"), CHIP_G)
                 add_rect(slide, ix, cy, iw, ch, fill=fill_hex, rounded=True, radius=0.28)
                 add_text(slide, ix + 6, cy, iw - 12, ch, chip["t"], size=8,
@@ -546,8 +619,242 @@ def render_cards(slide, x, y, w, h, block):
             lx += 195
 
 
+def render_infobox(slide, x, y, w, h, block):
+    """Slide-6 style: light-blue boxes, 12pt text with bold lead-ins.
+
+    spec: {"type":"infobox","cols":[[box,...],[box,...]]}
+      box = {"title": "...", "text": "..."}  (renders "**title** text")
+      or  {"paras": ["**lead** rest", ...]}
+    """
+    cols = block.get("cols") or ([block.get("boxes", [])] if block.get("boxes") else [])
+    cols = [c for c in cols if c]
+    if not cols:
+        return
+    n = len(cols)
+    col_gap = block.get("col_gap", 51.5)
+    row_gap = block.get("row_gap", 23.3)
+    cw = (w - col_gap * (n - 1)) / n
+    size = block.get("size", 12)
+    line_h = size * 1.35
+    pad = 8.0
+
+    def box_paras(bx) -> list[str]:
+        if bx.get("paras"):
+            return bx["paras"]
+        title, text = bx.get("title", ""), bx.get("text", "")
+        if title and text:
+            return [f"**{title}** {text}"]
+        return [title or text or ""]
+
+    def box_height(bx) -> float:
+        lines = sum(est_lines(ptext, cw - 2 * pad, size, char_w=0.56)
+                    for ptext in box_paras(bx))
+        return lines * line_h + 2 * pad
+
+    y_cur = y
+    max_rows = max(len(c) for c in cols)
+    for r in range(max_rows):
+        row_h = 0.0
+        for ci, col in enumerate(cols):
+            if r >= len(col):
+                continue
+            bx = col[r]
+            bh = float(bx["h"]) if bx.get("h") else box_height(bx)
+            row_h = max(row_h, bh)
+        for ci, col in enumerate(cols):
+            if r >= len(col):
+                continue
+            bx = col[r]
+            bh = float(bx["h"]) if bx.get("h") else box_height(bx)
+            bx_x = x + ci * (cw + col_gap)
+            add_rect(slide, bx_x, y_cur, cw, bh, fill=block.get("fill", INFOBOX_BG))
+            paras = box_paras(bx)
+            tb = add_text(slide, bx_x + pad, y_cur + pad, cw - 2 * pad, bh - 2 * pad,
+                          paras, size=size, color=INK)
+            for p in tb.text_frame.paragraphs:
+                p.line_spacing = 1.0
+                p.space_after = Pt(2)
+        y_cur += row_h + row_gap
+    if y_cur - row_gap > y + h + 1:
+        warn(f"infobox stack overflows by {y_cur - row_gap - (y + h):.0f}pt")
+
+
+def infobox_content_height(block, w: float) -> float:
+    cols = block.get("cols") or ([block.get("boxes", [])] if block.get("boxes") else [])
+    cols = [c for c in cols if c]
+    if not cols:
+        return 0.0
+    n = len(cols)
+    col_gap = block.get("col_gap", 51.5)
+    row_gap = block.get("row_gap", 23.3)
+    cw = (w - col_gap * (n - 1)) / n
+    size = block.get("size", 12)
+    line_h = size * 1.35
+    pad = 8.0
+
+    def box_paras(bx) -> list[str]:
+        if bx.get("paras"):
+            return bx["paras"]
+        title, text = bx.get("title", ""), bx.get("text", "")
+        if title and text:
+            return [f"**{title}** {text}"]
+        return [title or text or ""]
+
+    def box_height(bx) -> float:
+        lines = sum(est_lines(ptext, cw - 2 * pad, size, char_w=0.56)
+                    for ptext in box_paras(bx))
+        return lines * line_h + 2 * pad
+
+    total = 0.0
+    for r in range(max(len(c) for c in cols)):
+        row_h = max((box_height(col[r]) for col in cols if r < len(col)), default=0.0)
+        total += row_h + row_gap
+    return total - row_gap
+
+
+# ---------------------------------------------------------------- flow (slide-5 diagram)
+
+FLOW_SIZE = (114.0, 61.7)   # template node box
+FLOW_RADIUS = 0.167
+FLOW_LINE_W = 2.2
+
+SIDES = {"l": (0.0, 0.5), "r": (1.0, 0.5), "t": (0.5, 0.0), "b": (0.5, 1.0)}
+
+
+def render_flow(slide, x, y, w, h, block):
+    """Rounded flow boxes + arrowed connectors.
+
+    nodes: {"id","x","y","w":114,"h":61.7,"tone":"outline|slate|lime","text","sub":[..],"size":16}
+    edges: {"from","to","type":"straight|elbow","from_side","to_side","dash","color","arrow":true}
+    Coordinates are absolute page pt (x/y measured on the 960x540 canvas).
+    """
+    nodes = {n["id"]: n for n in block.get("nodes", [])}
+
+    def anchor(nid, side):
+        n = nodes[nid]
+        fx, fy = SIDES[side]
+        return (n["x"] + n.get("w", FLOW_SIZE[0]) * fx,
+                n["y"] + n.get("h", FLOW_SIZE[1]) * fy)
+
+    # edges first so boxes paint on top of line ends
+    for e in block.get("edges", []):
+        a, b = e["from"], e["to"]
+        na, nb = nodes[a], nodes[b]
+        acx, acy = na["x"] + na.get("w", FLOW_SIZE[0]) / 2, na["y"] + na.get("h", FLOW_SIZE[1]) / 2
+        bcx, bcy = nb["x"] + nb.get("w", FLOW_SIZE[0]) / 2, nb["y"] + nb.get("h", FLOW_SIZE[1]) / 2
+        s_side = e.get("from_side") or ("r" if bcx >= acx else "l") if abs(bcx - acx) >= abs(bcy - acy) \
+            else e.get("from_side") or ("b" if bcy >= acy else "t")
+        t_side = e.get("to_side") or ("l" if bcx >= acx else "r") if abs(bcx - acx) >= abs(bcy - acy) \
+            else e.get("to_side") or ("t" if bcy >= acy else "b")
+        p1 = anchor(a, s_side)
+        p2 = anchor(b, t_side)
+        color = e.get("color", SLATE)
+        lw = e.get("line_w", FLOW_LINE_W)
+        dash = e.get("dash")
+        arrow = e.get("arrow", True)
+        if e.get("points"):
+            pts = [p1] + [tuple(q) for q in e["points"]] + [p2]
+        elif e.get("type", "elbow") == "straight":
+            pts = [p1, p2]
+        else:
+            if s_side in ("l", "r"):            # leave horizontally
+                midx = (p1[0] + p2[0]) / 2
+                pts = [p1, (midx, p1[1]), (midx, p2[1]), p2]
+            else:                               # leave vertically
+                midy = (p1[1] + p2[1]) / 2
+                pts = [p1, (p1[0], midy), (p2[0], midy), p2]
+        for i in range(len(pts) - 1):
+            (x1, y1), (x2, y2) = pts[i], pts[i + 1]
+            if abs(x1 - x2) < 0.05 and abs(y1 - y2) < 0.05:
+                continue
+            seg = _add_line(slide, x1, y1, x2, y2, color=color, line_w=lw,
+                            dash=dash, arrow=(arrow and i == len(pts) - 2))
+
+    for n in block.get("nodes", []):
+        nx, ny = n["x"], n["y"]
+        nw, nh = n.get("w", FLOW_SIZE[0]), n.get("h", FLOW_SIZE[1])
+        tone = n.get("tone", "slate")
+        fill, ln_color, tcol = {
+            "outline": (None, SLATE, INK),
+            "slate": (SLATE, SLATE, WHITE),
+            "lime": (LIME, LIME, WHITE),
+        }.get(tone, (n.get("fill", SLATE), n.get("line", SLATE), n.get("text_color", WHITE)))
+        box = add_rect(slide, nx, ny, nw, nh, fill=fill, line=ln_color,
+                       line_w=FLOW_LINE_W, rounded=True, radius=FLOW_RADIUS)
+        tf = box.text_frame
+        tf.word_wrap = True
+        tf.margin_left = tf.margin_right = Pt(2)
+        tf.margin_top = tf.margin_bottom = Pt(1)
+        tf.vertical_anchor = MSO_ANCHOR.MIDDLE
+        size = n.get("size", 16)
+        p = tf.paragraphs[0]
+        p.alignment = PP_ALIGN.CENTER
+        p.line_spacing = 1.0
+        for txt, b, c in parse_markup(n.get("text", "")):
+            r = p.add_run()
+            r.text = txt
+            r.font.size = Pt(size)
+            r.font.name = F_MAIN
+            r.font.bold = b
+            r.font.color.rgb = _rgb(c or tcol)
+        for i, sub in enumerate(n.get("sub", [])):
+            sp = tf.add_paragraph()
+            sp.alignment = PP_ALIGN.CENTER
+            sp.line_spacing = 1.0
+            r = sp.add_run()
+            r.text = sub
+            r.font.size = Pt(n.get("sub_size", 11))
+            r.font.name = F_MAIN
+            r.font.italic = True
+            r.font.color.rgb = _rgb(tcol)
+
+
+def flow_content_height(block, w: float) -> float:
+    nodes = block.get("nodes", [])
+    if not nodes:
+        return 0.0
+    top = min(n["y"] for n in nodes)
+    bot = max(n["y"] + n.get("h", FLOW_SIZE[1]) for n in nodes)
+    return bot - top
+
+
+def render_timeline(slide, x, y, w, h, block):
+    """Slide-3 style: horizontal line, dots, bold labels above (SmartArt look).
+
+    Line spans x0=91 -> x1=858pt on the page (template measurement); labels are
+    sized to their text so they never wrap.
+    """
+    stages = block.get("stages", [])
+    n = len(stages)
+    if n == 0:
+        return
+    x0 = block.get("x0", 91.0)
+    x1 = block.get("x1", 858.0)
+    ly = block.get("y", y + h / 2)
+    label_size = block.get("label_size", 18)
+    _add_line(slide, x0, ly, x1, ly, color=block.get("color", TIMELINE_LINE), line_w=1.5)
+    pad = min(90.0, (x1 - x0) / (2 * n))
+    dot_r = block.get("dot_r", 4.5)
+    for i, st in enumerate(stages):
+        cx = x0 + pad + (x1 - x0 - 2 * pad) * (i / (n - 1)) if n > 1 else (x0 + x1) / 2
+        dot = slide.shapes.add_shape(MSO_SHAPE.OVAL, Pt(cx - dot_r), Pt(ly - dot_r),
+                                     Pt(2 * dot_r), Pt(2 * dot_r))
+        dot.shadow.inherit = False
+        dot.fill.solid()
+        dot.fill.fore_color.rgb = _rgb(block.get("dot_color", TIMELINE_DOT))
+        dot.line.fill.background()
+        label_w = block.get("label_w") or min(text_w(st, label_size) + 12, 280.0)
+        add_text(slide, cx - label_w / 2, ly - 14 - label_size * 1.35, label_w,
+                 label_size * 1.35, st, size=label_size, color=INK, bold=True,
+                 align="center", anchor="bottom", wrap=False)
+
+
+def timeline_content_height(block, w: float) -> float:
+    return block.get("h", 90.0)
+
+
 def render_columns(slide, x, y, w, h, block):
-    """Side-by-side child blocks, e.g. table left + diagram right."""
+    """Side-by-side child blocks, e.g. bullets left + image right."""
     cols = block.get("cols") or []
     weights = block.get("weights") or [1.0] * len(cols)
     tot = sum(weights)
@@ -579,19 +886,23 @@ BLOCK_RENDERERS = {
     "code": render_code,
     "cards": render_cards,
     "columns": render_columns,
+    "infobox": render_infobox,
+    "flow": render_flow,
+    "timeline": render_timeline,
 }
 
 
 def bullets_content_height(block, w: float) -> float:
-    size = block.get("size", 10)
+    base = block.get("size", 18)
+    scale = base / 18.0
     total = 0.0
     for it in block.get("items", []):
         if isinstance(it, str):
             it = {"t": it}
         lvl = int(it.get("lvl", 0))
-        s = it.get("size", size)
-        total += est_lines(it.get("t", ""), w - 24 - 12 * lvl, s) * s * 1.32
-        total += it.get("space_after", 4 if lvl == 0 else 2)
+        s = it.get("size", (18, 16, 14)[min(lvl, 2)] * scale)
+        total += est_lines(it.get("t", ""), w - 30 - 36 * lvl, s) * s * 1.32
+        total += it.get("space_after", 6 if lvl == 0 else 2)
     return total
 
 
@@ -637,10 +948,16 @@ def content_height(block, w: float) -> float | None:
         return code_content_height(block, w)
     if t == "cards":
         return cards_content_height(block, w)
+    if t == "infobox":
+        return infobox_content_height(block, w)
+    if t == "flow":
+        return flow_content_height(block, w)
+    if t == "timeline":
+        return timeline_content_height(block, w)
     return None  # image / columns / unknown → fill allocated space
 
 
-def render_body(slide, body, w_body=908.0, x0=26.0):
+def render_body(slide, body, w_body=BODY_W, x0=BODY_X):
     blocks = body if isinstance(body, list) else [body]
     blocks = [b for b in blocks if b]
     if not blocks:
@@ -684,93 +1001,71 @@ def render_body(slide, body, w_body=908.0, x0=26.0):
 
 
 # ---------------------------------------------------------------- slide layouts
+# Geometry from template slides 1/4/8/10 (cover & section) and 15 (thanks).
+
+COVER_TITLE = (32.3, 182.9, 626.6, 117.9)
+COVER_SUBTITLE = (33.6, 311.7, 749.9, 28.4)
+THANKS_TITLE_Y, THANKS_TITLE_H = 228.7, 71.0
+
+
+def _notes(slide, spec):
+    if spec.get("notes"):
+        slide.notes_slide.notes_text_frame.text = spec["notes"]
+
 
 def slide_cover(prs, spec):
     slide = prs.slides.add_slide(prs.slide_layouts[6])
     add_picture(slide, ASSETS / "bg_cover.jpg", 0, 0, SLIDE_W, SLIDE_H)
-    title = spec.get("title", "Deck title")
-    size = spec.get("size", 48)
-    add_text(slide, 70, spec.get("title_y", 200), 830, 80, title, size=size,
-             color=WHITE, bold=True, anchor="middle")
+    size = spec.get("size", 50)
+    ty = spec.get("title_y", COVER_TITLE[1])
+    add_text(slide, COVER_TITLE[0], ty, COVER_TITLE[2], COVER_TITLE[3],
+             spec.get("title", "Deck title"), size=size, color=WHITE, bold=True,
+             anchor="middle", inset=True, line_spacing=0.9)
     sub = spec.get("subtitle")
     if sub:
-        add_text(slide, 72, spec.get("title_y", 200) + 62, 700, 24, sub, size=16,
-                 color=WHITE)
-    date = spec.get("date")
-    if date:
-        pill = add_rect(slide, 72, 472, 172, 38, fill=WHITE, line=WHITE,
-                        line_w=1.0, rounded=True, radius=0.5)
-        _set_fill_alpha(pill, 14.5)
-        _set_line_alpha(pill, 25.1)
-        add_text(slide, 72, 472, 172, 38, date, size=16, color=WHITE,
-                 font=F_DATE, align="center", anchor="middle")
-    if spec.get("notes"):
-        slide.notes_slide.notes_text_frame.text = spec["notes"]
+        add_text(slide, COVER_SUBTITLE[0], spec.get("subtitle_y", COVER_SUBTITLE[1]),
+                 COVER_SUBTITLE[2], COVER_SUBTITLE[3], sub, size=14, color=WHITE,
+                 inset=True)
+    _notes(slide, spec)
     return slide
 
 
-def slide_agenda(prs, spec, page_no):
-    slide = prs.slides.add_slide(prs.slide_layouts[6])
-    add_picture(slide, ASSETS / "bg_agenda.jpg", 0, 0, SLIDE_W, SLIDE_H)
-    items = spec["items"]
-    n = len(items)
-    top = 24.0
-    step = min(46.6, (500.0 - top) / max(1, n))
-    for i, it in enumerate(items):
-        if isinstance(it, dict):
-            label, num = it.get("t", ""), it.get("n", i + 1)
-        else:
-            label, num = str(it), i + 1
-        y = top + i * step
-        num_txt = f"{int(num):02d}"
-        # number + glowing ring
-        add_text(slide, 55, y, 46, 30, num_txt, size=14, color=WHITE, bold=True,
-                 align="center", anchor="middle")
-        ring = slide.shapes.add_shape(MSO_SHAPE.OVAL, Pt(57), Pt(y), Pt(42), Pt(30))
-        ring.shadow.inherit = False
-        ring.fill.background()
-        ring.line.color.rgb = _rgb(NAVY_LINE)
-        ring.line.width = Pt(1.0)
-        # pill
-        add_rect(slide, 98, y, 347, 30, fill=None, line=NAVY_LINE, line_w=1.25,
-                 rounded=True, radius=0.5)
-        add_text(slide, 114, y, 320, 30, label, size=14, color=WHITE, bold=True,
-                 anchor="middle")
-    add_page_number(slide, page_no)
-    if spec.get("notes"):
-        slide.notes_slide.notes_text_frame.text = spec["notes"]
-    return slide
-
-
-def slide_content(prs, spec, page_no):
+def slide_content(prs, spec, page_no, eyebrow_default=""):
     slide = prs.slides.add_slide(prs.slide_layouts[6])
     add_rect(slide, 0, 0, SLIDE_W, SLIDE_H, fill=WHITE)
-    content_chrome(slide, spec.get("title", ""), page_no)
+    content_chrome(slide, prs, spec.get("title", ""),
+                   spec.get("eyebrow", eyebrow_default), page_no)
     body = spec.get("body")
     if body:
         render_body(slide, body)
     note = spec.get("note")
-    if note:  # small annotation bottom-left (e.g. red remarks)
-        add_text(slide, 26, SLIDE_H - 26, 700, 18, note, size=spec.get("note_size", 10),
-                 color=spec.get("note_color", RED), bold=spec.get("note_bold", False))
-    if spec.get("notes"):
-        slide.notes_slide.notes_text_frame.text = spec["notes"]
+    if note:  # red bold-italic footnote bottom-left (template slides 2/5/9/11/14)
+        paras = note if isinstance(note, list) else note.split("\n")
+        tb = add_text(slide, *NOTE_BOX, paras, size=spec.get("note_size", 14),
+                      color=spec.get("note_color", NOTE_RED), italic=True, bold=True,
+                      anchor="bottom", inset=True)
+        for i, p in enumerate(tb.text_frame.paragraphs):
+            if i > 0:
+                set_bullet(p, "\u2022", color=spec.get("note_color", NOTE_RED),
+                           indent_pt=14)
+                for r in p.runs:
+                    r.font.italic = True
+                    r.font.bold = True
+    _notes(slide, spec)
     return slide
 
 
-def slide_thanks(prs, spec, page_no):
+def slide_thanks(prs, spec):
     slide = prs.slides.add_slide(prs.slide_layouts[6])
     add_picture(slide, ASSETS / "bg_thanks.jpg", 0, 0, SLIDE_W, SLIDE_H)
-    add_text(slide, 0, spec.get("title_y", 222), SLIDE_W, 90,
-             spec.get("title", "THANK YOU"), size=spec.get("size", 54), color=WHITE,
-             bold=True, align="center", anchor="middle")
+    add_text(slide, 0, spec.get("title_y", THANKS_TITLE_Y), SLIDE_W, THANKS_TITLE_H,
+             spec.get("title", "THANK YOU!"), size=spec.get("size", 50), color=WHITE,
+             bold=True, align="center", anchor="middle", line_spacing=0.9)
     sub = spec.get("subtitle")
     if sub:
-        add_text(slide, 0, spec.get("title_y", 222) + 78, SLIDE_W, 26, sub, size=16,
-                 color="D6E4F5", align="center")
-    add_page_number(slide, page_no)
-    if spec.get("notes"):
-        slide.notes_slide.notes_text_frame.text = spec["notes"]
+        add_text(slide, 0, spec.get("title_y", THANKS_TITLE_Y) + THANKS_TITLE_H + 8,
+                 SLIDE_W, 26, sub, size=14, color=WHITE, align="center")
+    _notes(slide, spec)
     return slide
 
 
@@ -780,21 +1075,18 @@ def build(spec: dict, out_path: Path):
     prs = Presentation()
     prs.slide_width = Pt(SLIDE_W)
     prs.slide_height = Pt(SLIDE_H)
+    eyebrow_default = spec.get("eyebrow", "")
 
-    page_no = 0
     for i, s in enumerate(spec.get("slides", [])):
         layout = s.get("layout", "content")
         if layout == "cover":
             slide_cover(prs, s)
-        elif layout == "agenda":
-            page_no += 1
-            slide_agenda(prs, s, page_no)
+        elif layout == "section":
+            slide_cover(prs, s)            # same geometry, no page number
         elif layout == "content":
-            page_no += 1
-            slide_content(prs, s, page_no)
+            slide_content(prs, s, i + 1, eyebrow_default)
         elif layout == "thanks":
-            page_no += 1
-            slide_thanks(prs, s, page_no)
+            slide_thanks(prs, s)
         else:
             warn(f"slide {i + 1}: unknown layout '{layout}' skipped")
 
