@@ -1,6 +1,11 @@
 ---
 name: hi-docs-seeker
 description: "Find current, authoritative technical documentation for libraries, frameworks, APIs, tools, standards, versions, migrations, configuration, and compatibility. Use when an answer requires verified external documentation or precise source links."
+argument-hint: "<question> [topic|version|migration|compatibility|overview]"
+metadata:
+  author: baka3k
+  version: "1.0.0"
+  last_updated: "2026-10-18"
 ---
 
 # Documentation Search

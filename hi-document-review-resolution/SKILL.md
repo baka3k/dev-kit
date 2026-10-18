@@ -1,6 +1,11 @@
 ---
 name: hi-document-review-resolution
 description: "Resolve structured review comments against an evidence-backed document revision; assign a disposition to every comment and apply accepted changes idempotently. Do not generate, clarify, approve publication, or update global manifests."
+argument-hint: "<revision + comments>  — one disposition per comment"
+metadata:
+  author: baka3k
+  version: "1.0.0"
+  last_updated: "2026-10-18"
 ---
 
 # Document Review Resolution

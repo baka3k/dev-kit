@@ -5,6 +5,7 @@ argument-hint: "[problem description]"
 metadata:
   author: unknown
   version: "2.0.0"
+  last_updated: "2026-10-18"
 ---
 
 # Problem-Solving Techniques

@@ -5,6 +5,7 @@ argument-hint: "[issue] [--standard|--deep|--parallel|--review]  — default: Qu
 metadata:
   author: baka3k
   version: "2.1.0"
+  last_updated: "2026-10-18"
 ---
 # Fix - Issue Resolution
 

@@ -1,8 +1,11 @@
 ---
 name: hi-security
 description: STRIDE + OWASP-based security audit with MCP-assisted code analysis and optional iterative auto-fix. Scans code using graph_mcp for structure discovery and mind_mcp for security policy context, then produces severity-ranked findings with fix recommendations. Supports audit-only and audit+fix modes. Use before releases, after sensitive feature additions, or for periodic compliance reviews.
-version: 1.1.0
-last_updated: 2026-09-08
+argument-hint: "<source root + scope> [audit|audit-fix] [auth|data|api|infra|all]"
+metadata:
+  author: baka3k
+  version: "1.1.0"
+  last_updated: "2026-09-08"
 hooks:
   pre:
     - name: mcp-health-check

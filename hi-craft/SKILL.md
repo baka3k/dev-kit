@@ -5,6 +5,7 @@ argument-hint: "[task] [--full|--parallel|--review|--auto|--no-test|--test-budge
 metadata:
   author: baka3k
   version: "3.2.0"
+  last_updated: "2026-10-18"
 ---
 # Craft - Feature Implementation
 

@@ -1,6 +1,11 @@
 ---
 name: hi-usecase-discovery
 description: "Produce draft-only evidence-backed business use cases for one source module by inventorying files, classes, functions, entry points, registrations, indirect calls, and terminal effects, then reconstructing actors, permissions, rules, flows, outcomes, IDs, tests, and coverage. Do not use for technical behavior diagrams, API contracts, data models, or migration execution."
+argument-hint: "<module name> [output_dir] [parser_type] — draft-only"
+metadata:
+  author: baka3k
+  version: "1.0.0"
+  last_updated: "2026-10-18"
 ---
 
 # Use-Case Discovery

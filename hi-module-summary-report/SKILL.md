@@ -1,6 +1,11 @@
 ---
 name: hi-module-summary-report
 description: "Synthesize existing module-inventory and tech-audit artifacts into an architecture summary, per-module breakdown, risk assessment, and optional Mermaid diagrams. Do not inspect source from scratch or run full onboarding."
+argument-hint: "<artifacts> [engineering|management|mixed] [executive|standard|detailed]"
+metadata:
+  author: baka3k
+  version: "1.0.0"
+  last_updated: "2026-10-18"
 ---
 
 # Module Summary and Risk Report

@@ -5,6 +5,7 @@ argument-hint: "[task] [--full|--hard|--parallel|--two|--no-tasks]  — default:
 metadata:
   author: baka3k
   version: "2.2.0"
+  last_updated: "2026-10-18"
 ---
 # Plan - Implementation Planning
 

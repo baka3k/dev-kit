@@ -1,9 +1,11 @@
 ---
 name: hi-repository-search
 description: "Gather traceable evidence from repository code and project documents. Use for codebase exploration, architecture, feature tracing, dependency or impact analysis, and questions that require verified source context."
+argument-hint: "<question | symbol | path | SQL | impact target> [--code|--doc|--ask|--deep|--impact]"
 metadata:
   author: baka3k
   version: "1.1.0"
+  last_updated: "2026-10-18"
 ---
 
 # Repository Search

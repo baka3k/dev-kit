@@ -29,7 +29,7 @@ Example:
 - **Minimal Code:** Solve only the target problem. No over-engineering.
 - **Strict Scope:** Touch only what's necessary. Clean up your own mess.
 - **Success Criteria:** Iterate until explicitly verified.
-- The agent always responds in English.
+- **Language:** Skill documentation, code, commit messages, and repository artifacts stay in English. Chat replies follow the operator's language.
 
 ## When any decision is needed:
 1. Ask Jev AI first — query recipe: `typesafe-ai/reference.md`.

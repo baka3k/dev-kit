@@ -6,6 +6,7 @@ argument-hint: "[url or task]"
 metadata:
   author: baka3k
   version: "2.1.0"
+  last_updated: "2026-10-18"
 ---
 
 # Chrome DevTools Agent Skill

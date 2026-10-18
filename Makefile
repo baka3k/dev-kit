@@ -12,7 +12,10 @@ SKILL_DEV    ?= npx --yes skill-dev
 SKILL_DEV_LOCAL ?= $(HOME)/AI/dev-kit-install
 
 .DEFAULT_GOAL := help
-.PHONY: help install install-latest doctor prepare
+.PHONY: help install install-latest doctor prepare check-docs sync-manifests wiki
+
+# Repo root, so the docs targets work from any working directory (make -C ...).
+KIT_ROOT := $(patsubst %/,%,$(dir $(lastword $(MAKEFILE_LIST))))
 
 # Run the skill-dev installer against source $(1). Prefers the local
 # checkout (run `npm run build` there if dist/ is missing) and falls back
@@ -33,7 +36,10 @@ help:
 	@echo "dev-kit targets:"
 	@echo "  make install         Install skills from THIS local checkout ($(SKILL_SOURCE)) via skill-dev (agents incl. Antigravity + Hermes)"
 	@echo "  make install-latest  Install the newest skills from GitHub (baka3/dev-kit) instead"
-	@echo "  make doctor          Health check: git/node/npx, uv, skills, Cortex 'dev' command"
+	@echo "  make doctor          Health check: git/node/npx, uv, skills, Cortex 'dev', docs drift"
+	@echo "  make check-docs      Verify README/devkit.md/manifests/wiki against the real skill tree"
+	@echo "  make sync-manifests  Regenerate CLAUDE.md and .cursorrules from AGENTS.md"
+	@echo "  make wiki            (Re)generate the compact wiki guides owned by scripts/gen-wiki-pages.mjs"
 	@echo "  make prepare         Clone cortex-harness into $(CORTEX_DIR) and install 'dev' (no-op if already installed)"
 	@echo ""
 	@echo "Variables: CORTEX_DIR=$(CORTEX_DIR)  CORTEX_REPO=$(CORTEX_REPO)  SKILL_SOURCE=$(SKILL_SOURCE)  SKILL_DEV_LOCAL=$(SKILL_DEV_LOCAL)"
@@ -66,11 +72,24 @@ doctor:
 		if [ -d "$$HOME/.agents/skills/hi-cortex" ]; then ok "skills installed (~/.agents/skills/hi-cortex present)"; \
 		else warn "skills dir exists but hi-cortex is missing — run 'make install'"; fi; \
 	else warn "no ~/.agents/skills — run 'make install'"; fi; \
+	if command -v node >/dev/null 2>&1; then \
+		if node $(KIT_ROOT)/scripts/check-kit-docs.mjs >/dev/null 2>&1; then ok "docs drift check: clean"; \
+		else fail "docs drift detected — run 'make check-docs' for details"; fi; \
+	fi; \
 	if [ -n "$$DEV" ]; then \
 		echo "==> running cortex health check ($$DEV doctor)"; \
 		$$DEV doctor || fail "'dev doctor' reported failures"; \
 	fi; \
 	exit $$status
+
+check-docs:
+	@node $(KIT_ROOT)/scripts/check-kit-docs.mjs
+
+sync-manifests:
+	@node $(KIT_ROOT)/scripts/sync-manifests.mjs
+
+wiki:
+	@node $(KIT_ROOT)/scripts/gen-wiki-pages.mjs
 
 prepare:
 	@if command -v dev >/dev/null 2>&1 || [ -x "$$HOME/.local/bin/dev" ]; then \

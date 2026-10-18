@@ -1,3 +1,5 @@
+<!-- Generated from AGENTS.md by scripts/sync-manifests.mjs — edit AGENTS.md, then run: node scripts/sync-manifests.mjs -->
+
 # Root Agent: Context Search Directive
 
 **Objective:** Gather project context before executing tasks.
@@ -29,7 +31,7 @@ Example:
 - **Minimal Code:** Solve only the target problem. No over-engineering.
 - **Strict Scope:** Touch only what's necessary. Clean up your own mess.
 - **Success Criteria:** Iterate until explicitly verified.
-- The agent always responds in English.
+- **Language:** Skill documentation, code, commit messages, and repository artifacts stay in English. Chat replies follow the operator's language.
 
 ## When any decision is needed:
 1. Ask Jev AI first — query recipe: `typesafe-ai/reference.md`.

@@ -6,6 +6,7 @@ argument-hint: "[problem to analyze step-by-step]"
 metadata:
   author: claudekit
   version: "1.0.0"
+  last_updated: "2026-10-18"
 ---
 
 # Sequential Thinking

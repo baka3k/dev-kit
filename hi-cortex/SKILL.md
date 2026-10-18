@@ -5,6 +5,7 @@ argument-hint: "[setup|status|add-code|sync-code|add-doc|sync-doc|start-mcp|stop
 metadata:
   author: baka3k
   version: "1.1.0"
+  last_updated: "2026-10-18"
 ---
 
 # Cortex Harness

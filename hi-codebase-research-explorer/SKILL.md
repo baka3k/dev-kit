@@ -5,6 +5,7 @@ argument-hint: "[search-target]"
 metadata:
   author: baka3k
   version: "3.0.0"
+  last_updated: "2026-10-18"
 ---
 
 # explorer (Parallel Codebase + External Researcher)

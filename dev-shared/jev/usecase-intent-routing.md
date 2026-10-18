@@ -1,6 +1,6 @@
 # Usecase: Intent Routing — With Jev vs Without Jev
 
-Runnable proof of [jev-contract.md](jev-contract.md) on the orchestrator's detect-intent step (`devkit.md` §4): the same requests route to the same skills whether or not Jev is present — only the **decision source** (rung J1/J2/J3) changes.
+Runnable proof of [jev-contract.md](../jev-contract.md) on the orchestrator's detect-intent step (`devkit.md` §3): the same requests route to the same skills whether or not Jev is present — only the **decision source** (rung J1/J2/J3) changes.
 
 ## Run
 

@@ -1,6 +1,11 @@
 ---
 name: hi-reverse
 description: "Reverse Engineering C and C++ modules into validated use-case, module, and C++-to-Java migration artifact packages. Generates evidence-backed traces, sequence/class/state/activity/architecture diagrams, entry-point/interface/data/business-rule/error/concurrency catalogs, parity mappings, risks, tests, reviews, and coverage; exhaust mind_mcp and graph_mcp before Serena, and use native source tools only as a final fallback."
+argument-hint: "<module | use-case | migration> [--check-catalog|--profile|--module|--use-case|--condition|--output-root|--next|--summary]"
+metadata:
+  author: baka3k
+  version: "1.0.0"
+  last_updated: "2026-10-18"
 ---
 
 # C++ Reverse Engineering

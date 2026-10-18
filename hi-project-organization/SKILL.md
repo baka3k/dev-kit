@@ -1,6 +1,11 @@
 ---
 name: hi-project-organization
 description: Organize project files, directories, output paths, names, and Markdown structure. Use when creating files, choosing where outputs belong, reorganizing existing assets, or standardizing a project layout.
+argument-hint: "[advisory|organize] <path>"
+metadata:
+  author: baka3k
+  version: "1.0.0"
+  last_updated: "2026-10-18"
 ---
 
 # Project Organization

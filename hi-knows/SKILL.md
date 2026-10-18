@@ -1,8 +1,11 @@
 ---
 name: hi-knows
 description: Unified knowledge retrieval skill. Build traceable answers from git, MCP, and memory files.
-version: 2.0.0
-last_updated: 2026-05-28
+argument-hint: "<target> [why-changed|impact-analysis|architecture-context|history-trace]"
+metadata:
+  author: baka3k
+  version: "2.0.0"
+  last_updated: "2026-05-28"
 ---
 
 # Knows
