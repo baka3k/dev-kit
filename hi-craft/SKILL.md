@@ -2,10 +2,6 @@
 name: hi-craft
 description: "ALWAYS activate before implementing ANY feature, plan, or fix."
 argument-hint: "[task] [--full|--parallel|--review|--auto|--no-test|--test-budget=N]  — default: fast mode"
-metadata:
-  author: baka3k
-  version: "3.2.0"
-  last_updated: "2026-10-18"
 ---
 # Craft - Feature Implementation
 

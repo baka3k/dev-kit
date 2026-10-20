@@ -2,10 +2,6 @@
 name: hi-repo-recon
 description: "Map an unfamiliar repository into an evidence-backed module inventory, entry-point map, and optional key-function catalog. Use for repository onboarding, architecture reconnaissance, handover preparation, or refactor scoping."
 argument-hint: "<repo path> [backend|frontend|infra|data|all] [quick|standard|deep]  — default: standard"
-metadata:
-  author: baka3k
-  version: "1.0.0"
-  last_updated: "2026-10-18"
 ---
 
 # Repository Reconnaissance

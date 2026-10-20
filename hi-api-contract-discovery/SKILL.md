@@ -2,10 +2,6 @@
 name: hi-api-contract-discovery
 description: "Produce draft-only evidence-backed HTTP and asynchronous API contracts, including OpenAPI or AsyncAPI drafts, endpoints, messages, schemas, authentication, authorization, errors, consumers, and providers. Do not deploy APIs, modify implementations, or publish inferred contracts as authoritative."
 argument-hint: "<service | module | endpoint scope> [protocol mode] — draft-only"
-metadata:
-  author: baka3k
-  version: "1.0.0"
-  last_updated: "2026-10-18"
 ---
 
 # API Contract Discovery

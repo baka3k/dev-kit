@@ -2,10 +2,6 @@
 name: hi-document-refinement
 description: "Analyze an evidence-backed draft for ambiguity, terminology gaps, missing semantics, and under-specified Mermaid diagrams, then apply validated clarification answers to an isolated candidate revision. Do not generate initial documents, resolve review comments, invent answers, or update an orchestrator's global manifest."
 argument-hint: "<draft> [analyze|apply]"
-metadata:
-  author: baka3k
-  version: "1.0.0"
-  last_updated: "2026-10-18"
 ---
 
 # Document Refinement

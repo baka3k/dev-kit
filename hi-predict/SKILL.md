@@ -2,10 +2,6 @@
 name: hi-predict
 description: Five expert personas independently analyze proposed changes before implementation to catch architectural, security, performance, and UX issues early. Uses mind_mcp for project context and graph_mcp for code impact analysis. Produces GO/CAUTION/STOP verdict with consensus agreements, conflict resolutions, and risk mitigations. Use before major features, refactors, or risky changes.
 argument-hint: "<change proposal> [--files <glob>] [quick|deep]"
-metadata:
-  author: baka3k
-  version: "1.0.0"
-  last_updated: "2026-05-12"
 hooks:
   pre: mcp-health-check
   post: cleanup-handler

@@ -2,10 +2,6 @@
 name: hi-command-spec-discovery
 description: "Produce draft-only special command or protocol wire-format specification from implementation code, including APDU/TLV fields, CLA/INS/P1/P2/Lc/Le framing, opcodes, status words, and command-specific models. Do not use for business scenarios, API contracts, or standalone behavior modeling."
 argument-hint: "<module or command anchor> [command name|opcode|header] — draft-only"
-metadata:
-  author: baka3k
-  version: "1.0.0"
-  last_updated: "2026-10-18"
 ---
 
 # Command Specification Discovery

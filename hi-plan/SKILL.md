@@ -2,10 +2,6 @@
 name: hi-plan
 description: "Plan implementations, design architectures, create technical roadmaps with detailed phases."
 argument-hint: "[task] [--full|--hard|--parallel|--two|--no-tasks]  — default: fast mode. Sub: archive|red-team|validate"
-metadata:
-  author: baka3k
-  version: "2.2.0"
-  last_updated: "2026-10-18"
 ---
 # Plan - Implementation Planning
 

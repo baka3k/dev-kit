@@ -2,10 +2,6 @@
 name: hi-maintenance-docs
 description: "Orchestrate a complete, navigable, evidence-backed maintenance documentation pack spanning system overview, architecture, modules, use cases, technical behavior, API contracts, data models, command specifications, gaps, and freshness. Use for end-to-end documentation — not one bounded domain."
 argument-hint: "<repo_root> [scope]  — review_required defaults to true"
-metadata:
-  author: baka3k
-  version: "1.0.0"
-  last_updated: "2026-10-18"
 ---
 
 # Maintenance Documentation

@@ -3,10 +3,6 @@ name: hi-debug
 description: "Debug systematically with root cause analysis before fixes. Use for bugs, test failures, unexpected behavior, performance issues, call stack tracing, multi-layer validation, log analysis, CI/CD failures, database diagnostics, system investigation."
 languages: all
 argument-hint: "[error or issue description]"
-metadata:
-  author: claudekit
-  version: "4.0.0"
-  last_updated: "2026-10-18"
 ---
 
 # Debugging & System Investigation

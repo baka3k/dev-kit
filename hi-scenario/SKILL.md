@@ -2,10 +2,6 @@
 name: hi-scenario
 description: Generate comprehensive edge cases and test scenarios by decomposing features across 12 dimensions (user types, input extremes, timing, scale, state, environment, errors, authorization, data integrity, integration, compliance, business logic). Uses mind_mcp for feature requirements context and graph_mcp for code path discovery. Use before implementation, during code review, or when planning test coverage.
 argument-hint: "<feature or module> [quick|deep] [focus dimensions]"
-metadata:
-  author: baka3k
-  version: "1.2.0"
-  last_updated: "2026-09-30"
 hooks:
   pre:
     - name: input-validation

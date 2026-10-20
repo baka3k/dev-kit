@@ -2,10 +2,6 @@
 name: hi-document-lifecycle
 description: "Orchestrates evidence-backed document generation, human clarification, semantic/diagram refinement, and conditional review-comment resolution with pause/resume for one scoped domain. Use hi-maintenance-docs for a complete multi-domain pack."
 argument-hint: "<domain> [generate|clarify_refine|review_update]  — one generator per run"
-metadata:
-  author: baka3k
-  version: "1.0.0"
-  last_updated: "2026-10-18"
 ---
 
 # Document Lifecycle

@@ -2,10 +2,6 @@
 name: hi-data-model-discovery
 description: "Produce draft-only evidence-backed physical and logical data models, ERDs, entity and field inventories, data dictionaries, ownership, read/write access, lifecycle, sensitivity, caching, replication, and migration gaps. Do not execute schema migrations or present inferred relationships as declared constraints."
 argument-hint: "<database | module | entity scope> — draft-only"
-metadata:
-  author: baka3k
-  version: "1.0.0"
-  last_updated: "2026-10-18"
 ---
 
 # Data Model Discovery

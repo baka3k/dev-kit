@@ -2,10 +2,6 @@
 name: hi-log
 description: "Write log entries analyzing recent changes and session reflections."
 argument-hint: "[topic] [--since <ref>] [--scope <dir>]"
-metadata:
-  author: baka3k
-  version: "1.3.1"
-  last_updated: "2026-10-18"
 ---
 # Log
 

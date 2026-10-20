@@ -2,10 +2,6 @@
 name: hi-behavior-modeling
 description: "Produce draft-only evidence-backed technical behavior as sequence, activity, state-machine, and event-flow documentation. Do not use for business use-case catalogs, API contracts, or persistent data models."
 argument-hint: "<module | symbol | use-case anchor> [sequence|activity|state-machine|event-flow] — draft-only"
-metadata:
-  author: baka3k
-  version: "1.0.0"
-  last_updated: "2026-10-18"
 ---
 
 # Behavior Modeling
