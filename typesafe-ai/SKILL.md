@@ -8,6 +8,10 @@ description: >
   brainstorming what AI could make possible, or when a prompt-and-parse step
   could become a structured decision. Minimal query recipe: reference.md.
 argument-hint: "<feature intent> [choice|noul|score]"
+metadata:
+  author: baka3k
+  version: "1.0.0"
+  last_updated: "2026-10-18"
 ---
 
 # Build with TypeSafe

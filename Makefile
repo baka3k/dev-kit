@@ -12,7 +12,7 @@ SKILL_DEV    ?= npx --yes skill-dev
 SKILL_DEV_LOCAL ?= $(HOME)/AI/dev-kit-install
 
 .DEFAULT_GOAL := help
-.PHONY: help install install-latest doctor prepare check-docs sync-manifests sync-metadata wiki
+.PHONY: help install install-latest doctor prepare check-docs sync-manifests wiki
 
 # Repo root, so the docs targets work from any working directory (make -C ...).
 KIT_ROOT := $(patsubst %/,%,$(dir $(lastword $(MAKEFILE_LIST))))
@@ -39,7 +39,6 @@ help:
 	@echo "  make doctor          Health check: git/node/npx, uv, skills, Cortex 'dev', docs drift"
 	@echo "  make check-docs      Verify README/devkit.md/manifests/wiki against the real skill tree"
 	@echo "  make sync-manifests  Regenerate CLAUDE.md and .cursorrules from AGENTS.md"
-	@echo "  make sync-metadata   Regenerate METADATA.json from git history (skill versions and last updated dates)"
 	@echo "  make wiki            (Re)generate the compact wiki guides owned by scripts/gen-wiki-pages.mjs"
 	@echo "  make prepare         Clone cortex-harness into $(CORTEX_DIR) and install 'dev' (no-op if already installed)"
 	@echo ""
@@ -88,9 +87,6 @@ check-docs:
 
 sync-manifests:
 	@node $(KIT_ROOT)/scripts/sync-manifests.mjs
-
-sync-metadata:
-	@node $(KIT_ROOT)/scripts/sync-metadata.mjs
 
 wiki:
 	@node $(KIT_ROOT)/scripts/gen-wiki-pages.mjs

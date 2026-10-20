@@ -2,6 +2,10 @@
 name: hi-tech-build-audit
 description: "Audit a repository's technology stack, build system, dependency management, CI/CD pipelines, deployment targets, and platform assumptions. Use for build onboarding, migration readiness, deployment review, or CI/CD documentation."
 argument-hint: "<repo path> [local|container|cloud|hybrid|auto] [quick|standard|deep]"
+metadata:
+  author: baka3k
+  version: "1.0.0"
+  last_updated: "2026-10-18"
 ---
 
 # Technology and Build Audit

@@ -2,6 +2,10 @@
 name: hi-scout
 description: "Gather traceable evidence from repository code, project documents, and external sources. Use for codebase exploration, architecture, feature tracing, dependency or impact analysis, file discovery, web/docs lookup, GitHub repo analysis, and image or UI understanding."
 argument-hint: "<question | symbol | path | SQL | impact target | repo URL | docs topic | image> [--code|--doc|--ask|--deep|--impact] [--external] [--parallel]"
+metadata:
+  author: baka3k
+  version: "4.0.0"
+  last_updated: "2026-10-20"
 ---
 
 # Scout

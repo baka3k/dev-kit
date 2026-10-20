@@ -2,6 +2,10 @@
 name: hi-cross-artifact-validation
 description: "Validate consistency across discovery outputs (use-case, API, data-model, behavior, command-spec) by checking stable ID resolution, actor/auth alignment, state-transition lifecycle matches, schema compatibility, and cross-domain evidence coherence. Use after leaf discovery skills complete, before refinement."
 argument-hint: "<output_root> [domains] [strict]  — needs 2+ domain manifests"
+metadata:
+  author: baka3k
+  version: "1.0.0"
+  last_updated: "2026-10-18"
 ---
 
 # Cross-Artifact Validation

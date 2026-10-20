@@ -2,6 +2,10 @@
 name: hi-cortex
 description: "Set up and operate Cortex Harness for project code/doc ingestion, config updates, sync workflows, and MCP server lifecycle."
 argument-hint: "[setup|status|add-code|sync-code|add-doc|sync-doc|start-mcp|stop-mcp|doctor] [project path or repo URL]"
+metadata:
+  author: baka3k
+  version: "1.1.0"
+  last_updated: "2026-10-18"
 ---
 
 # Cortex Harness

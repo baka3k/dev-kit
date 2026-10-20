@@ -2,6 +2,10 @@
 name: hi-fix
 description: "ALWAYS activate before fixing ANY bug, error, test failure, CI/CD issue, type error, lint, log error, UI issue, code problem."
 argument-hint: "[issue] [--standard|--deep|--parallel|--review]  — default: Quick mode"
+metadata:
+  author: baka3k
+  version: "2.1.0"
+  last_updated: "2026-10-18"
 ---
 # Fix - Issue Resolution
 

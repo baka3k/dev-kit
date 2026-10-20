@@ -3,6 +3,10 @@ name: hi-chrome-devtools
 description: Browser automation via Puppeteer CLI scripts with persistent sessions. Screenshots, performance, network, scraping, form automation, auth, debugging.
 license: Apache-2.0
 argument-hint: "[url or task]"
+metadata:
+  author: baka3k
+  version: "2.1.0"
+  last_updated: "2026-10-18"
 ---
 
 # Chrome DevTools Agent Skill

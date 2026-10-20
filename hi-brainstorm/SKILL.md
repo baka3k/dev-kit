@@ -2,6 +2,10 @@
 name: hi-brainstorm
 description: Convene an adaptive panel of independent experts to generate competing solutions, challenge assumptions, debate tradeoffs, and select an evidence-backed option with weighted scoring before implementation. Use for ambiguous, consequential, or multi-path decisions; skip trivial work with one obvious reversible solution.
 argument-hint: "<decision or topic> [quick|standard|deep]  — default: standard"
+metadata:
+  author: baka3k
+  version: "1.1.0"
+  last_updated: "2026-09-08"
 ---
 
 # HI Brainstorm

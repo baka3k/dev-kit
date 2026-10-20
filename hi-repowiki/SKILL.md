@@ -2,6 +2,10 @@
 name: hi-repowiki
 description: "Generate or update a comprehensive, evidence-backed repository wiki in Repo Wiki format (/repowiki/), including architecture, installation and configuration, CLI/build automation, languages and frameworks, data/graph schemas, protocol integrations such as MCP, query/search, incremental processing, APIs, testing, deployment, developer guidance, troubleshooting, module documentation, and knowledge cards. Use for codebase documentation, team onboarding, repository capability mapping, and persistent architecture knowledge."
 argument-hint: "<repo> [generate|update|plan-only] [en|zh] [--resume]"
+metadata:
+  author: baka3k
+  version: "1.0.0"
+  last_updated: "2026-10-18"
 ---
 
 # Repo Wiki Generator

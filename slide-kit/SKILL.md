@@ -2,6 +2,10 @@
 name: slide-kit
 description: Generate .pptx slide decks in the Modernization corporate style extracted from Template3.pptx (navy constellation cover/section/closing art, white content slides with slate Lato 32pt title + eyebrow + 3 accent squares, slate #445469 text, light-blue info boxes, slate/lime flowchart boxes, horizontal timeline, blue-header zebra tables, dark slate code panels, red bold-italic footnotes). Use whenever the user asks to create slides/deck/pptx "theo style này", "giống Template3/Modernization", or loads this kit. Strictly brand-neutral — no company logo or brand asset anywhere; never draw any logo on slides.
 argument-hint: "<deck request> [--output-dir <dir>]"
+metadata:
+  author: baka3k
+  version: "1.0.0"
+  last_updated: "2026-10-18"
 ---
 
 # Slide kit — Modernization deck generator (Template3 style)
