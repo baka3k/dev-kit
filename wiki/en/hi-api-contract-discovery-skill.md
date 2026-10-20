@@ -29,6 +29,6 @@
 - `hi-cross-artifact-validation`
 - `hi-maintenance-docs`
 - `hi-document-lifecycle`
-- `hi-repository-search`
+- `hi-scout`
 
 Source: [hi-api-contract-discovery/SKILL.md](../../hi-api-contract-discovery/SKILL.md)

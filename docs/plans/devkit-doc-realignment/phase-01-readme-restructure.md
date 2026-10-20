@@ -2,7 +2,7 @@
 
 ## Context Links
 - [plan.md](./plan.md)
-- `/Users/hieplq1.aip/AI/dev-kit/README.md` (568 lines, current target)
+- `/Users/baka3k/AI/dev-kit/README.md` (568 lines, current target)
 - Verified inventory: `ls -d */` ∩ `*/SKILL.md` at repo root
 
 ## Overview

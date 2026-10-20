@@ -133,7 +133,7 @@ Main tool integrations:
 - `psql` for PostgreSQL;
 - `gh` for GitHub Actions logs/pipeline;
 - `hi-docs-seeker` for package docs;
-- `hi-repository-search` and `hi-codebase-research-explorer` for code/docs context;
+- `hi-scout` for code/docs context;
 - Chrome MCP or `hi-chrome-devtools` for frontend;
 - `hi-problem-solving` when stuck.
 
@@ -1093,7 +1093,7 @@ Debug tasks can be session-scoped. The investigation report must be a persistent
 
 ```mermaid
 flowchart TD
-    A[Issue] --> B[hi-codebase-research-explorer]
+    A[Issue] --> B[hi-scout]
     B --> C[hi-debug]
     C --> D{Need package docs?}
     D -->|Yes| E[hi-docs-seeker]
@@ -1110,7 +1110,7 @@ flowchart TD
 
 | Skill | Relationship |
 |---|---|
-| `hi-codebase-research-explorer` | Locate files, call paths, and external context |
+| `hi-scout` | Locate files, call paths, and external context |
 | `hi-fix` | Use the diagnosis to fix the root cause |
 | `hi-craft` | Call `hi-fix` after multiple test failures or for implementation orchestration |
 | `hi-plan` | Record architectural changes or follow-up plans |

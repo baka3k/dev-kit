@@ -31,7 +31,7 @@
 
 ## Skill liên quan
 
-- `hi-repository-search`
+- `hi-scout`
 - `hi-plan`
 - `hi-craft`
 - `hi-fix`

@@ -19,15 +19,15 @@ metadata:
 | --review | Human-in-the-loop at each step |
 
 ## Process Flow
-`[Codebase-Research-Explorer] -> [Diagnose] -> [Fix] -> [Verify+Prevent] -> [Finalize]`
+`[Scout] -> [Diagnose] -> [Fix] -> [Verify+Prevent] -> [Finalize]`
 
 <HARD-GATE>
-Do NOT fix before Codebase-Research-Explorer + Diagnose. Find ROOT CAUSE first. If 3+ fix attempts fail, STOP and question architecture with user.
+Do NOT fix before Scout + Diagnose. Find ROOT CAUSE first. If 3+ fix attempts fail, STOP and question architecture with user.
 </HARD-GATE>
 
-### Step 1: Codebase-Research-Explorer (locate-only, default)
+### Step 1: Scout (locate-only, default)
 Locate affected files and  clear error. One agent is sufficient.
-Standard/Deep: activate hi-codebase-research-explorer or 2-3 parallel workers per [dev-shared/delegation-contract.md](../dev-shared/delegation-contract.md).
+Standard/Deep: run `hi-scout --parallel` or 2-3 parallel workers per [dev-shared/delegation-contract.md](../dev-shared/delegation-contract.md).
 
 ### Step 2: Diagnose (MANDATORY)
 Capture pre-fix state: exact error, stack traces, logs.
@@ -50,13 +50,13 @@ Standard/Deep: report -> review (if --review) -> docs -> commit
 ## Workflows
 
 ### Quick (default, 1 file, type/lint, clear error)
-Codebase-Research-Explorer (locate only) -> Diagnose (read error) -> Fix -> Verify (typecheck+lint) -> Done
+Scout (locate only) -> Diagnose (read error) -> Fix -> Verify (typecheck+lint) -> Done
 
 ### Standard (--standard, 2-5 files)
-Full Codebase-Research-Explorer -> Full Diagnose (call hi-debug if needed) -> Fix -> Verify (typecheck+lint+build+test) -> Review (if --review) -> Finalize
+Full Scout -> Full Diagnose (call hi-debug if needed) -> Fix -> Verify (typecheck+lint+build+test) -> Review (if --review) -> Finalize
 
 ### Deep (--deep, 5+ files, architecture impact)
-Parallel Codebase-Research-Explorer + Diagnose + Research -> Fix -> Comprehensive Verify -> Review -> Finalize
+Parallel Scout + Diagnose + Research -> Fix -> Comprehensive Verify -> Review -> Finalize
 
 ### Parallel (2+ independent)
 Separate task tree per issue. Delegate one `implementer` ([dev-shared/roles/implementer.md](../dev-shared/roles/implementer.md)) per issue per [dev-shared/delegation-contract.md](../dev-shared/delegation-contract.md).

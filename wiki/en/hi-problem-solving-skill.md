@@ -68,7 +68,7 @@ flowchart TD
 | Situation | Main skill |
 |---|---|
 | Code is wrong/test failing and root cause is needed | `hi-debug` or `hi-fix` |
-| Need to find file/call path/context | `hi-codebase-research-explorer` |
+| Need to find file/call path/context | `hi-scout` |
 | Need plan/architecture artifact | `hi-plan` |
 | Need scenario/edge-case matrix | `hi-scenario` |
 | Need end-to-end test/implementation | `hi-craft` |

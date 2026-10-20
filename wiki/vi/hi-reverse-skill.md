@@ -507,7 +507,7 @@ Dùng `--summary` để compact output; không đọc implementation của valid
 
 ```mermaid
 flowchart LR
-    A[C++ module] --> B[hi-repository-search/explorer]
+    A[C++ module] --> B[hi-scout]
     B --> C[hi-reverse Graph-RAG discovery]
     C --> D[Evidence ledger/artifacts]
     D --> E[hi-security review]

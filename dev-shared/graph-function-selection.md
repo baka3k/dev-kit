@@ -70,8 +70,7 @@ The "Additions" column lists functions beyond the tier baseline that the skill t
 | hi-plan | T2 | `plan_dependency_order` (phasing); `analyze_workflow_impact` (blast radius) |
 | hi-craft | T2 | pre-edit impact: `query_subgraph(downstream)` on touched symbols |
 | hi-fix | T2 | `query_subgraph(upstream)` (callers of the defect); `search_by_code` (error strings) |
-| hi-codebase-research-explorer | T2 | `query_subgraph`; `get_node_details` |
-| hi-repository-search | T2 | `search_by_code`; `search_functions`; `query_subgraph` |
+| hi-scout | T2 | `search_by_code`; `search_functions`; `get_node_details` |
 | hi-cross-artifact-validation | T2 | `search_functions` + `get_node_details` to re-resolve claimed IDs; `find_callers_of_endpoint` / `get_ipc_message` for claimed bridges |
 | hi-tech-build-audit | T2 | `plan_file_dependency_order`; `search_by_code` (build/CI literals) |
 | hi-project-organization | T1 | conditional `plan_file_dependency_order` for layout moves |

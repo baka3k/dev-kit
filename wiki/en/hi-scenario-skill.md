@@ -935,7 +935,7 @@ flowchart TD
 | `hi-fix` | Reproduction cases and regression test candidates |
 | `hi-debug` | Hypothesis/test inputs for timing, error cascades, performance |
 | `hi-security` | Auth, data exposure, injection and compliance scenarios |
-| `hi-codebase-research-explorer` | Code path/source context so scenarios have traceability |
+| `hi-scout` | Code path/source context so scenarios have traceability |
 | `hi-sequential-thinking` | Decompose the complex scenario space and compare branches |
 
 ## 22. Limitations to understand correctly

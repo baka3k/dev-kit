@@ -29,8 +29,7 @@ Skills that own global state, stage ordering, and publication. They are the only
 
 | Skill | Called by | Purpose |
 | --- | --- | --- |
-| `hi-codebase-research-explorer` | fix, debug, ad-hoc | Parallel file discovery and external research |
-| `hi-repository-search` | plan, debug, ad-hoc evidence queries | Traceable repository evidence bundle |
+| `hi-scout` | fix, debug, plan, ad-hoc evidence queries | Traceable repository evidence, external research, parallel file discovery |
 | `hi-knows` | ad-hoc (no skill declares it as a leaf) | Knowledge retrieval from git, MCP, memory files |
 | `hi-docs-seeker` | plan, debug, craft (full) | Authoritative external documentation lookup |
 | `hi-log` | craft, plan, finalization flows | Session logging |
@@ -57,7 +56,6 @@ Skills that own global state, stage ordering, and publication. They are the only
 
 | Skill | Type | Purpose |
 | --- | --- | --- |
-| `hi-repository-search` | Code + doc exploration | Search ingested repos via code graph (Qdrant/Neo4j/FalkorDb) + document graph RAG. Semantic search, call-graph tracing, dependency analysis. |
 | `hi-cortex` | Harness infrastructure | Install and operate Cortex Harness: config, code/doc sync, database infrastructure, MCP lifecycle for use by other skills. |
 | `hi-chrome-devtools` | Browser automation | Browser automation via Puppeteer CLI with persistent sessions. Screenshots, performance, network, scraping, form automation, auth, debugging. |
 | `slide-kit` | Deliverable generation | `.pptx` decks in the Modernization corporate style, brand-neutral. No skill calls it; it answers direct deck requests. |
@@ -110,8 +108,8 @@ graph LR
 | Mode | Scope | Repository evidence | Delegation |
 | --- | --- | --- | --- |
 | default | 1 file, type/lint, or clear issue | Direct inspection | 1 agent is enough |
-| `--standard` | 2-5 files | Full explorer and diagnosis | `hi-codebase-research-explorer` or `2-3` parallel agents when useful |
-| `--deep` | 5+ files or architectural impact | Parallel explorer, diagnosis, research | Parallel agents for exploration/research |
+| `--standard` | 2-5 files | Full scout and diagnosis | `hi-scout --parallel` or `2-3` parallel agents when useful |
+| `--deep` | 5+ files or architectural impact | Parallel scout, diagnosis, research | Parallel agents for exploration/research |
 | `--parallel` | 2+ independent issues | Separate task tree per issue | Spawn `implementer` per issue |
 | `--review` | Any scope | Mode-dependent | Human review at gates |
 
@@ -120,7 +118,7 @@ graph LR
     A["Capture symptom<br/>error / log / failing check"] --> B["Explore affected area"]
     B --> P{"Standard / deep / parallel?"}
     P -->|no| C["Diagnose<br/>symptom -> cause -> root cause"]
-    P -->|yes| X["hi-codebase-research-explorer or parallel agents<br/>locate evidence"]
+    P -->|yes| X["hi-scout --parallel<br/>locate evidence"]
     X --> C
     C --> D["Fix root cause<br/>minimal change"]
     D --> E["Verify"]
@@ -148,7 +146,7 @@ graph LR
 
 ```mermaid
 graph LR
-    A["Scan active plans"] --> B["Gather evidence<br/>hi-repository-search"]
+    A["Scan active plans"] --> B["Gather evidence<br/>hi-scout"]
     B --> R{"Research mode?"}
     R -->|fast| C["Define assumptions<br/>dependencies / gaps"]
     R -->|full / hard / parallel / two| S["Spawn researcher agents<br/>by selected mode"]
@@ -325,7 +323,7 @@ graph TD
     Detect -->|"feature / implementation"| Craft["hi-craft"]
     Detect -->|"bug / failure"| Fix["hi-fix"]
     Detect -->|"plan / architecture"| Plan["hi-plan"]
-    Detect -->|"repo question / impact"| RepoSearch["hi-repository-search"]
+    Detect -->|"repo question / impact"| Scout["hi-scout"]
     Detect -->|"debug investigation"| Debug["hi-debug"]
     Detect -->|"security audit"| Security["hi-security"]
     Detect -->|"edge cases / tests"| Scenario["hi-scenario"]
@@ -344,14 +342,13 @@ graph TD
     Fix -->|"2+ failed hypotheses"| PS["hi-problem-solving"]
     Fix -->|"final record"| Log
 
-    Plan -->|"code/doc evidence"| RepoSearch
+    Plan -->|"code/doc evidence"| Scout
     Plan -->|"complex reasoning"| ST["hi-sequential-thinking"]
     Plan -->|"docs for a library/API"| DocsSeeker["hi-docs-seeker"]
     Plan -->|"outputs / naming"| Org["hi-project-organization"]
     Plan -->|"archive / final record"| Log
 
-    Debug -->|"find files / external research"| Explorer["hi-codebase-research-explorer"]
-    Debug -->|"repo evidence"| RepoSearch
+    Debug -->|"repo evidence / external research"| Scout
     Debug -->|"stuck"| PS
 
     Docs -->|"structure evidence"| Recon["hi-repo-recon"]
@@ -362,7 +359,7 @@ graph TD
     Docs -->|"refine / resolve comments"| DLC["hi-document-refinement / hi-document-review-resolution"]
     Docs -->|"final record"| Log
 
-    Cortex["hi-cortex"] -->|"healthy MCPs"| RepoSearch
+    Cortex["hi-cortex"] -->|"healthy MCPs"| Scout
 
     classDef primary fill:#c8e6c9,stroke:#1b5e20,color:#000
     classDef evidence fill:#e1bee7,stroke:#6a1b9a,color:#000
@@ -371,7 +368,7 @@ graph TD
     classDef external fill:#f5f5f5,stroke:#333,color:#000
 
     class Craft,Fix,Plan,Docs,Reverse primary
-    class RepoSearch,Recon,Audit,Summary,Leaves,XV,DLC,Explorer,DocsSeeker evidence
+    class Scout,Recon,Audit,Summary,Leaves,XV,DLC,DocsSeeker evidence
     class Debug,Security,Scenario,ST,PS,Brainstorm,Predict analysis
     class Log,Org,Chrome,Cortex,Slide utility
     class User,Detect external
@@ -383,9 +380,9 @@ The intent table behind that graph:
 | --- | --- | --- |
 | Feature / implementation | `hi-craft` | `hi-plan` (no plan), `hi-fix` (3+ test failures) |
 | Bug / failure | `hi-fix` | `hi-debug`, `hi-problem-solving` |
-| Plan / architecture | `hi-plan` | `hi-repository-search --deep`, red-team, validate |
-| Repository question / impact | `hi-repository-search` | evidence-only; the calling skill keeps orchestration |
-| Debug investigation | `hi-debug` | `hi-codebase-research-explorer`, `hi-docs-seeker` |
+| Plan / architecture | `hi-plan` | `hi-scout --deep`, red-team, validate |
+| Repository question / impact | `hi-scout` | evidence-only; the calling skill keeps orchestration |
+| Debug investigation | `hi-debug` | `hi-scout`, `hi-docs-seeker` |
 | Security audit | `hi-security` | `mind_mcp` policy context, `graph_mcp` structure (T3) |
 | Edge cases / tests | `hi-scenario` | `graph_mcp` feature paths (T3) |
 | Ambiguous decision | `hi-brainstorm` | `hi-plan --two` for competing approaches |
@@ -394,7 +391,7 @@ The intent table behind that graph:
 | C/C++ reverse engineering | `hi-reverse` | its own validation and package gates |
 | Deck / pptx | `slide-kit` | — |
 | Browser task | `hi-chrome-devtools` | — |
-| Retrieval infrastructure | `hi-cortex` | `hi-repository-search` once MCPs are healthy |
+| Retrieval infrastructure | `hi-cortex` | `hi-scout` once MCPs are healthy |
 
 ---
 
@@ -409,13 +406,12 @@ Most DevKit skills stay single-agent by default. Delegation happens only when th
 
 | Skill | Delegates? | Trigger / condition |
 | --- | --- | --- |
-| `hi-codebase-research-explorer` | Yes, by design | Splits local, external, or hybrid exploration into `1-5` non-overlapping agents. Skips task registration when `<=2` agents or task tools are unavailable. Each agent has a 3-minute timeout. |
+| `hi-scout` | Conditional | Sequential search never spawns. `--parallel` splits local, external, or hybrid exploration into `1-5` non-overlapping agents (skip task registration when `<=2` agents or task tools are unavailable; 3-minute timeout each). `--deep` uses at most two investigators, code and documents, only when delegation is permitted and the work has independent tracks, spans 3+ subsystems, or needs independent conflict verification. |
 | `hi-craft` | Conditional | `--parallel` delegates one `implementer` (`fullstack-developer` alias) per phase. Test failures are handled directly for attempts 1-2; attempt 3+ invokes `hi-fix`. Planner and tester roles are never delegated. |
-| `hi-fix` | Conditional | Standard/deep modes can activate `hi-codebase-research-explorer` or `2-3` parallel workers. `--parallel` creates a separate task tree and delegates `implementer` per independent issue. |
+| `hi-fix` | Conditional | Standard/deep modes can run `hi-scout --parallel` or `2-3` parallel workers. `--parallel` creates a separate task tree and delegates `implementer` per independent issue. |
 | `hi-plan` | Conditional | Delegates the `researcher` role: 1 for `--full`, 2 for `--hard` and `--parallel`, 2+ for `--two` (competing approaches). Fast/default mode never delegates. |
 | `hi-debug` | Conditional | Multi-component investigations, parallel log/data collection, or CI/CD failures with 3+ possible causes may spawn parallel collection agents. |
 | `hi-log` | Conditional | Delegates `log-writer` for material changes; writes inline for small sessions. If there is no material change, logging aborts. |
-| `hi-repository-search` | Conditional | Does not spawn by default. Uses at most two investigators, code and documents, only when delegation is permitted and the work has independent tracks, spans 3+ subsystems, or needs independent conflict verification. |
 | `hi-maintenance-docs`, `hi-document-lifecycle`, `hi-repowiki` | Conditional | Orchestrators may run independent domain leaves in parallel when their manifests do not overlap; the orchestrator keeps sole ownership of checkpoint and manifest state. |
 
 ```mermaid
@@ -428,12 +424,11 @@ graph TD
     E --> F["Collect outputs<br/>dedupe / reconcile conflicts"]
     F --> G["Main agent owns synthesis<br/>integration and verification"]
 
-    E --> H["hi-codebase-research-explorer<br/>1-5 scoped agents"]
+    E --> H["hi-scout<br/>1-5 scoped agents / max 2 investigators"]
     E --> I["hi-plan<br/>researchers by mode"]
     E --> J["hi-fix / hi-craft<br/>implementer or hi-fix escalation"]
     E --> K["hi-debug<br/>parallel evidence collection"]
     E --> L["hi-log<br/>log-writer"]
-    E --> M["hi-repository-search<br/>max 2 investigators"]
     E --> N["orchestrators<br/>independent domain leaves"]
 
     classDef decision fill:#ffe0b2,stroke:#e65100,color:#000
@@ -442,7 +437,7 @@ graph TD
     classDef synthesis fill:#e1bee7,stroke:#6a1b9a,color:#000
     class B,D decision
     class C,G primary
-    class E,H,I,J,K,L,M,N delegated
+    class E,H,I,J,K,L,N delegated
     class F synthesis
 ```
 
@@ -455,7 +450,7 @@ graph TD
 | `hi-craft` | Do not edit until a reviewed plan exists, unless the user explicitly skips planning. | Stop, create or reuse a plan, then continue. |
 | `hi-fix` | Do not fix before locating the failure and identifying root cause. | Return to explore/diagnose; after 3 failed fix attempts, question architecture with the user. |
 | `hi-plan` | Scan active plans first and record relevant `blockedBy` / `blocks` relationships. | Update the related plans before producing the new plan. |
-| `hi-repository-search` | Provide traceable evidence only; do not invent context or own implementation decisions. | Report search coverage and ask for details if evidence is missing. |
+| `hi-scout` | Provide traceable evidence only; do not invent context or own implementation decisions. | Report search coverage and ask for details if evidence is missing. |
 | `hi-security` | Security findings need source evidence and severity-ranked remediation. | Do not auto-fix outside the requested audit/fix scope. |
 | `hi-project-organization` | Do not override established project layout without evidence. | Use existing conventions or return an advisory recommendation. |
 

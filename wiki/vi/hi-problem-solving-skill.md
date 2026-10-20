@@ -68,7 +68,7 @@ flowchart TD
 | Tình huống | Skill chính |
 |---|---|
 | Code đang sai/test fail và cần root cause | `hi-debug` hoặc `hi-fix` |
-| Cần tìm file/call path/context | `hi-codebase-research-explorer` |
+| Cần tìm file/call path/context | `hi-scout` |
 | Cần plan/architecture artifact | `hi-plan` |
 | Cần scenario/edge-case matrix | `hi-scenario` |
 | Cần test/implementation end-to-end | `hi-craft` |

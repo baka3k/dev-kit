@@ -44,7 +44,6 @@ const HAND_WRITTEN_WIKI = new Set([
   "wiki/en/agents-md-guide.md",
   "wiki/vi/agents-md-guide.md",
   ...[
-    "hi-codebase-research-explorer",
     "hi-craft",
     "hi-debug",
     "hi-docs-seeker",
@@ -55,7 +54,6 @@ const HAND_WRITTEN_WIKI = new Set([
     "hi-predict",
     "hi-problem-solving",
     "hi-project-organization",
-    "hi-repository-search",
     "hi-reverse",
     "hi-scenario",
     "hi-security",

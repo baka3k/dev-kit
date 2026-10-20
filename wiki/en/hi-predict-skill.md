@@ -906,7 +906,7 @@ flowchart TD
 | `hi-scenario` | Adds edge cases/test scenarios derived from persona risks |
 | `hi-security` | Deep-audits the security risks that were found |
 | `hi-debug` | Investigates assumptions/flow when evidence is missing or conflicting |
-| `hi-repository-search` | Provides code/document context for Phase 0 |
+| `hi-scout` | Provides code/document context for Phase 0 |
 | `hi-red-team`/plan red-team | Adversarial review of the plan after the proposal is finalized |
 
 `hi-predict` and `red-team` are not the same:

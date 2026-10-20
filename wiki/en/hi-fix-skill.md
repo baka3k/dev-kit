@@ -14,7 +14,7 @@ An error usually has multiple layers:
 If you only fix the symptom, the error may disappear in one case but come back through another call path. `hi-fix` forces the workflow to go through research and diagnosis before fixing:
 
 ```text
-[Codebase-Research-Explorer] -> [Diagnose] -> [Fix] -> [Verify + Prevent] -> [Finalize]
+[Scout] -> [Diagnose] -> [Fix] -> [Verify + Prevent] -> [Finalize]
 ```
 
 The goal is to produce a fix that can be explained with evidence:
@@ -60,7 +60,7 @@ flowchart TD
 
 Mandatory rule:
 
-> Do not fix before Codebase-Research-Explorer and Diagnose have been run.
+> Do not fix before Scout and Diagnose have been run.
 
 This means you should not:
 
@@ -207,7 +207,7 @@ Standard mode should be used when:
 
 ```mermaid
 flowchart TD
-    A[Complex issue] --> B1[Explorer: affected modules]
+    A[Complex issue] --> B1[Scout: affected modules]
     A --> B2[Diagnose: error chain]
     A --> B3[Research: patterns and history]
     B1 --> C[Synthesize evidence]
@@ -288,7 +288,7 @@ If there is no critical finding:
 
 The user choosing `Approve anyway` should be explicitly recorded in the report along with the residual risk. It does not make the critical issue disappear from the evidence.
 
-## 10. Step 1: Codebase-Research-Explorer
+## 10. Step 1: Scout
 
 ### 10.1 Goal
 
@@ -306,11 +306,11 @@ It needs to identify:
 
 ### 10.2 Scale by mode
 
-| Mode | Explorer |
+| Mode | Scout |
 |---|---|
 | Quick | 1 locate-only agent |
-| Standard | `hi-codebase-research-explorer` or 2-3 explorers |
-| Deep | Explorer in parallel with Diagnose and Research |
+| Standard | `hi-scout` or 2-3 explorers |
+| Deep | Scout in parallel with Diagnose and Research |
 | Parallel | Separate explorer for each issue |
 
 The explorer must not modify code on its own. It returns context so that diagnosis can verify hypotheses.
@@ -765,7 +765,7 @@ Production login intermittently returns 500 when the user has just been created.
 /hi-fix intermittent 500 on login for newly-created users --deep --review
 ```
 
-### 19.2 Explorer
+### 19.2 Scout
 
 Find:
 
@@ -833,7 +833,7 @@ Only finalize after the root cause is confirmed, the regression test passes and 
 ```mermaid
 flowchart TD
     A[Issue] --> B[hi-fix]
-    B --> C[hi-codebase-research-explorer]
+    B --> C[hi-scout]
     C --> D[Diagnose]
     D --> E{Complex diagnosis?}
     E -->|Yes| F[hi-debug]
@@ -851,7 +851,7 @@ flowchart TD
 
 | Skill | Role |
 |---|---|
-| `hi-codebase-research-explorer` | Locate affected files, symbols and dependencies |
+| `hi-scout` | Locate affected files, symbols and dependencies |
 | `hi-debug` | Systematic debugging when diagnosis is hard |
 | `hi-problem-solving` | Escape the framing/hypothesis loop |
 | `hi-scenario` | Supplement edge cases and scenario matrix |

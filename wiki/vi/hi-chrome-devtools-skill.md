@@ -29,6 +29,6 @@
 
 ## Skill liên quan
 
-- `hi-codebase-research-explorer`
+- `hi-scout`
 
 Nguồn: [hi-chrome-devtools/SKILL.md](../../hi-chrome-devtools/SKILL.md)

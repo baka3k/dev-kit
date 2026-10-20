@@ -66,7 +66,7 @@ Pull context từ:
 - `git diff`;
 - `git log`;
 - scope/since filters;
-- `hi-codebase-research-explorer` nếu scope mơ hồ.
+- `hi-scout` nếu scope mơ hồ.
 
 Mục tiêu là thu event candidates, không viết log ngay khi thấy một diff.
 

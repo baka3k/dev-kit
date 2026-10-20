@@ -18,7 +18,7 @@ Use this skill when a task needs Cortex Harness from `https://github.com/baka3k/
 2. Prefer the installed `dev` command. Preflight first: `command -v dev || [ -x "$HOME/.local/bin/dev" ]`. If both miss, follow [Install](./references/install.md); if `dev` exists but errors, run `dev doctor` first — never reinstall over a working installation. The wrapper at `~/.local/bin/dev` may pin its own checkout (`CORTEX_HARNESS_DIR`) — read it before assuming the repository location.
 3. Do not invent config paths, database names, checkout locations, or project folders. Run `dev status` or inspect the Cortex Harness config before changing it.
 4. Prefer fully flagged, non-interactive commands. Wizard prompts (`dev init`, `dev sync code add` without arguments, bare `dev sync code`) may only be answered with user-provided values — an agent never guesses wizard answers.
-5. Keep Cortex Harness as the retrieval and MCP infrastructure layer. Pair it with `hi-repository-search`, `hi-plan`, `hi-craft`, `hi-fix`, `hi-debug`, `hi-scenario`, or `hi-security` for the actual engineering workflow.
+5. Keep Cortex Harness as the retrieval and MCP infrastructure layer. Pair it with `hi-scout`, `hi-plan`, `hi-craft`, `hi-fix`, `hi-debug`, `hi-scenario`, or `hi-security` for the actual engineering workflow.
 
 ## `dev` Command Surface
 

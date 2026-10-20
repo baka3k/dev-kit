@@ -133,7 +133,7 @@ Các tool integration chính:
 - `psql` cho PostgreSQL;
 - `gh` cho GitHub Actions logs/pipeline;
 - `hi-docs-seeker` cho package docs;
-- `hi-repository-search` và `hi-codebase-research-explorer` cho code/docs context;
+- `hi-scout` cho code/docs context;
 - Chrome MCP hoặc `hi-chrome-devtools` cho frontend;
 - `hi-problem-solving` khi bị stuck.
 
@@ -1093,7 +1093,7 @@ Debug tasks có thể session-scoped. Investigation report phải là artifact p
 
 ```mermaid
 flowchart TD
-    A[Issue] --> B[hi-codebase-research-explorer]
+    A[Issue] --> B[hi-scout]
     B --> C[hi-debug]
     C --> D{Need package docs?}
     D -->|Yes| E[hi-docs-seeker]
@@ -1110,7 +1110,7 @@ flowchart TD
 
 | Skill | Quan hệ |
 |---|---|
-| `hi-codebase-research-explorer` | Locate files, call paths và external context |
+| `hi-scout` | Locate files, call paths và external context |
 | `hi-fix` | Dùng diagnosis để sửa root cause |
 | `hi-craft` | Gọi `hi-fix` sau nhiều test failures hoặc orchestration implementation |
 | `hi-plan` | Ghi architectural change hoặc follow-up plan |

@@ -27,6 +27,6 @@
 
 ## Related skills
 
-- `hi-codebase-research-explorer`
+- `hi-scout`
 
 Source: [hi-chrome-devtools/SKILL.md](../../hi-chrome-devtools/SKILL.md)

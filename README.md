@@ -1,6 +1,6 @@
 # DevKit
 
-A token-efficient agent skills kit for software engineering workflows. **35 composable skills** plus the `dev-shared` support package, built for Claude Code / Cursor / Continue / Copilot / OpenCode / Qwen Code / Antigravity / Hermes and any agent that reads `SKILL.md`.
+A token-efficient agent skills kit for software engineering workflows. **34 composable skills** plus the `dev-shared` support package, built for Claude Code / Cursor / Continue / Copilot / OpenCode / Qwen Code / Antigravity / Hermes and any agent that reads `SKILL.md`.
 
 ## Advanced Capabilities
 
@@ -30,7 +30,7 @@ $ npx skill-dev
 ◆  Select skills
 │  ◼ hi-craft
 │  ◼ hi-debug
-│  ◼ hi-codebase-research-explorer
+│  ◼ hi-scout
 │  ◼ hi-fix
 │  ◼ hi-knows
 │  ◼ hi-log
@@ -167,7 +167,7 @@ Set `CLAUDE_CONFIG_DIR`, `CODEX_HOME`, or `XDG_CONFIG_HOME` to override the base
 
 ## What Is Included
 
-35 skills in six groups, plus the `dev-shared` support package. Every row is one directory under the repo root.
+34 skills in six groups, plus the `dev-shared` support package. Every row is one directory under the repo root.
 
 ### Core Workflow (4)
 
@@ -178,12 +178,11 @@ Set `CLAUDE_CONFIG_DIR`, `CODEX_HOME`, or `XDG_CONFIG_HOME` to override the base
 | `hi-fix/` | `hi-fix` | Bug, test, CI, type, lint, UI, and runtime issue resolution. |
 | `hi-debug/` | `hi-debug` | Root-cause debugging for failures, logs, CI, databases, performance, and system behavior. |
 
-### Evidence And Exploration (5)
+### Evidence And Exploration (4)
 
 | Directory | Skill name | Purpose |
 | --- | --- | --- |
-| `hi-repository-search/` | `hi-repository-search` | Traceable repository evidence from project docs, semantic code search, symbols, call paths, dependency analysis, and documents. |
-| `hi-codebase-research-explorer/` | `hi-codebase-research-explorer` | Fast parallel codebase and external research for file discovery, web/docs lookup, GitHub analysis, and UI/image understanding. |
+| `hi-scout/` | `hi-scout` | Traceable evidence from project docs, semantic code search, symbols, call paths, dependency analysis, external web/GitHub/image research, and parallel exploration. |
 | `hi-knows/` | `hi-knows` | Unified knowledge retrieval from Git, MCP, and memory files. |
 | `hi-docs-seeker/` | `hi-docs-seeker` | Current, authoritative technical documentation for libraries, frameworks, APIs, versions, migrations, and compatibility. |
 | `hi-repo-recon/` | `hi-repo-recon` | Map an unfamiliar repository into a module inventory, entry-point map, and key-function catalog. |
@@ -252,8 +251,7 @@ Skills are invoked by slash command or by bare name, depending on the harness. A
 | `hi-craft` | `/hi-craft [task \| plan path]` | `--full`, `--parallel`, `--review`, `--auto`, `--no-test`, `--test-budget=N` (default: fast) | — |
 | `hi-fix` | `/hi-fix [issue]` | `--standard`, `--deep`, `--parallel`, `--review` (default: quick) | — |
 | `hi-debug` | `/hi-debug [error or issue description]` | — | — |
-| `hi-repository-search` | `/hi-repository-search [question \| symbol \| path \| SQL \| impact target]` | `--code`, `--doc`, `--ask`, `--deep`, `--impact` | — |
-| `hi-codebase-research-explorer` | `/hi-codebase-research-explorer [search target]` | — | — |
+| `hi-scout` | `/hi-scout [question \| symbol \| path \| SQL \| impact target \| repo URL \| docs topic \| image]` | `--code`, `--doc`, `--ask`, `--deep`, `--impact`, `--external`, `--parallel` | — |
 | `hi-knows` | `/hi-knows [target]` | intent: `why-changed`, `impact-analysis`, `architecture-context`, `history-trace` | — |
 | `hi-docs-seeker` | `/hi-docs-seeker [question]` | mode: `topic`, `version`, `migration`, `compatibility`, `overview` | — |
 | `hi-repo-recon` | `/hi-repo-recon [repo path]` | `scope`: `backend`, `frontend`, `infra`, `data`, `all`; `depth`: `quick`, `standard`, `deep` | — |
@@ -284,9 +282,9 @@ Skills are invoked by slash command or by bare name, depending on the harness. A
 | `hi-tech-build-audit` | `/hi-tech-build-audit [repo path]` | `target_env`: `local`, `container`, `cloud`, `hybrid`, `auto`; `depth`: `quick`, `standard`, `deep` | — |
 | `typesafe-ai` | `/typesafe-ai [feature intent]` | primitives: `choice`, `noul`, `score` | — |
 
-## Repository Search Integration
+## Evidence Retrieval (hi-scout)
 
-`hi-repository-search` is the shared evidence layer for questions that require verified repository context. Use it before planning or changing code when the answer depends on codebase structure, architecture, cross-file behavior, impact analysis, or project documentation.
+`hi-scout` is the shared evidence layer for questions that require verified repository context. Use it before planning or changing code when the answer depends on codebase structure, architecture, cross-file behavior, impact analysis, project documentation, or an external source.
 
 The expected context search chain is:
 
@@ -297,7 +295,7 @@ The expected context search chain is:
 
 If one level is missing or disconnected, skip immediately to the next level. If the full chain yields no evidence, stop and ask for more details instead of guessing.
 
-`hi-repository-search` is intentionally evidence-only. It gathers and verifies context; orchestration always stays with the calling skill or agent, and the skill never plans or implements.
+`hi-scout` is intentionally evidence-only. It gathers and verifies context; orchestration always stays with the calling skill or agent, and the skill never plans or implements. Sequential search is the default; `--external` and `--parallel` are explicit escalation modes.
 
 Recommended modes:
 
@@ -305,17 +303,21 @@ Recommended modes:
 | --- | --- |
 | `--code` | You need symbol, file, call path, or implementation evidence. |
 | `--doc` | You need project docs, concepts, requirements, or architectural notes. |
+| `--ask` | You need a short answer from the nearest sufficient evidence. |
 | `--deep` | You need to reconcile code and docs. |
 | `--impact` | You need dependency, blast-radius, caller, or workflow impact evidence. |
+| `--external` | The target is web docs, a GitHub repo, or an image/UI, reached through MCP tools. |
+| `--parallel` | The target splits into 1-5 independent scopes worth running as separate agents. |
 
 ## Typical Workflows
 
 ```text
 Implement feature:    hi-craft -> hi-plan --fast -> implement -> test -> hi-log
-Fix bug:              hi-fix -> hi-codebase-research-explorer -> diagnose -> fix -> verify
-Plan architecture:    hi-plan --full -> hi-repository-search --deep -> phases -> validate
+Fix bug:              hi-fix -> hi-scout -> diagnose -> fix -> verify
+Plan architecture:    hi-plan --full -> hi-scout --deep -> phases -> validate
 Investigate failure:  hi-debug -> logs/traces -> root cause -> fix recommendation
-Impact analysis:      hi-repository-search --impact -> hi-predict -> scoped plan
+Impact analysis:      hi-scout --impact -> hi-predict -> scoped plan
+External research:    hi-scout --external --parallel -> docs/repo/image evidence -> next step
 Security audit:       hi-security -> findings -> optional auto-fix -> re-verify
 Scenario coverage:    hi-scenario -> edge cases -> tests or review checklist
 Browser task:         hi-chrome-devtools -> inspect/click/screenshot/network
@@ -335,7 +337,7 @@ Mode matrices, per-skill flow diagrams, the cross-skill integration graph, deleg
 | `hi-craft` | Do not edit until a reviewed plan exists, unless the user explicitly skips planning. | Stop, create or reuse a plan, then continue. |
 | `hi-fix` | Do not fix before locating the failure and identifying root cause. | Return to explore/diagnose; after 3 failed fix attempts, question architecture with the user. |
 | `hi-plan` | Scan active plans first and record relevant `blockedBy` / `blocks` relationships. | Update the related plans before producing the new plan. |
-| `hi-repository-search` | Provide traceable evidence only; do not invent context or own implementation decisions. | Report search coverage and ask for details if evidence is missing. |
+| `hi-scout` | Provide traceable evidence only; do not invent context or own implementation decisions. | Report search coverage and ask for details if evidence is missing. |
 | `hi-security` | Security findings need source evidence and severity-ranked remediation. | Do not auto-fix outside the requested audit/fix scope. |
 | `hi-project-organization` | Do not override established project layout without evidence. | Use existing conventions or return an advisory recommendation. |
 
@@ -374,8 +376,7 @@ dev-kit/
 ├── hi-craft/
 ├── hi-fix/
 ├── hi-debug/
-├── hi-repository-search/          # Evidence and exploration
-├── hi-codebase-research-explorer/
+├── hi-scout/                      # Evidence and exploration
 ├── hi-knows/
 ├── hi-docs-seeker/
 ├── hi-repo-recon/
@@ -412,7 +413,7 @@ dev-kit/
 - Evidence comes before assumptions. Prefer traceable context from `mind_mcp`, `graph_mcp`, `serena`, then native search.
 - Keep changes scoped. Skills should solve the target problem without unrelated refactors or cleanup.
 - Use the lightest useful mode first. Escalate to deep, review, parallel, or impact modes when risk or uncertainty justifies it.
-- `hi-repository-search` gathers evidence; implementation and final decisions stay with the orchestrating skill or agent.
+- `hi-scout` gathers evidence; implementation and final decisions stay with the orchestrating skill or agent.
 - Discovery artifacts are draft-only. Only an orchestrator with explicit human approval publishes a document.
 - Every workflow that mutates the repository ends with a commit plus a `hi-log` entry under `docs/logs/`.
 - Known process gap: `docs/logs/` still holds a single entry while `hi-log` is a mandatory finalize step. Logging discipline, not tooling, is what is missing.

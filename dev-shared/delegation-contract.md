@@ -64,6 +64,6 @@ A workflow that ends with delegated work invisible in the task tree or log viola
 | `implementer` | `dev-shared/roles/implementer.md` (alias: `fullstack-developer`) | `hi-craft --parallel`, `hi-fix --parallel` |
 | `reviewer` | `dev-shared/roles/reviewer.md` | `hi-plan red-team`, `hi-craft --review`/`--full` |
 | `log-writer` | `hi-log/references/log-writer-contract.md` | `hi-log` |
-| `investigator` | ad hoc — define the brief at spawn time | `hi-debug`, `hi-repository-search`, `hi-codebase-research-explorer` |
+| `investigator` | ad hoc — define the brief at spawn time | `hi-debug`, `hi-scout` |
 
 Skills may add roles; the brief must exist before the role is delegated.

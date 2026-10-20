@@ -394,7 +394,7 @@ Rule cuối của `AGENTS.md`:
 flowchart TD
     A[Task] --> B[AGENTS.md policy]
     B --> C[Context priority]
-    C --> D[hi-repository-search / explorer]
+    C --> D[hi-scout]
     D --> E[Evidence]
     E --> F[hi-plan]
     E --> G[hi-debug/hi-fix]
@@ -407,13 +407,13 @@ flowchart TD
     K --> L
 ```
 
-### 14.1 Với `hi-repository-search`
+### 14.1 Với `hi-scout`
 
-`AGENTS.md` quy định priority chain. `hi-repository-search` thực thi repository evidence search với modes và Evidence Bundle.
+`AGENTS.md` quy định priority chain. `hi-scout` thực thi repository evidence search với modes và Evidence Bundle.
 
-### 14.2 Với `hi-codebase-research-explorer`
+### 14.2 Với `hi-scout --external` / `--parallel`
 
-Explorer có thể parallelize local/external research, nhưng internal search vẫn phải respect tool priority policy khi tìm local context.
+Scout có thể parallelize local/external research, nhưng internal search vẫn phải respect tool priority policy khi tìm local context.
 
 ### 14.3 Với `hi-plan`
 

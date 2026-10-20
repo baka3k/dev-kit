@@ -160,11 +160,11 @@ sequenceDiagram
 
 In the diagram above, `Researchers` is an **agent role**, not the name of a skill. Per the current contract, a researcher can invoke the three skills explicitly named in the research phase:
 
-- `hi-repository-search` to obtain evidence from the repository;
+- `hi-scout` to obtain evidence from the repository;
 - `hi-docs-seeker` to check external documentation;
 - `hi-sequential-thinking` when decomposing or comparing a complex problem is needed.
 
-`hi-repository-search` is the layer that routes down to `mind_mcp`, `graph_mcp`, Serena and `rg`. The `graph_mcp` functions in the branch below are **intent-based**; not every function is always called in a single run.
+`hi-scout` is the layer that routes down to `mind_mcp`, `graph_mcp`, Serena and `rg`. The `graph_mcp` functions in the branch below are **intent-based**; not every function is always called in a single run.
 
 ```mermaid
 sequenceDiagram
@@ -174,7 +174,7 @@ sequenceDiagram
     participant R as Researcher<br/>Research subagent
     participant ST as hi-sequential-thinking<br/>Analysis skill
     participant DS as hi-docs-seeker<br/>Research skill
-    participant RS as hi-repository-search<br/>Retrieval skill
+    participant RS as hi-scout<br/>Retrieval skill
     participant M as mind_mcp<br/>Knowledge MCP service
     participant G as graph_mcp<br/>Code-graph MCP service
     participant F as Serena / rg<br/>MCP + CLI fallback
@@ -257,7 +257,7 @@ In the sequence diagram, the first line is the actor identity and the second lin
 | Researcher | Research subagent | Spawned by `hi-plan` to investigate one approach or one research lens | **Yes** |
 | `hi-sequential-thinking` | Analysis skill | Runs as a capability inside the researcher when decomposing or comparing approaches | No |
 | `hi-docs-seeker` | Research skill | Runs inside the researcher to obtain documentation from official sources | No |
-| `hi-repository-search` | Retrieval skill | Runs inside the researcher to gather repository evidence and coordinate the retrieval chain | Not in this flow |
+| `hi-scout` | Retrieval skill | Runs inside the researcher to gather repository evidence and coordinate the retrieval chain | Not in this flow |
 | `mind_mcp` | Knowledge MCP service | Provides project documents, concepts and architecture context | No |
 | `graph_mcp` | Code-graph MCP service | Provides semantic candidates, relationships, paths and impact evidence | No |
 | Serena / `rg` | MCP + CLI fallback tools | Serena confirms symbol/reference; `rg` handles the final exact-string gap | No |
@@ -268,13 +268,13 @@ An actor bearing a skill name does not imply a SubAgent. In this flow, only `Res
 
 The boundaries that must be understood correctly:
 
-- A Researcher does **not call** `hi-codebase-research-explorer` by default; the `hi-plan` contract currently does not declare that routing.
+- A Researcher does **not escalate** `hi-scout` to `--parallel` or `--external` by default; the `hi-plan` contract routes only the sequential evidence search.
 - Red-team reviewers are agents running hostile lenses in `/hi-plan red-team`; the contract does not say reviewer automatically calls `hi-security`.
 - `semantic_search` produces candidates. Relationships are only considered evidence after `explore_graph`, graph traversal or source corroboration.
 - `query_subgraph`, `trace_flow`, `find_paths` and `analyze_workflow_impact` are choice branches based on the question; they are not all run sequentially.
 - When the runtime schema differs from the documentation, the response from `list_mcp_functions()` is authoritative; do not hardcode old parameters.
 
-Reference sources: [`hi-plan/SKILL.md`](../../hi-plan/SKILL.md), [`research-phase.md`](../../hi-plan/references/research-phase.md), [`red-team-workflow.md`](../../hi-plan/references/red-team-workflow.md), [`hi-repository-search/SKILL.md`](../../hi-repository-search/SKILL.md), and [`code_graph.md`](../../hi-repository-search/references/code_graph.md).
+Reference sources: [`hi-plan/SKILL.md`](../../hi-plan/SKILL.md), [`research-phase.md`](../../hi-plan/references/research-phase.md), [`red-team-workflow.md`](../../hi-plan/references/red-team-workflow.md), [`hi-scout/SKILL.md`](../../hi-scout/SKILL.md), and [`code_graph.md`](../../hi-scout/references/code_graph.md).
 
 ### 4.4 `--hard`
 

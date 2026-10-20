@@ -160,11 +160,11 @@ sequenceDiagram
 
 Trong diagram ở trên, `Researchers` là **vai trò agent**, không phải tên một skill. Theo contract hiện tại, researcher có thể gọi ba skill được nêu rõ trong research phase:
 
-- `hi-repository-search` để lấy evidence từ repository;
+- `hi-scout` để lấy evidence từ repository;
 - `hi-docs-seeker` để kiểm tra documentation bên ngoài;
 - `hi-sequential-thinking` khi cần phân rã hoặc so sánh vấn đề phức tạp.
 
-`hi-repository-search` mới là lớp định tuyến xuống `mind_mcp`, `graph_mcp`, Serena và `rg`. Các hàm `graph_mcp` trong nhánh dưới đây là **theo intent**, không phải mọi hàm đều luôn được gọi trong một run.
+`hi-scout` mới là lớp định tuyến xuống `mind_mcp`, `graph_mcp`, Serena và `rg`. Các hàm `graph_mcp` trong nhánh dưới đây là **theo intent**, không phải mọi hàm đều luôn được gọi trong một run.
 
 ```mermaid
 sequenceDiagram
@@ -174,7 +174,7 @@ sequenceDiagram
     participant R as Researcher<br/>Research subagent
     participant ST as hi-sequential-thinking<br/>Analysis skill
     participant DS as hi-docs-seeker<br/>Research skill
-    participant RS as hi-repository-search<br/>Retrieval skill
+    participant RS as hi-scout<br/>Retrieval skill
     participant M as mind_mcp<br/>Knowledge MCP service
     participant G as graph_mcp<br/>Code-graph MCP service
     participant F as Serena / rg<br/>MCP + CLI fallback
@@ -257,7 +257,7 @@ Trong sequence diagram, dòng đầu là actor identity và dòng thứ hai là 
 | Researcher | Research subagent | Được `hi-plan` spawn để điều tra một approach hoặc một research lens | **Có** |
 | `hi-sequential-thinking` | Analysis skill | Chạy như capability bên trong researcher khi cần phân rã hoặc so sánh approach | Không |
 | `hi-docs-seeker` | Research skill | Chạy trong researcher để lấy documentation từ nguồn chính thức | Không |
-| `hi-repository-search` | Retrieval skill | Chạy trong researcher để thu thập repository evidence và điều phối retrieval chain | Không theo flow này |
+| `hi-scout` | Retrieval skill | Chạy trong researcher để thu thập repository evidence và điều phối retrieval chain | Không theo flow này |
 | `mind_mcp` | Knowledge MCP service | Cung cấp project documents, concepts và architecture context | Không |
 | `graph_mcp` | Code-graph MCP service | Cung cấp semantic candidates, relationships, paths và impact evidence | Không |
 | Serena / `rg` | MCP + CLI fallback tools | Serena xác nhận symbol/reference; `rg` xử lý exact-string gap cuối cùng | Không |
@@ -268,13 +268,13 @@ Một actor mang tên skill không đồng nghĩa với SubAgent. Trong flow nà
 
 Các ranh giới cần hiểu đúng:
 
-- Researcher **không mặc định gọi** `hi-codebase-research-explorer`; contract của `hi-plan` hiện không khai báo routing đó.
+- Researcher **không mặc định nâng** `hi-scout` lên `--parallel` hoặc `--external`; contract của `hi-plan` chỉ định tuyến evidence search tuần tự.
 - Red-team reviewer là agent chạy hostile lens trong `/hi-plan red-team`; contract không nói reviewer tự động gọi `hi-security`.
 - `semantic_search` tạo candidate. Relationship chỉ được coi là evidence sau `explore_graph`, graph traversal hoặc source corroboration.
 - `query_subgraph`, `trace_flow`, `find_paths` và `analyze_workflow_impact` là các nhánh lựa chọn theo câu hỏi; không chạy tuần tự tất cả.
 - Khi runtime schema khác tài liệu, response từ `list_mcp_functions()` là authority; không hardcode tham số cũ.
 
-Nguồn đối chiếu: [`hi-plan/SKILL.md`](../../hi-plan/SKILL.md), [`research-phase.md`](../../hi-plan/references/research-phase.md), [`red-team-workflow.md`](../../hi-plan/references/red-team-workflow.md), [`hi-repository-search/SKILL.md`](../../hi-repository-search/SKILL.md), và [`code_graph.md`](../../hi-repository-search/references/code_graph.md).
+Nguồn đối chiếu: [`hi-plan/SKILL.md`](../../hi-plan/SKILL.md), [`research-phase.md`](../../hi-plan/references/research-phase.md), [`red-team-workflow.md`](../../hi-plan/references/red-team-workflow.md), [`hi-scout/SKILL.md`](../../hi-scout/SKILL.md), và [`code_graph.md`](../../hi-scout/references/code_graph.md).
 
 ### 4.4 `--hard`
 

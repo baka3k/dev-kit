@@ -394,7 +394,7 @@ This applies to the agent's responses in this repository, even though the user m
 flowchart TD
     A[Task] --> B[AGENTS.md policy]
     B --> C[Context priority]
-    C --> D[hi-repository-search / explorer]
+    C --> D[hi-scout]
     D --> E[Evidence]
     E --> F[hi-plan]
     E --> G[hi-debug/hi-fix]
@@ -407,13 +407,13 @@ flowchart TD
     K --> L
 ```
 
-### 14.1 With `hi-repository-search`
+### 14.1 With `hi-scout`
 
-`AGENTS.md` defines the priority chain. `hi-repository-search` executes repository evidence search with modes and an Evidence Bundle.
+`AGENTS.md` defines the priority chain. `hi-scout` executes repository evidence search with modes and an Evidence Bundle.
 
-### 14.2 With `hi-codebase-research-explorer`
+### 14.2 With `hi-scout --external` / `--parallel`
 
-The Explorer can parallelize local/external research, but internal search must still respect the tool priority policy when looking for local context.
+Scout can parallelize local/external research, but internal search must still respect the tool priority policy when looking for local context.
 
 ### 14.3 With `hi-plan`
 

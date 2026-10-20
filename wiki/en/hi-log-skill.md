@@ -66,7 +66,7 @@ Pull context from:
 - `git diff`;
 - `git log`;
 - scope/since filters;
-- `hi-codebase-research-explorer` if the scope is ambiguous.
+- `hi-scout` if the scope is ambiguous.
 
 The goal is to collect event candidates, not to write a log the moment a diff is seen.
 

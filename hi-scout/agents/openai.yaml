@@ -1,0 +1,11 @@
+interface:
+  display_name: "Hi Scout"
+  short_description: "Gather traceable evidence from repository code, project documents, and external sources (web docs, GitHub repos, images, UI)."
+  default_prompt: "Use $hi-scout to answer repository or research questions with verified evidence and explicit search coverage. Choose the narrowest mode: --code, --doc, --ask, --deep for code-document reconciliation, --impact for dependency and blast-radius analysis, --external for web/GitHub/image MCP research, or --parallel for 1-5 scoped subagents."
+  capabilities:
+    - local_codebase_search
+    - repository_evidence_bundle
+    - web_documentation_lookup
+    - github_repo_analysis
+    - image_and_ui_analysis
+    - parallel_agent_orchestration

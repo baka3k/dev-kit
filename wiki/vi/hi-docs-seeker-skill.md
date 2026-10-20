@@ -738,7 +738,7 @@ flowchart TD
     C --> D[hi-plan: design/configuration plan]
     C --> E[hi-craft: implementation]
     C --> F[hi-fix/hi-debug: library-specific diagnosis]
-    C --> G[hi-repository-search: project-specific usage]
+    C --> G[hi-scout: project-specific usage]
     C --> H[hi-security: secure configuration/policy]
 ```
 
@@ -748,11 +748,11 @@ flowchart TD
 | `hi-craft` | Syntax/behavior docs trước implementation |
 | `hi-fix` | Official troubleshooting, version fix và compatibility context |
 | `hi-debug` | Package semantics, known issue và release evidence |
-| `hi-repository-search` | External docs để đối chiếu local project usage |
+| `hi-scout` | External docs để đối chiếu local project usage |
 | `hi-security` | Official security configuration và standards |
 | `hi-sequential-thinking` | Structured research questions/alternatives |
 
-`hi-docs-seeker` không thay thế `hi-repository-search`: một cái tìm external authoritative docs, cái kia tìm project-specific code/doc evidence.
+`hi-docs-seeker` không thay thế `hi-scout`: một cái tìm external authoritative docs, cái kia tìm project-specific code/doc evidence.
 
 ## 22. Các lỗi phổ biến
 

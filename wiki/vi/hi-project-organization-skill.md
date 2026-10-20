@@ -892,7 +892,7 @@ flowchart TD
 | `hi-debug` | Incident/performance/report layout |
 | `hi-scenario` | Scenario report deliverable path |
 | `hi-predict` | Prediction report naming/path |
-| `hi-repository-search` | Evidence report/document placement |
+| `hi-scout` | Evidence report/document placement |
 | `hi-log` | Technical log path và timestamp |
 
 ## 21. Giới hạn cần hiểu đúng

@@ -59,6 +59,8 @@ const SUMMARY_VI = {
     "Lập bản đồ repository lạ: inventory module, entry-point map và catalog hàm chính; chỉ tạo bằng chứng cấu trúc.",
   "hi-repowiki":
     "Sinh hoặc cập nhật wiki repository ở /repowiki/: kiến trúc, cài đặt, cấu hình, CLI/build, API, test, deploy, module.",
+  "hi-scout":
+    "Thu thập bằng chứng có truy vết từ code, tài liệu dự án và nguồn ngoài (web docs, GitHub, ảnh/UI); có mode tuần tự và song song.",
   "hi-tech-build-audit":
     "Audit tech stack, build system, quản lý dependency, pipeline CI/CD, target deploy và giả định nền tảng.",
   "hi-usecase-discovery":
@@ -69,12 +71,12 @@ const SUMMARY_VI = {
 
 /** Related skills per page (kept in sync with devkit.md). */
 const RELATIONS = {
-  "hi-api-contract-discovery": ["hi-usecase-discovery", "hi-data-model-discovery", "hi-behavior-modeling", "hi-cross-artifact-validation", "hi-maintenance-docs", "hi-document-lifecycle", "hi-repository-search"],
+  "hi-api-contract-discovery": ["hi-usecase-discovery", "hi-data-model-discovery", "hi-behavior-modeling", "hi-cross-artifact-validation", "hi-maintenance-docs", "hi-document-lifecycle", "hi-scout"],
   "hi-behavior-modeling": ["hi-usecase-discovery", "hi-cross-artifact-validation", "hi-maintenance-docs", "hi-document-lifecycle"],
   "hi-brainstorm": ["hi-plan", "hi-predict", "hi-sequential-thinking"],
-  "hi-chrome-devtools": ["hi-codebase-research-explorer"],
+  "hi-chrome-devtools": ["hi-scout"],
   "hi-command-spec-discovery": ["hi-usecase-discovery", "hi-behavior-modeling", "hi-cross-artifact-validation", "hi-maintenance-docs", "hi-document-lifecycle"],
-  "hi-cortex": ["hi-repository-search", "hi-plan", "hi-craft", "hi-fix", "hi-debug", "hi-scenario", "hi-security"],
+  "hi-cortex": ["hi-scout", "hi-plan", "hi-craft", "hi-fix", "hi-debug", "hi-scenario", "hi-security"],
   "hi-cross-artifact-validation": ["hi-usecase-discovery", "hi-behavior-modeling", "hi-api-contract-discovery", "hi-data-model-discovery", "hi-command-spec-discovery", "hi-maintenance-docs"],
   "hi-data-model-discovery": ["hi-usecase-discovery", "hi-behavior-modeling", "hi-cross-artifact-validation", "hi-maintenance-docs", "hi-document-lifecycle"],
   "hi-document-lifecycle": ["hi-maintenance-docs", "hi-document-refinement", "hi-document-review-resolution", "hi-module-summary-report", "hi-usecase-discovery", "hi-behavior-modeling", "hi-api-contract-discovery", "hi-data-model-discovery", "hi-command-spec-discovery"],
@@ -84,6 +86,7 @@ const RELATIONS = {
   "hi-module-summary-report": ["hi-repo-recon", "hi-tech-build-audit", "hi-maintenance-docs", "hi-repowiki"],
   "hi-repo-recon": ["hi-tech-build-audit", "hi-module-summary-report", "hi-usecase-discovery", "hi-maintenance-docs", "hi-repowiki"],
   "hi-repowiki": ["hi-repo-recon", "hi-tech-build-audit", "hi-module-summary-report"],
+  "hi-scout": ["hi-plan", "hi-craft", "hi-fix", "hi-debug", "hi-cortex", "hi-docs-seeker"],
   "hi-tech-build-audit": ["hi-repo-recon", "hi-module-summary-report", "hi-repowiki"],
   "hi-usecase-discovery": ["hi-repo-recon", "hi-behavior-modeling", "hi-cross-artifact-validation", "hi-maintenance-docs", "hi-document-lifecycle"],
   "typesafe-ai": ["hi-plan", "hi-craft", "hi-security", "hi-scenario"],

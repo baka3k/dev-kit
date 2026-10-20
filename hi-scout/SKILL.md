@@ -1,16 +1,16 @@
 ---
-name: hi-repository-search
-description: "Gather traceable evidence from repository code and project documents. Use for codebase exploration, architecture, feature tracing, dependency or impact analysis, and questions that require verified source context."
-argument-hint: "<question | symbol | path | SQL | impact target> [--code|--doc|--ask|--deep|--impact]"
+name: hi-scout
+description: "Gather traceable evidence from repository code, project documents, and external sources. Use for codebase exploration, architecture, feature tracing, dependency or impact analysis, file discovery, web/docs lookup, GitHub repo analysis, and image or UI understanding."
+argument-hint: "<question | symbol | path | SQL | impact target | repo URL | docs topic | image> [--code|--doc|--ask|--deep|--impact] [--external] [--parallel]"
 metadata:
   author: baka3k
-  version: "1.1.0"
-  last_updated: "2026-10-18"
+  version: "4.0.0"
+  last_updated: "2026-10-20"
 ---
 
-# Repository Search
+# Scout
 
-Retrieve and verify context; do not own planning, diagnosis, or implementation decisions.
+Retrieve and verify context; do not own planning, diagnosis, or implementation decisions. Sequential evidence gathering is the default; parallel agents and external research are explicit modes.
 
 ## Modes
 
@@ -19,8 +19,13 @@ Retrieve and verify context; do not own planning, diagnosis, or implementation d
 | default | Narrowest search that answers the question |
 | `--code` | Code, symbols, references, and call paths |
 | `--doc` | Project documents, decisions, and requirements |
+| `--ask` | Short question answered from the nearest sufficient evidence |
 | `--deep` | Reconcile code with documents and report conflicts |
 | `--impact` | Callers, dependencies, affected modules, and workflows |
+| `--external` | Web docs, GitHub repos, and image/UI analysis via MCP tools |
+| `--parallel` | Split an independent-scope target across 1-5 subagents |
+
+Modes combine: `--external --parallel` runs one toolset per agent; `--deep --parallel` verifies code and document tracks independently.
 
 ## Search Order
 
@@ -45,6 +50,15 @@ If a tool is unavailable, record it once and continue without retrying. Stop des
 
 Evidence is sufficient when it identifies the relevant source, supports required relationships, separates facts from inference, and exposes conflicts or gaps.
 
+## External And Parallel Modes
+
+- External targets (web docs, GitHub repo, image/UI) use MCP tools; read [references/external-research.md](./references/external-research.md) for tool selection, the decision matrix, and failure handling.
+- `--parallel` splits a target into 1-5 non-overlapping agent scopes; read [references/task-management.md](./references/task-management.md) for task registration, timeouts, and collection.
+- Spawn only when a mode requests it, never more than 5 units.
+- Each agent has a 3-minute timeout; skip non-responders instead of retrying.
+- The main agent owns synthesis: deduplicate paths/URLs, merge findings by topic, and record gaps.
+- When `--deep` needs only code/document conflict verification, at most two investigators (code, documents) are allowed.
+
 ## Evidence Bundle
 
 Include only relevant sections:
@@ -54,7 +68,7 @@ Include only relevant sections:
 - tool: used | unavailable | no results | skipped
 
 ## Findings
-- Claim — code|document — file+symbol|source_id+paragraph_id — confidence
+- Claim — code|document|external — file+symbol|source_id+paragraph_id|url — confidence
   Evidence: concise supporting detail
 
 ## Relationships
@@ -70,9 +84,19 @@ Derived conclusions, explicitly labeled.
 Unavailable, unindexed, or unanswered context.
 ```
 
-## Subagents
+## Report Format (parallel mode)
 
-Do not spawn by default. Use at most two investigators—code and documents—only when the user or project instructions permit delegation and the work has independent tracks, spans at least three subsystems, or needs independent conflict verification. The main agent owns synthesis and confidence.
+```markdown
+# Scout Report
+## Relevant Files / Resources
+- path/to/file.ts - description
+- https://docs.example.com/page - description
+- github.com/owner/repo/path/to/file - description
+## Key Findings
+- finding 1
+## Unresolved Questions
+- any gaps
+```
 
 ## Tool References
 
@@ -80,3 +104,7 @@ Read only when exact parameters are needed:
 
 - [Code Graph MCP](./references/code_graph.md)
 - [Document Graph RAG](./references/doc_graph_rag.md)
+
+## Configuration
+
+MCPs must be configured at the client (Claude Code / Cursor / Copilot). No config file is needed in the repository. When outputs are written to disk, follow `hi-project-organization`.

@@ -14,7 +14,7 @@ Một lỗi thường có nhiều lớp:
 Nếu chỉ sửa symptom, lỗi có thể biến mất trong một case nhưng quay lại qua call path khác. `hi-fix` buộc workflow phải đi qua research và diagnosis trước khi sửa:
 
 ```text
-[Codebase-Research-Explorer] -> [Diagnose] -> [Fix] -> [Verify + Prevent] -> [Finalize]
+[Scout] -> [Diagnose] -> [Fix] -> [Verify + Prevent] -> [Finalize]
 ```
 
 Mục tiêu là tạo một fix có thể giải thích bằng evidence:
@@ -60,7 +60,7 @@ flowchart TD
 
 Quy tắc bắt buộc:
 
-> Không được fix trước khi đã chạy Codebase-Research-Explorer và Diagnose.
+> Không được fix trước khi đã chạy Scout và Diagnose.
 
 Điều này có nghĩa là không nên:
 
@@ -207,7 +207,7 @@ Standard mode nên được dùng khi:
 
 ```mermaid
 flowchart TD
-    A[Complex issue] --> B1[Explorer: affected modules]
+    A[Complex issue] --> B1[Scout: affected modules]
     A --> B2[Diagnose: error chain]
     A --> B3[Research: patterns and history]
     B1 --> C[Synthesize evidence]
@@ -288,11 +288,11 @@ Nếu không có critical finding:
 
 Việc user chọn `Approve anyway` nên được ghi rõ trong report cùng residual risk. Nó không làm critical issue biến mất khỏi evidence.
 
-## 10. Bước 1: Codebase-Research-Explorer
+## 10. Bước 1: Scout
 
 ### 10.1 Mục tiêu
 
-Explorer ở bước đầu có nhiệm vụ **locate-only**: tìm đúng vùng code trước khi diagnosis sâu.
+Scout ở bước đầu có nhiệm vụ **locate-only**: tìm đúng vùng code trước khi diagnosis sâu.
 
 Cần xác định:
 
@@ -306,14 +306,14 @@ Cần xác định:
 
 ### 10.2 Scale theo mode
 
-| Mode | Explorer |
+| Mode | Scout |
 |---|---|
 | Quick | 1 agent locate-only |
-| Standard | `hi-codebase-research-explorer` hoặc 2-3 explorer |
-| Deep | Explorer song song với Diagnose và Research |
-| Parallel | Explorer riêng cho từng issue |
+| Standard | `hi-scout` hoặc 2-3 explorer |
+| Deep | Scout song song với Diagnose và Research |
+| Parallel | Scout riêng cho từng issue |
 
-Explorer không được tự ý sửa code. Nó trả về context để diagnosis có thể kiểm chứng hypothesis.
+Scout không được tự ý sửa code. Nó trả về context để diagnosis có thể kiểm chứng hypothesis.
 
 ### 10.3 Output mong đợi
 
@@ -765,7 +765,7 @@ Production login thỉnh thoảng trả 500 khi user vừa được tạo.
 /hi-fix intermittent 500 on login for newly-created users --deep --review
 ```
 
-### 19.2 Explorer
+### 19.2 Scout
 
 Tìm:
 
@@ -833,7 +833,7 @@ Chỉ finalize sau khi root cause được confirm, regression test pass và kh�
 ```mermaid
 flowchart TD
     A[Issue] --> B[hi-fix]
-    B --> C[hi-codebase-research-explorer]
+    B --> C[hi-scout]
     C --> D[Diagnose]
     D --> E{Complex diagnosis?}
     E -->|Yes| F[hi-debug]
@@ -851,7 +851,7 @@ flowchart TD
 
 | Skill | Vai trò |
 |---|---|
-| `hi-codebase-research-explorer` | Locate affected files, symbols và dependencies |
+| `hi-scout` | Locate affected files, symbols và dependencies |
 | `hi-debug` | Systematic debugging khi diagnosis khó |
 | `hi-problem-solving` | Thoát khỏi framing/hypothesis loop |
 | `hi-scenario` | Bổ sung edge cases và scenario matrix |

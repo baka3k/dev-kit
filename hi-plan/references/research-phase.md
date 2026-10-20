@@ -7,7 +7,7 @@
 - Sequential thinking (hi-sequential-thinking) for complex analysis
 - Documentation research (hi-docs-seeker)
 - GitHub analysis: Actions logs, PRs, issues
-- Remote repo: `hi-repository-search`
+- Remote repo: `hi-scout --external`
 
 ## Best Practices
 - Research breadth before depth

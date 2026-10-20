@@ -738,7 +738,7 @@ flowchart TD
     C --> D[hi-plan: design/configuration plan]
     C --> E[hi-craft: implementation]
     C --> F[hi-fix/hi-debug: library-specific diagnosis]
-    C --> G[hi-repository-search: project-specific usage]
+    C --> G[hi-scout: project-specific usage]
     C --> H[hi-security: secure configuration/policy]
 ```
 
@@ -748,11 +748,11 @@ flowchart TD
 | `hi-craft` | Syntax/behavior docs before implementation |
 | `hi-fix` | Official troubleshooting, version fixes, and compatibility context |
 | `hi-debug` | Package semantics, known issues, and release evidence |
-| `hi-repository-search` | External docs to cross-check local project usage |
+| `hi-scout` | External docs to cross-check local project usage |
 | `hi-security` | Official security configuration and standards |
 | `hi-sequential-thinking` | Structured research questions/alternatives |
 
-`hi-docs-seeker` does not replace `hi-repository-search`: one finds external authoritative documentation, the other finds project-specific code/documentation evidence.
+`hi-docs-seeker` does not replace `hi-scout`: one finds external authoritative documentation, the other finds project-specific code/documentation evidence.
 
 ## 22. Common mistakes
 
