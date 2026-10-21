@@ -23,7 +23,7 @@ Produce an evidence-backed research digest that the planning agent can turn into
 
 ## Output Format
 
-- **Findings**: numbered; each with source references (`path:line`, doc link).
+- **Findings**: numbered; each with source references (repo-relative `path:line`, doc link). Never machine-absolute paths.
 - **Conventions to follow**: patterns the implementation must match.
 - **Risks / open questions**: explicit `unknown`/`inferred` markers where evidence is missing.
 - **Recommended approaches**: max 3, one line each.

@@ -34,6 +34,15 @@ const LINK_ALLOWLIST = new Set([
   "system/system-overview.md",
 ]);
 
+/** Docs that state the path convention itself may spell out the forbidden patterns verbatim. */
+const ABSOLUTE_PATH_ALLOWLIST = new Set([
+  "hi-plan/SKILL.md",
+  "hi-plan/references/output-standards.md",
+  "hi-log/SKILL.md",
+  "hi-log/references/log-writer-contract.md",
+  "dev-shared/roles/researcher.md",
+]);
+
 const read = (p) => readFileSync(join(ROOT, p), "utf8");
 const listDir = (p) => readdirSync(join(ROOT, p), { withFileTypes: true });
 
@@ -208,6 +217,27 @@ rule("links-resolve", () => {
         if (existsSync(resolve(ROOT, dirname(file), target))) continue;
         findings.push(`${file}: broken link -> ${target}`);
       }
+    }
+  }
+  return findings;
+});
+
+rule("no-absolute-paths", () => {
+  // Plans, logs, and wiki pages must stay machine-portable: a persisted
+  // `/Users/<name>/...` path leaks the author's username and breaks for clones.
+  const findings = [];
+  for (const file of walkMarkdown()) {
+    if (ABSOLUTE_PATH_ALLOWLIST.has(file)) continue;
+    const lines = read(file).split("\n");
+    let fence = false;
+    for (const [i, line] of lines.entries()) {
+      if (/^\s*(```|~~~)/.test(line)) {
+        fence = !fence;
+        continue;
+      }
+      if (fence) continue; // fenced paths are examples, not persisted references
+      const m = line.match(/(?:\/(?:Users|home)\/[A-Za-z0-9._-]+|C:\\Users\\[A-Za-z0-9._-]+)/);
+      if (m) findings.push(`${file}:${i + 1}: machine-absolute path \`${m[0]}\` — persist repo-relative or \`~/\` instead`);
     }
   }
   return findings;

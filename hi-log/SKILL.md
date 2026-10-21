@@ -4,8 +4,8 @@ description: "Write log entries analyzing recent changes and session reflections
 argument-hint: "[topic] [--since <ref>] [--scope <dir>]"
 metadata:
   author: baka3k
-  version: "1.3.1"
-  last_updated: "2026-10-18"
+  version: "1.3.2"
+  last_updated: "2026-10-21"
 ---
 # Log
 
@@ -41,6 +41,7 @@ Ensure cross-links to plans (`./docs/plans/`) and journal entries.
 - Do NOT log empty sessions. If no material change -> abort with notice.
 - Always include **Impact** section in every entry.
 - Tie each entry to concrete references: `path/to/file.ts:LINE` or `commit:sha`.
+- References are repo-relative. Never persist machine-absolute paths (`/Users/...`, `/home/...`, `C:\Users\...`).
 - One event = one file. No monolithic daily dumps.
 - Preserve decision rationale, not just the outcome.
 

@@ -33,6 +33,9 @@ Example:
 - **Success Criteria:** Iterate until explicitly verified.
 - **Language:** Skill documentation, code, commit messages, and repository artifacts stay in English. Chat replies follow the operator's language.
 
+## Git
+- Commit only, always rebase, do not push unless requested
+
 ## When any decision is needed:
 1. Ask Jev AI first — query recipe: `typesafe-ai/reference.md`.
 2. If Jev AI fails (error, no network, no key), decide yourself.

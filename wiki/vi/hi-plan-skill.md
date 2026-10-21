@@ -105,7 +105,7 @@ flowchart LR
     E --> F{At least 3 phases?}
     F -->|Yes| G[Hydrate session tasks]
     F -->|No| H[Skip task creation]
-    G --> I[Return absolute path]
+    G --> I[Return project-relative path]
     H --> I
 ```
 
@@ -243,7 +243,7 @@ sequenceDiagram
 
     P->>P: Propagate quyết định, hydrate tasks
     P->>O: Invoke skill chuẩn hóa vị trí artifact
-    P-->>U: Absolute plan path & handoff command
+    P-->>U: Project-relative plan path & handoff command
 ```
 
 ##### 4.3.1.1 Actor types
@@ -498,7 +498,7 @@ Mỗi phase cần đủ thông tin để một developer khác có thể triển
 
 Output thông thường gồm:
 
-- absolute path tới plan directory;
+- project-relative path tới plan directory;
 - danh sách phase đã tạo;
 - trạng thái task hydration hoặc lý do skip;
 - nếu có full flow: review/validation summary;

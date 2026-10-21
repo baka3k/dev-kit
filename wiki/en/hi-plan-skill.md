@@ -105,7 +105,7 @@ flowchart LR
     E --> F{At least 3 phases?}
     F -->|Yes| G[Hydrate session tasks]
     F -->|No| H[Skip task creation]
-    G --> I[Return absolute path]
+    G --> I[Return project-relative path]
     H --> I
 ```
 
@@ -243,7 +243,7 @@ sequenceDiagram
 
     P->>P: Propagate decisions, hydrate tasks
     P->>O: Invoke skill to normalize artifact location
-    P-->>U: Absolute plan path & handoff command
+    P-->>U: Project-relative plan path & handoff command
 ```
 
 ##### 4.3.1.1 Actor types
@@ -498,7 +498,7 @@ Each phase needs enough information for another developer to implement without g
 
 Typical output includes:
 
-- the absolute path to the plan directory;
+- the project-relative path to the plan directory;
 - the list of created phases;
 - the task hydration status or the reason for skipping;
 - if a full flow ran: the review/validation summary;

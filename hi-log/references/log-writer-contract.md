@@ -23,7 +23,7 @@ Defines inputs, outputs, and scope rules for the log-writer subagent spawned by 
 ## Quality Bar
 - Every entry MUST contain: Context, Change, Impact, Decision, References.
 - Impact level declared (low/med/high). No "TBD" placeholders.
-- File references use `path:LINE` form. Commits use full sha.
+- File references use repo-relative `path:LINE` form. Commits use full sha. Never machine-absolute paths (`/Users/...`, `/home/...`).
 - If a section has nothing to say, omit the file entirely (do not log empty events).
 - Cross-link to plans (`./docs/plans/<id>/`) when work traces back to a plan.
 

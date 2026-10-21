@@ -4,8 +4,8 @@ description: "Plan implementations, design architectures, create technical roadm
 argument-hint: "[task] [--full|--hard|--parallel|--two|--no-tasks]  — default: fast mode. Sub: archive|red-team|validate"
 metadata:
   author: baka3k
-  version: "2.2.0"
-  last_updated: "2026-10-18"
+  version: "2.3.0"
+  last_updated: "2026-10-21"
 ---
 # Plan - Implementation Planning
 
@@ -45,7 +45,7 @@ Add `--no-tasks` to skip task hydration.
 3. **Codebase Analysis** -> Đọc docs, scan nếu cần (không spawn researcher)
 4. **Plan Documentation** -> Write plan.md + phase-XX.md
 5. **Hydrate Tasks** -> TaskCreate per phase (--no-tasks để skip)
-6. **Output** -> Absolute path
+6. **Output** -> Project-relative path
 
 ## Full Flow (--full)
 1. **Pre-Creation Check** -> Check Plan Context
@@ -57,7 +57,7 @@ Add `--no-tasks` to skip task hydration.
 7. **Red Team** -> `/hi-plan red-team {path}`
 8. **Validate** -> `/hi-plan validate {path}`
 9. **Hydrate Tasks** -> TaskCreate per phase
-10. **Output** -> Absolute path + craft command
+10. **Output** -> Project-relative path + craft command
 
 ## Graph Impact Layer (only when graph_mcp is available)
 - T2 profile per [dev-shared/graph-function-selection.md](../dev-shared/graph-function-selection.md): `semantic_search`/`search_functions` for scope anchors, `query_subgraph` for touched areas.
@@ -69,6 +69,7 @@ All worker launches follow [dev-shared/delegation-contract.md](../dev-shared/del
 
 ## Output Requirements
 - Plans in CURRENT WORKING PROJECT DIRECTORY (not user home)
+- Paths persisted in artifacts are repo-relative (`./docs/plans/<id>/...`, `src/foo.ts:42`); outside-repo paths use `~/`. Machine-absolute paths (`/Users/...`, `/home/...`, `C:\Users\...`) go in the final chat message only — never written into plan files
 - Plan files = persistent. Tasks = session-scoped
 - Invoke /hi-project-organization after output
 - Respect `./docs/development-rules.md`

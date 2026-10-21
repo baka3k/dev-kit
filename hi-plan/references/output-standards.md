@@ -33,6 +33,10 @@ description: 1-2 sentences, concrete deliverables, reference phase file
 ## Writing Style
 Sacrifice grammar for concision. Focus clarity over eloquence. Use bullets and lists. Short sentences. Prioritize actionable info.
 
+## Path Convention
+- Paths persisted in plan files are repo-relative: `./docs/plans/<id>/...`, `src/foo.ts:42`.
+- Outside-repo paths use `~/`. Never write machine-absolute paths (`/Users/...`, `/home/...`, `C:\Users\...`) into artifacts — report them in the final chat message only. Enforced by `scripts/check-kit-docs.mjs` (`no-absolute-paths`).
+
 ## Output Requirements
 - Plans ONLY, no implementation
 - Self-contained with necessary context
