@@ -72,7 +72,7 @@ All worker launches follow [dev-shared/delegation-contract.md](../dev-shared/del
 - Paths persisted in artifacts are repo-relative (`./docs/plans/<id>/...`, `src/foo.ts:42`); outside-repo paths use `~/`. Machine-absolute paths (`/Users/...`, `/home/...`, `C:\Users\...`) go in the final chat message only — never written into plan files
 - Plan files = persistent. Tasks = session-scoped
 - Invoke /hi-project-organization after output
-- Respect `./docs/development-rules.md`
+- Respect `./docs/development-rules.md` if present
 - Each `phase-XX.md` states its test scope: mapped acceptance criteria + expected size (S/M/L) per [dev-shared/test-budget.md](../dev-shared/test-budget.md)
 
 ## Task Management

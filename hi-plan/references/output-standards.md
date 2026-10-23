@@ -43,7 +43,7 @@ Sacrifice grammar for concision. Focus clarity over eloquence. Use bullets and l
 - Code snippets/pseudocode when clarifying
 - Multiple options with trade-offs when appropriate
 - Unresolved questions: AskUserQuestion, then revise based on answers
-- Fully respect ./docs/development-rules.md
+- Fully respect ./docs/development-rules.md when present
 
 ## Quality
 - Thorough: edge cases, failure modes, assumptions documented
