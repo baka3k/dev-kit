@@ -1,6 +1,8 @@
 # Persona Analysis Playbook
 
-Use this reference to build the shared context packet, issue isolated persona briefs, run the per-persona analysis, and (in `deep`) run the challenge round for hi-predict.
+Use this reference to run the per-persona analysis and (in `deep`) the challenge round for hi-predict.
+
+Packet assembly (including the impact-evidence sections below), the evidence ledger, brief rules, independence (isolated subagents vs disclosed sequential fallback), and debate discipline are defined once in [dev-shared/expert-council.md](../../dev-shared/expert-council.md); this playbook adds the predict-specific packet sections, persona framework, and challenge round.
 
 ## Shared Context Packet
 
@@ -17,7 +19,7 @@ impact_evidence:                  # from hi-scout --impact or the retrieval prot
   callers_callees: [{id: "rel-1", from: "...", to: "...", verified: true}]
   affected_workflows: [{id: "wf-1", name: "...", severity: "critical|high|medium|low"}]
   dependency_order_risks: []
-evidence:
+evidence:                         # ledger schema: dev-shared/expert-council.md
   verified_facts: [{id: "fact-1", statement: "..."}]
   user_statements: [{id: "user-1", statement: "..."}]
   assumptions: [{id: "assumption-1", statement: "..."}]
@@ -26,7 +28,7 @@ coverage:
   tools: {hi-scout: "used|unavailable|no results", mind_mcp: "...", graph_mcp: "...", serena: "...", rg: "..."}
 ```
 
-Do not include a verdict, a preferred mitigation, another persona's output, or language that anchors the panel toward `GO` or `STOP`. A semantic match is a candidate, not proof — only verified relationships enter `impact_evidence`.
+A semantic match is a candidate, not proof — only verified relationships enter `impact_evidence`.
 
 ## Isolated Persona Brief
 
@@ -182,12 +184,4 @@ List the proposal's load-bearing assumptions from the packet's `assumptions` and
 
 ## Deep Challenge Round
 
-In `deep`, after the draft consensus exists, give each persona the anonymized agreements, conflicts, and draft verdict — not other personas' raw outputs — and ask:
-
-1. What is the strongest reason the draft verdict is wrong?
-2. Which single assumption, if false, flips the verdict?
-3. Which risk is under- or over-weighted, and what evidence shows it?
-4. Can your objection be mitigated or tested cheaply? If not, why is it fatal?
-5. What evidence, if obtained, would move the verdict up or down (flip conditions)?
-
-Revise findings only on evidence or reasoning; record every change with its cause. Persistent disagreement stays in the report as an unresolved conflict — it is never averaged away.
+In `deep`, after the draft consensus exists, give each persona the anonymized agreements, conflicts, and draft verdict — not other personas' raw outputs — and ask the shared debate questions (dev-shared/expert-council.md). Revise findings only on evidence or reasoning; record every change with its cause. Persistent disagreement stays in the report as an unresolved conflict — it is never averaged away.

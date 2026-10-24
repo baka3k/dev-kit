@@ -2,6 +2,8 @@
 
 Use this reference to assemble the panel, issue isolated briefs, run rebuttals, and format the final decision.
 
+Packet assembly, the evidence ledger, brief rules, independence (isolated subagents vs disclosed sequential fallback), and debate discipline are defined once in [dev-shared/expert-council.md](../../dev-shared/expert-council.md); this playbook adds the brainstorm-specific charters, candidate records, scoring, and report.
+
 ## Shared Context Packet
 
 Give every expert the same neutral packet:
@@ -17,15 +19,13 @@ decision:
 scope:
   affected_users: []
   affected_systems: []
-evidence:
+evidence:                            # ledger schema: dev-shared/expert-council.md
   verified_facts: [{id: "fact-1", statement: "..."}]
   user_statements: [{id: "user-1", statement: "..."}]
   assumptions: [{id: "assumption-1", statement: "..."}]
   unknowns: [{id: "unknown-1", question: "..."}]
 candidate_options_from_user: []
 ```
-
-Do not include a preferred answer, another expert's output, or language that anchors the panel toward one solution.
 
 ## Expert Charters
 
@@ -155,23 +155,11 @@ A criterion may omit one expert's rating, but at least two expert ratings are re
 
 ## Rebuttal Round
 
-Give experts the anonymized options and initial score summary, not author identities. Ask each expert:
+Give experts the anonymized options and initial score summary, not author identities. Ask each expert the shared debate questions (dev-shared/expert-council.md) plus this council-specific one:
 
-1. What is the strongest reason the current leader should not be selected?
-2. Which assumption would most likely reverse the ranking?
-3. What is the strongest case for a lower-ranked option?
-4. Can the objection be mitigated or tested cheaply? If not, why is it fatal?
-5. Which ratings should change, and what new evidence or reasoning justifies each change?
 6. Are any candidates the same near-term solution with a roadmap or optional stage receiving unearned benefit?
 
-The moderator separates:
-
-- resolved disagreement: evidence or reasoning changed a view;
-- persistent value tradeoff: experts use different legitimate priorities;
-- unresolved factual dispute: decisive evidence is missing;
-- veto: a hard gate fails.
-
-Never erase persistent dissent merely because the median is stable.
+The moderator applies the shared disagreement taxonomy (resolved disagreement, persistent value tradeoff, unresolved factual dispute, veto) when consolidating the rebuttal.
 
 ## Decision Report Template
 

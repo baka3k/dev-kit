@@ -1,6 +1,6 @@
 ---
 name: dev-shared
-description: "Shared contracts and role briefs referenced by other DevKit skills via ../dev-shared/ paths (delegation, orchestrator, leaf, retrieval, graph selection). Support package: install alongside hi-* skills; never activate directly."
+description: "Shared contracts and role briefs referenced by other DevKit skills via ../dev-shared/ paths (delegation, orchestrator, leaf, retrieval, expert council, graph selection). Support package: install alongside hi-* skills; never activate directly."
 metadata:
   author: baka3k
   support: true
@@ -17,6 +17,7 @@ installed as a sibling of the skills that use it.
 - `leaf-contract.md` — evidence-backed artifacts, local manifest, completion conditions for leaf skills.
 - `test-budget.md` — proportionate testing: mapping rule, three values per dimension, tiers, soft ceiling with justification. Followed by every skill or role that plans, writes, or reviews tests.
 - `retrieval-protocol.md` — layered search order shared by discovery skills.
+- `expert-council.md` — evidence ledger, neutral packet, independence, and debate rules for skills that convene independent experts (hi-brainstorm, hi-predict).
 - `graph-function-selection.md` — when to use which `graph_mcp` function.
 - `roles/` — paste-into-prompt briefs for delegated roles (`researcher`, `implementer`, `reviewer`).
 
