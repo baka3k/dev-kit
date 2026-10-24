@@ -1,11 +1,11 @@
 ---
 name: hi-predict
-description: Five expert personas independently analyze proposed changes before implementation to catch architectural, security, performance, and UX issues early. Uses mind_mcp for project context and graph_mcp for code impact analysis. Produces GO/CAUTION/STOP verdict with consensus agreements, conflict resolutions, and risk mitigations. Use before major features, refactors, or risky changes.
-argument-hint: "<change proposal> [--files <glob>] [quick|deep]"
+description: Five expert personas independently stress-test one proposed change before implementation to catch architectural, security, performance, and UX issues early. Grounds findings in code impact evidence (hi-scout --impact over mind_mcp and graph_mcp) and produces a GO/CAUTION/STOP verdict with consensus agreements, conflict resolutions, and risk mitigations. Use before major features, refactors, or risky changes once an approach is chosen; use hi-brainstorm first when competing options still need selection.
+argument-hint: "<change proposal> [--files <glob>] [quick|standard|deep]  — default: standard"
 metadata:
   author: baka3k
-  version: "1.0.0"
-  last_updated: "2026-05-12"
+  version: "1.1.0"
+  last_updated: "2026-10-24"
 hooks:
   pre: mcp-health-check
   post: cleanup-handler
@@ -13,13 +13,17 @@ hooks:
 
 # HI Predict
 
-Five-expert-persona pre-analysis that debates proposed changes using MCP-assisted code context before any code is written.
+Five-persona pre-mortem that stress-tests one chosen proposal with evidence-grounded code context before any code is written. The outcome is a verdict with mitigations — not a choice between competing options, and not authorization to implement.
 
 ## When To Use / When NOT
 
-Use: before major features, refactors, competing approaches, assumption stress-tests, implementation gates. Skip: trivial changes, already-approved work, pure dep upgrades, docs-only.
+Use: before major features, refactors, assumption stress-tests, and implementation gates — once a single approach is on the table. Skip: trivial changes, already-approved work with unchanged scope, pure dependency upgrades, docs-only changes.
 
-Required: change proposal, optional `--files <glob>` and concern areas, depth (`quick`|`deep`).
+Boundary with `hi-brainstorm`: this skill stress-tests one proposal; it does not select among alternatives. When competing options still need selection, run `hi-brainstorm` first and feed its selected option and conditions here (`hi-brainstorm` already hands high-risk selections to this skill). A `STOP` that invalidates the core approach returns the decision to `hi-brainstorm`.
+
+Required: change proposal, optional `--files <glob>` and concern areas, depth (`quick`|`standard`|`deep`).
+
+Depth never drops a persona — all five always run; it controls context coverage and debate rounds, following the depth levels in [dev-shared/retrieval-protocol.md](../dev-shared/retrieval-protocol.md). `quick`: module boundaries and direct callers/callees only, one debate pass, condensed report. `standard` (default): full impact evidence (callers, dependencies, affected workflows), full four-phase pipeline. `deep`: standard + verified cross-module and runtime paths, a second challenge round against the draft consensus, and explicit flip conditions.
 
 ## The 5 Personas
 
@@ -33,11 +37,11 @@ Required: change proposal, optional `--files <glob>` and concern areas, depth (`
 
 ## Input Validation
 
-`proposal`: non-empty, 10-5000 chars, natural language (no code-only). `depth`: `quick` (default) or `deep`.
+`proposal`: non-empty, 10-5000 chars, natural language (no code-only). `depth`: `quick`, `standard` (default), or `deep`.
 
 ## Performance
 
-Timeouts: phase 0=180s, phase 1=300s, phase 2=180s, phase 3=60s; total=720s (12min). Progress events: phase_start, persona_progress, conflict_resolving, final_summary.
+Timeouts (`standard`): phase 0=180s, phase 1=300s, phase 2=180s, phase 3=60s; total=720s (12min). `quick` should finish well inside these; `deep` adds one extra 180s Phase 2 round. Progress events: phase_start, persona_progress, conflict_resolving, final_summary.
 
 ---
 
@@ -60,13 +64,13 @@ Timeouts: phase 0=180s, phase 1=300s, phase 2=180s, phase 3=60s; total=720s (12m
 
 ## Orchestration Workflow
 
-**Phase 0 — Code Context (3min):** Parse the proposal and query `mind_mcp.hybrid_search` for architecture context. In `graph_mcp`, resolve named functions with `search_functions(query, parser_type)` and use `query_subgraph(direction:"all", max_depth:2)` for immediate callers/callees. Use `trace_flow` with direction `out` or `in`, selected `rel_types`, and `max_depth:6` for indirect or callback-aware runtime paths; use `find_paths` for known start/end anchors, `analyze_workflow_impact` for affected workflows, severity, and risk, and `plan_dependency_order` for phase-ordering risk (selection matrix: `dev-shared/graph-function-selection.md`). Build one evidence-scoped context package.
+**Phase 0 — Code Context (3min):** Parse the proposal into named symbols, scoped files (`--files`), and affected workflows. Gather impact evidence with `hi-scout --impact` at the chosen depth, or follow [dev-shared/retrieval-protocol.md](../dev-shared/retrieval-protocol.md) directly when delegation is unavailable: resolve named functions first, then collect callers/callees, indirect or callback-aware paths, affected workflows with severity, and dependency-ordering risk; route graph intents per [dev-shared/graph-function-selection.md](../dev-shared/graph-function-selection.md) and discover live tool schemas before use. Build one neutral, evidence-scoped context packet (template in [references/persona-playbook.md](references/persona-playbook.md)) that separates verified facts, user statements, assumptions, and unknowns with stable IDs. It must contain no verdict, preferred mitigation, or persona conclusion.
 
-**Phase 1 — Independent Analysis (5min):** Each persona analyzes in isolation (no cross-reading), using MCP context + code reading. Record findings per the `persona_output_format` below.
+**Phase 1 — Independent Analysis (5min):** Every persona receives the same packet and analyzes in isolation. When collaboration agents are available and delegation is allowed, run one persona brief per subagent (isolated forks, same packet, concurrently); personas never see each other's output before Phase 2. If isolated contexts are unavailable, run clearly separated sequential passes, disclose the fallback in the report, and lower confidence — never describe sequential self-analysis as independent parallel agents. Each finding cites packet evidence IDs or is marked as an assumption. Record findings per `persona_output_format` below.
 
-**Phase 2 — Consensus Debate (3min):** Compare outputs side-by-side. Agreements = 4+ personas align. Conflicts = meaningful disagreement → weigh tradeoffs, document resolution with rationale per `conflict_resolution_rules`.
+**Phase 2 — Consensus Debate (3min):** Compare outputs side-by-side. Agreements = 4+ personas align. Conflicts = meaningful disagreement → weigh tradeoffs, document resolution with rationale per `conflict_resolution_rules`. In `deep`, run a second challenge round (playbook: [references/persona-playbook.md](references/persona-playbook.md)): each persona rebuts the draft consensus, names the assumption most likely to flip the verdict, and proposes a mitigation or concedes; revise only on evidence and record what changed.
 
-**Phase 3 — Verdict & Report (1min):** Synthesize findings, generate risk summary, produce recommendations, format report. `GO`: 0 Critical, <3 High, clear mitigations. `CAUTION`: 1-2 mitigatable Critical OR 3+ High. `STOP`: any unmitigatable Critical or false assumption detected.
+**Phase 3 — Verdict & Report (1min):** Synthesize findings, generate risk summary, produce recommendations, format report. `GO`: 0 Critical, <3 High, clear mitigations. `CAUTION`: 1-2 mitigatable Critical OR 3+ High. `STOP`: any unmitigatable Critical or false assumption detected. In `deep`, also list flip conditions: the evidence that would move the verdict up or down.
 
 ```yaml
 persona_output_format:
@@ -79,21 +83,25 @@ persona_output_format:
     threats: ["threat 1", "threat 2"]
     severity: "critical|high|medium|low"
     mitigations: ["mitigation 1"]
+    confidence: "high|medium|low"
 
   performance:
     bottlenecks: ["bottleneck 1"]
     metrics_impact: "latency +Xms, queries +N"
     alternatives: ["alternative 1"]
+    confidence: "high|medium|low"
 
   ux:
     issues: ["issue 1"]
     edge_cases: ["edge case 1"]
     a11y_concerns: ["a11y concern 1"]
+    confidence: "high|medium|low"
 
   devils_advocate:
     assumptions_challenged: ["assumption 1"]
     simpler_alternatives: ["alternative 1"]
     worst_case: "description of worst case"
+    confidence: "high|medium|low"
 ```
 
 ```yaml
@@ -108,13 +116,14 @@ conflict_resolution_rules:
 
 ## Output Contract
 
-Minimum report fields: title + date + depth + verdict; executive summary (2-3 sentences); agreements list; conflicts table (topic × 5 personas + resolution); risk summary table (risk/severity/persona/mitigation); per-persona detail block (concerns, threats, bottlenecks, issues, challenged assumptions + recommendations/mitigations/impact/alternatives); numbered recommendations with rationale; next steps tied to verdict (GO → hi-plan, CAUTION → address mitigations, STOP → redesign).
+Minimum report fields: title + date + depth + isolation mode (parallel subagents | sequential fallback) + verdict; executive summary (2-3 sentences); context coverage (tools used or unavailable, evidence IDs); agreements list; conflicts table (topic × 5 personas + resolution); risk summary table (risk/severity/persona/mitigation/evidence); per-persona detail block (concerns, threats, bottlenecks, issues, challenged assumptions + recommendations/mitigations/impact/alternatives); numbered recommendations with rationale; flip conditions (`deep`); next steps tied to verdict (GO → hi-plan, CAUTION → address mitigations, STOP → redesign, or return to hi-brainstorm when the approach itself must be re-selected).
 
 ---
 
 ## Non-Negotiable Rules
 
-- Personas MUST analyze independently — no cross-contamination during analysis phase
+- Personas MUST analyze independently — no cross-contamination during analysis phase; the isolation mode actually used is reported honestly
+- Depth never removes a persona
 - Security persona findings always weighted higher for auth/data concerns
 - Devil's Advocate must challenge at least one core assumption
 - STOP verdict requires explicit documentation of what must change
@@ -123,17 +132,17 @@ Minimum report fields: title + date + depth + verdict; executive summary (2-3 se
 
 ## Error Handling & Fallback
 
-Preflight: validate proposal, abort on failure. MCP-unavailable: skip code context, analyze proposal text only, mark code-derived findings lower confidence, note "MCP unavailable". Persona timeout: mark incomplete and continue. Unresolvable conflict: document as unresolved in report.
+Preflight: validate proposal, abort on failure. Code context unavailable (hi-scout or every retrieval layer fails): analyze proposal text only, mark code-derived findings lower confidence, note "code context unavailable". Persona timeout: mark incomplete and continue. Unresolvable conflict: document as unresolved in report.
 
 ## Known Limitations
 
-- Static analysis only — cannot predict runtime behavior; quality depends on proposal detail; MCP-unavailable mode is less confident.
+- Static analysis only — cannot predict runtime behavior; quality depends on proposal detail; the no-code-context mode is less confident.
 - Personas cannot ask clarifying questions (one-pass); business nuances may be missed without domain expert input.
 
 ## Deliverables
 
-- `prediction_report_{timestamp}.md` — Full prediction report with all persona analyses, conflicts, verdict, and recommendations
+- `prediction_report_{timestamp}.md` — Full prediction report with all persona analyses, conflicts, verdict, and recommendations. Write it when the user wants a persistent artifact (location per `hi-project-organization`); otherwise return the report inline.
 
 ## References
 
-- `references/persona-playbook.md` — Detailed analysis framework per persona with example prompts
+- [references/persona-playbook.md](references/persona-playbook.md) — Shared context packet, isolated persona brief with example prompts, per-persona focus/questions/red flags, and the `deep` challenge round

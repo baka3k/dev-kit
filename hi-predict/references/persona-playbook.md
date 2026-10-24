@@ -1,6 +1,54 @@
 # Persona Analysis Playbook
 
-Detailed analysis framework for each of the 5 personas in hi-predict.
+Use this reference to build the shared context packet, issue isolated persona briefs, run the per-persona analysis, and (in `deep`) run the challenge round for hi-predict.
+
+## Shared Context Packet
+
+Give every persona the same neutral packet. Evidence IDs are stable so findings can cite them.
+
+```yaml
+proposal:
+  summary: "What changes and why"
+  scope_files: []                 # from --files or parsed from the proposal
+  concern_areas: []               # optional focus: architecture|security|performance|ux|assumptions
+  depth: "quick|standard|deep"
+impact_evidence:                  # from hi-scout --impact or the retrieval protocol; empty when unavailable
+  symbols: [{id: "sym-1", name: "...", file: "...", layer: "mind_mcp|graph_mcp|serena|rg"}]
+  callers_callees: [{id: "rel-1", from: "...", to: "...", verified: true}]
+  affected_workflows: [{id: "wf-1", name: "...", severity: "critical|high|medium|low"}]
+  dependency_order_risks: []
+evidence:
+  verified_facts: [{id: "fact-1", statement: "..."}]
+  user_statements: [{id: "user-1", statement: "..."}]
+  assumptions: [{id: "assumption-1", statement: "..."}]
+  unknowns: [{id: "unknown-1", question: "..."}]
+coverage:
+  tools: {hi-scout: "used|unavailable|no results", mind_mcp: "...", graph_mcp: "...", serena: "...", rg: "..."}
+```
+
+Do not include a verdict, a preferred mitigation, another persona's output, or language that anchors the panel toward `GO` or `STOP`. A semantic match is a candidate, not proof — only verified relationships enter `impact_evidence`.
+
+## Isolated Persona Brief
+
+Issue the brief to each persona in an isolated context: one subagent per persona, same packet, run concurrently. When isolated contexts are unavailable, run clearly separated sequential passes, disclose this in the report as the isolation mode, and lower confidence.
+
+```text
+You are the <PERSONA> on a pre-implementation review panel.
+
+Using only the shared context packet and the code it references:
+1. Restate what the proposal changes from your lens; do not judge the verdict yet.
+2. List your findings (concerns, threats, bottlenecks, issues, or challenged
+   assumptions) with severity, each citing packet evidence IDs or marked as
+   an assumption.
+3. For every finding give a concrete mitigation, alternative, or the test that
+   would confirm or dismiss it.
+4. State your confidence and the missing evidence that would raise it.
+5. Do not infer or discuss other personas' likely views. Do not implement anything.
+
+Return the persona_output_format block for your persona only.
+```
+
+---
 
 ## Architect Persona
 
@@ -22,6 +70,9 @@ Detailed analysis framework for each of the 5 personas in hi-predict.
 - Bypasses existing service/repository layers
 - Creates a god component that does too much
 - Violates established module boundary conventions
+
+### Example Prompt
+Map the proposal onto the module boundaries in the packet; name every new edge in the dependency graph (`callers_callees`) and whether it crosses a layer that has no such edge today.
 
 ---
 
@@ -46,6 +97,9 @@ Detailed analysis framework for each of the 5 personas in hi-predict.
 - SQL/NoSQL string concatenation
 - New secret introduced without rotation plan
 
+### Example Prompt
+Enumerate every entry point, data store, log line, and secret the change introduces or touches; for each, state where authentication and validation happen, citing the symbol, or mark the gap as an assumption.
+
 ---
 
 ## Performance Persona
@@ -68,6 +122,9 @@ Detailed analysis framework for each of the 5 personas in hi-predict.
 - Unbounded collection loaded into memory
 - Missing pagination on new list endpoint
 - New database query without index plan
+
+### Example Prompt
+Walk the hot path through the verified callers in the packet; estimate added latency, query count, and memory for the peak case the proposal names, or mark the peak case as unknown.
 
 ---
 
@@ -92,6 +149,9 @@ Detailed analysis framework for each of the 5 personas in hi-predict.
 - Non-responsive on mobile viewport
 - Missing loading indicator for async operations
 
+### Example Prompt
+Trace the user-visible flow through loading, empty, error, abort, and assistive-technology states; name every state the proposal leaves undefined and what the user would see there today.
+
 ---
 
 ## Devil's Advocate Persona
@@ -114,3 +174,20 @@ Detailed analysis framework for each of the 5 personas in hi-predict.
 - No simpler alternative was seriously considered
 - Success depends on a single person's knowledge
 - Timeline assumes no interruptions or scope changes
+
+### Example Prompt
+List the proposal's load-bearing assumptions from the packet's `assumptions` and `unknowns`; for each, state what breaks if it is false, then describe the smallest alternative — including doing nothing — that still meets the stated goal.
+
+---
+
+## Deep Challenge Round
+
+In `deep`, after the draft consensus exists, give each persona the anonymized agreements, conflicts, and draft verdict — not other personas' raw outputs — and ask:
+
+1. What is the strongest reason the draft verdict is wrong?
+2. Which single assumption, if false, flips the verdict?
+3. Which risk is under- or over-weighted, and what evidence shows it?
+4. Can your objection be mitigated or tested cheaply? If not, why is it fatal?
+5. What evidence, if obtained, would move the verdict up or down (flip conditions)?
+
+Revise findings only on evidence or reasoning; record every change with its cause. Persistent disagreement stays in the report as an unresolved conflict — it is never averaged away.

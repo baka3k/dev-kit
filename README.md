@@ -271,7 +271,7 @@ Skills are invoked by slash command or by bare name, depending on the harness. A
 | `hi-module-summary-report` | `/hi-module-summary-report [artifacts]` | `audience`: `engineering`, `management`, `mixed`; `depth`: `executive`, `standard`, `detailed`; `mermaid` (default `true`) | — |
 | `hi-scenario` | `/hi-scenario [feature or module]` | depth: `quick` (default), `deep`; optional focus dimensions and severity filter | — |
 | `hi-brainstorm` | `/hi-brainstorm [decision or topic]` | modes: `quick` (3 lenses), `standard` (default, 5 lenses), `deep` | — |
-| `hi-predict` | `/hi-predict [change proposal]` | `--files <glob>`, concern areas, depth: `quick`, `deep` | — |
+| `hi-predict` | `/hi-predict [change proposal]` | `--files <glob>`, concern areas, depth: `quick`, `standard` (default), `deep` | — |
 | `hi-security` | `/hi-security [source root + scope]` | mode: `audit`, `audit-fix`; focus: `auth`, `data`, `api`, `infra`, `all`; max fix iterations (default 10) | — |
 | `hi-cortex` | `/hi-cortex [setup \| status \| add-code \| sync-code \| add-doc \| sync-doc \| start-mcp \| stop-mcp \| doctor] [project path or repo URL]` | `--project-dir`, `--name`, `--sync-mode`, `--git`, `--full-scan` | `dev init`, `dev sync code add`, `dev sync doc add`, `dev mcp`, `dev start`, `dev stop` |
 | `hi-chrome-devtools` | `/hi-chrome-devtools [url or task]` | `--headless`, `--url`, `--output`, `--ref`, `--action`, `--timeout`, `--wait-until`, `--wait-for-login`, `--close` | scripts: `navigate`, `screenshot`, `click`, `fill`, `evaluate`, `snapshot`, `console`, `network`, `performance` |

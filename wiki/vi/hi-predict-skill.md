@@ -1,6 +1,6 @@
 # Hi Predict Skill: Hướng dẫn đầy đủ
 
-> `hi-predict` là pre-analysis gate dùng trước feature lớn, refactor, competing approaches hoặc thay đổi rủi ro cao. Năm persona độc lập phân tích proposal từ các góc architecture, security, performance, UX và assumptions, sau đó debate, resolve conflicts và tạo verdict `GO`, `CAUTION` hoặc `STOP`.
+> `hi-predict` là pre-analysis gate dùng trước feature lớn, refactor hoặc thay đổi rủi ro cao khi đã chốt một approach (để chọn giữa các competing approaches, chạy `hi-brainstorm` trước). Năm persona độc lập phân tích proposal từ các góc architecture, security, performance, UX và assumptions, sau đó debate, resolve conflicts và tạo verdict `GO`, `CAUTION` hoặc `STOP`.
 
 ## 1. Hi Predict giải quyết vấn đề gì?
 
@@ -54,7 +54,7 @@ flowchart TD
 
 - major feature;
 - refactor ảnh hưởng nhiều module;
-- competing architecture approaches;
+- một architecture approach đã chọn cần kiểm tra rủi ro (để chọn giữa các competing approaches, chạy `hi-brainstorm` trước rồi đưa option được chọn vào đây);
 - assumption stress-test;
 - implementation gate trước code;
 - thay đổi authentication/authorization;
@@ -102,14 +102,15 @@ function rotateToken() { ... }
 
 - `--files <glob>`: giới hạn files/modules được xem xét;
 - concern areas: architecture/security/performance/UX/assumptions;
-- `depth`: `quick` hoặc `deep`.
+- `depth`: `quick`, `standard` (mặc định) hoặc `deep`.
 
 ### 4.3 Depth
 
 | Depth | Mục tiêu |
 |---|---|
-| `quick` | Pre-analysis nhanh cho proposal chính, major risks |
-| `deep` | Mở rộng context, code paths, assumptions và conflict analysis |
+| `quick` | Ranh giới module và callers/callees trực tiếp, một vòng debate, report rút gọn |
+| `standard` | Mặc định: đầy đủ impact evidence (callers, dependencies, affected workflows) và trọn bộ pipeline bốn phase |
+| `deep` | Standard cộng cross-module/runtime path đã verify, vòng challenge thứ hai phản biện draft consensus và flip conditions |
 
 Quick không có nghĩa bỏ Security persona hoặc Devil's Advocate. Năm persona vẫn là core model; depth điều khiển độ sâu context và analysis.
 
@@ -131,7 +132,7 @@ Persona phải analyze **độc lập** ở Phase 1, không cross-read output c�
 
 Thời gian mục tiêu: 3 phút, timeout 180 giây.
 
-Các bước:
+Route ưu tiên: `hi-scout --impact` ở depth đã chọn trả về impact evidence (callers/callees, affected workflows, dependency-order risk) trong một Evidence Bundle. Các bước dưới đây là những gì route đó thực hiện, và là thứ chạy trực tiếp khi không delegation được:
 
 1. parse proposal;
 2. đọc architecture/project context;
@@ -177,6 +178,8 @@ Mỗi persona:
 - ghi concerns/threats/bottlenecks/issues/assumptions;
 - ghi recommendations/mitigations/alternatives;
 - ghi confidence.
+
+Isolation mode: khi có collaboration agents, mỗi persona chạy trong subagent riêng (cùng packet, chạy song song). Khi không có isolated context, chạy các pass tuần tự tách bạch rõ ràng, ghi fallback đó vào report và hạ confidence — không bao giờ mô tả self-analysis tuần tự là các agent song song độc lập.
 
 ```mermaid
 flowchart TD

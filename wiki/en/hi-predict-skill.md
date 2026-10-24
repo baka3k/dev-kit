@@ -1,6 +1,6 @@
 # Hi Predict Skill: Complete Guide
 
-> `hi-predict` is a pre-analysis gate used before major features, refactors, competing approaches, or high-risk changes. Five independent personas analyze the proposal from the angles of architecture, security, performance, UX, and assumptions, then debate, resolve conflicts, and produce a `GO`, `CAUTION`, or `STOP` verdict.
+> `hi-predict` is a pre-analysis gate used before major features, refactors, or high-risk changes once an approach has been chosen (to select among competing approaches, run `hi-brainstorm` first). Five independent personas analyze the proposal from the angles of architecture, security, performance, UX, and assumptions, then debate, resolve conflicts, and produce a `GO`, `CAUTION`, or `STOP` verdict.
 
 ## 1. What problem does Hi Predict solve?
 
@@ -54,7 +54,7 @@ flowchart TD
 
 - major features;
 - refactors affecting many modules;
-- competing architecture approaches;
+- a chosen architecture approach that still needs a risk check (to select among competing approaches, run `hi-brainstorm` first and bring its selected option here);
 - assumption stress-testing;
 - implementation gate before code;
 - authentication/authorization changes;
@@ -102,14 +102,15 @@ function rotateToken() { ... }
 
 - `--files <glob>`: limits the files/modules under consideration;
 - concern areas: architecture/security/performance/UX/assumptions;
-- `depth`: `quick` or `deep`.
+- `depth`: `quick`, `standard` (default), or `deep`.
 
 ### 4.3 Depth
 
 | Depth | Goal |
 |---|---|
-| `quick` | Fast pre-analysis for the main proposal and major risks |
-| `deep` | Extended context, code paths, assumptions, and conflict analysis |
+| `quick` | Module boundaries and direct callers/callees, one debate pass, condensed report |
+| `standard` | Default: full impact evidence (callers, dependencies, affected workflows) and the full four-phase pipeline |
+| `deep` | Standard plus verified cross-module/runtime paths, a second challenge round against the draft consensus, and flip conditions |
 
 Quick does not mean dropping the Security persona or Devil's Advocate. The five personas remain the core model; depth controls the depth of context and analysis.
 
@@ -131,7 +132,7 @@ Personas must analyze **independently** in Phase 1 and not cross-read each other
 
 Target time: 3 minutes, timeout 180 seconds.
 
-Steps:
+Preferred route: `hi-scout --impact` at the chosen depth returns the impact evidence (callers/callees, affected workflows, dependency-order risk) as one Evidence Bundle. The steps below are what that route performs, and what to run directly when delegation is unavailable:
 
 1. parse the proposal;
 2. read architecture/project context;
@@ -177,6 +178,8 @@ Each persona:
 - records concerns/threats/bottlenecks/issues/assumptions;
 - records recommendations/mitigations/alternatives;
 - records confidence.
+
+Isolation mode: when collaboration agents are available, each persona runs in its own subagent (same packet, concurrently). When isolated contexts are unavailable, run clearly separated sequential passes, state that fallback in the report, and lower confidence — never present sequential self-analysis as independent parallel agents.
 
 ```mermaid
 flowchart TD

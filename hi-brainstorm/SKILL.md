@@ -4,8 +4,8 @@ description: Convene an adaptive panel of independent experts to generate compet
 argument-hint: "<decision or topic> [quick|standard|deep]  — default: standard"
 metadata:
   author: baka3k
-  version: "1.1.0"
-  last_updated: "2026-09-08"
+  version: "1.2.0"
+  last_updated: "2026-10-24"
 ---
 
 # HI Brainstorm
@@ -26,7 +26,7 @@ Independence: when collaboration agents are available and delegation allowed, on
 
 ## Workflow
 
-1. **Frame and ground** — normalize goal, measures, constraints, deadline, evidence gaps; gather repository context per the project's search order; distinguish verified facts, user statements, assumptions.
+1. **Frame and ground** — normalize goal, measures, constraints, deadline, evidence gaps; gather repository context per the project's search order ([dev-shared/retrieval-protocol.md](../dev-shared/retrieval-protocol.md)); when the decision touches existing code, run `hi-scout --impact` on the affected symbols or modules so verified callers, dependencies, and affected workflows enter the evidence registry as facts with IDs — `Evidence and feasibility` and `Risk and safety` ratings must cite them, and code-derived claims without this grounding are marked as assumptions; distinguish verified facts, user statements, assumptions.
 2. **Generate independently** — each expert proposes ≥1 solution (mechanism, benefits, costs, assumptions, failure modes, falsification test).
 3. **Form the candidate set** — merge duplicates, preserve distinct mechanisms (3–5 options; never drop a user-mandated candidate for count); same decision horizon and scope; merge hybrids whose near-term mechanism matches a base option; include status quo or a reversible experiment when credible; anonymize origins.
 4. **Apply hard gates** — `fail` any option that violates a non-negotiable/verified constraint, has an unresolved critical security/privacy/legal issue, is infeasible under verified limits, or intrinsically depends on an excluded action. Use `conditional` when a blocker has a concrete mitigation. Never average a failure away. Lack of post-council authorization is not an option failure.
